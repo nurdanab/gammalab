@@ -1,0 +1,345 @@
+{
+  "common": {
+    "phone": "+7 (705) 1000-333",
+    "email": "info@gammalab.kz",
+    "address": "Almaty, Sample Street, 123",
+    "search": "Search",
+    "searchAnalyses": "Search tests",
+    "login": "Login",
+    "cart": "Cart",
+    "language": "Language"
+  },
+  "nav": {
+    "analyses": "Tests & Prices",
+    "whereToTest": "Testing Locations",
+    "about": "About Us",
+    "news": "News & Articles",
+    "contacts": "Contacts",
+    "patients": "For Patients"
+  },
+  "buttons": {
+    "takeTest": "Get Tested",
+    "results": "Test Results",
+    "tuberculosis": "Tuberculosis",
+    "covid": "COVID-19 Test",
+    "addToCart": "Add to Cart",
+    "learnMore": "Learn More",
+    "sendMessage": "Send",
+    "callBack": "Request Callback"
+  },
+  "home": {
+    "hero": {
+      "title": "GammaLab Diagnostic Laboratory",
+      "subtitle": "Accurate Diagnosis — The Foundation of Health",
+      "description": "A modern laboratory with high-precision equipment for conducting a wide range of laboratory tests"
+    },
+    "advantages": {
+      "title": "GammaLab Advantages",
+      "accuracy": "High Accuracy",
+      "accuracyDesc": "Modern equipment and strict quality control",
+      "speed": "Fast Results",
+      "speedDesc": "Most test results are ready within 1-2 days",
+      "comfort": "Comfort",
+      "comfortDesc": "Convenient location and pleasant atmosphere",
+      "professionals": "Professionals",
+      "professionalsDesc": "Team of experienced specialists"
+    },
+    "popular": {
+      "title": "Popular Tests",
+      "viewAll": "View All"
+    },
+    "news": {
+      "title": "News & Promotions",
+      "viewAll": "All News"
+    }
+  },
+  "about": {
+    "title": "About Laboratory",
+    "mission": "Mission & Values",
+    "licenses": "Licenses & Documents",
+    "equipment": "Equipment",
+    "quality": "Quality System",
+    "partners": "Partners"
+  },
+  "aboutPage": {
+    "pageTitle": "About Company",
+    "pageSubtitle": "Learn more about GammaLab Diagnostic Laboratory",
+    "sections": {
+      "about": "About Us",
+      "advantages": "Our Advantages",
+      "analyses": "Tests",
+      "equipment": "Equipment",
+      "reagents": "Reagents and Consumables",
+      "labTests": "List of Laboratory Tests",
+      "logistics": "Logistics and Transportation",
+      "quality": "Quality Management System",
+      "licenses": "Licenses and Permits",
+      "experience": "Experience and Cooperation"
+    },
+    "aboutSection": {
+      "title": "ABOUT US",
+      "p1": "GammaLab Diagnostic Laboratory LLP is a modern molecular genetic laboratory — a union of professionals, a cohesive team solving a number of promising scientific and practical tasks related to various areas of modern technologies in the field of disease diagnostics.",
+      "p2": "The main goal of the laboratory is research activities in promising areas of laboratory diagnostics, as well as the implementation of new solutions related to molecular tumor profiling, providing the first step of personalized medicine.",
+      "p3": "The laboratory is equipped with the most modern equipment, allowing research at a level that meets international standards. The qualifications of employees and the ability to perform research at a modern level allows the laboratory to participate in clinical trials.",
+      "p4": "Laboratory specialists are authors of publications in Kazakhstani and foreign scientific journals. Employees have certificates allowing them to work in the practical healthcare system and have completed internships at leading institutions engaged in molecular genetic research.",
+      "p5": "We are constantly expanding the range of molecular genetic studies performed, which is why the largest state healthcare institutions and private medical centers trust us.",
+      "p6label": "Participation in government programs:",
+      "p6": "GammaLab LLP is a participant in the guaranteed volume of free medical care (GVFMC) program and compulsory social health insurance (CSHI) as a co-executor and service provider.",
+      "p7": "The laboratory provides a comprehensive approach to laboratory diagnostics and provides constant support to its clients. GammaLab LLP specializes in a narrow field, striving for high quality in laboratory testing. Our focus on specific areas of research allows us to achieve outstanding results."
+    },
+    "reagentsSection": {
+      "title": "REAGENTS AND CONSUMABLES",
+      "p1": "We work exclusively with high-quality reagents and consumables that have proven their diagnostic capability. Blood collection is performed using vacuum systems with disposable needles, which ensure comfort and safety for both patients and medical staff."
+    },
+    "logisticsSection": {
+      "title": "LOGISTICS AND TRANSPORTATION",
+      "howToSend": "How to send material to GAMMALAB laboratory?",
+      "freeHelp": "Free Assistance",
+      "freeHelpDesc": "Application for research within the framework of free assistance to the population of RK",
+      "selfReferral": "Self-referral",
+      "regionsRK": "Regions of RK",
+      "almatyCity": "Almaty city",
+      "step1Title": "Patient registration in KMIS for research",
+      "step1Note": "if LPU integration with GammaLab is available",
+      "step2Title": "Patient registration in Partner's Personal Account",
+      "step2Note": "if there is no LPU integration with GammaLab",
+      "callCenter": "If you have any questions, call the call center",
+      "barcodeNote": "Patient's biomaterial is assigned a barcode from GammaLab",
+      "documentsTitle": "Documents for transfer",
+      "doc1": "Referral for analysis",
+      "doc2": "Copy of extract with histological conclusion",
+      "deliveryCourier": "Via courier",
+      "deliveryCourierDesc": "The operator informs the doctor of the address, date and time of biomaterial transfer. The courier delivers the material to the laboratory.",
+      "deliverySelf": "Self-delivery",
+      "deliverySelfDesc": "The patient delivers the material to the laboratory at",
+      "address": "Almaty, Khodzhanova st. 55A",
+      "receptionTime": "Mon-Sat from 09:00 to 17:00",
+      "deliveryTimeLabel": "Delivery time",
+      "deliveryDays": "Within 2 working days from material collection",
+      "analysisTimeLabel": "Execution time",
+      "analysisDays": "From 5 to 14 working days depending on the type of research",
+      "resultsTitle": "Getting results",
+      "resultsDesc": "Results are sent to the patient's e-mail. GVFMC results are automatically sent to KMIS."
+    },
+    "equipmentSection": {
+      "title": "EQUIPMENT",
+      "p1": "The laboratory is equipped with the latest diagnostic equipment from leading manufacturers, which ensures the highest diagnostic accuracy and allows for correct identification of disease causes and selection of the best treatment strategy.",
+      "p2": "The laboratory has about 50 types of instruments and analyzers. This allows performing more than 100 of the most popular tests within one day."
+    },
+    "analysesSection": {
+      "title": "ANALYSES",
+      "description": "The main goal of the laboratory is to work in promising areas of laboratory diagnostics, as well as to implement new solutions related to the study of mutations in tumor tissue for the selection of targeted therapy.",
+      "chartTitle": "Types of Therapy",
+      "chartSubtitle": "Treatment directions based on diagnostic results",
+      "therapy1": "Targeted therapy",
+      "therapy2": "Surgical operation",
+      "therapy3": "Radiation therapy",
+      "therapy4": "Chemotherapy",
+      "therapy5": "Immunotherapy"
+    },
+    "advantagesSection": {
+      "title": "KEY ADVANTAGES OF THE LABORATORY",
+      "qualityLabel": "Quality.",
+      "qualityText": "All studies are performed on modern high-tech equipment using certified reagents and a multi-level quality control system, which ensures high reliability and reproducibility of results.",
+      "speedLabel": "Research speed.",
+      "speedText": "Optimized laboratory processes and our own team of specialists allow us to perform research in a short time, which is especially important in the diagnosis and treatment of cancer patients.",
+      "deadlineText": "Results are delivered within 3 to 14 days. The laboratory is one of the molecular genetic laboratories providing results in the shortest possible time.",
+      "staffLabel": "Human resources.",
+      "staffText": "The laboratory is staffed with highly qualified specialists, including:",
+      "staffList1": "laboratory head: over 20 years of experience in oncogenetics",
+      "staffList2": "pathomorphologists",
+      "staffList3": "laboratory diagnostics specialists with specialized education and significant practical experience in molecular pathology and medical genetics",
+      "membersText": "Specialists actively participate in congresses and are members of the European Congress of Pathology, European Cytogeneticists Association (ECA).",
+      "convenienceLabel": "Convenience for partners and patients.",
+      "convenienceText": "We have our own logistics and organized delivery of biological material in compliance with all transportation requirements."
+    },
+    "qualitySection": {
+      "title": "QUALITY MANAGEMENT SYSTEM",
+      "p1": "The activities of biomaterial collection points and the GammaLab laboratory are carried out in accordance with sanitary requirements and recommendations of the World Health Organization.",
+      "hasTitle": "The company has:",
+      "item1": "Quality control department for service provision",
+      "item2": "QMS Manager – monitoring all customer inquiries",
+      "item3": "Internal laboratory quality control manager for performed tests"
+    },
+    "experienceSection": {
+      "title": "EXPERIENCE AND COOPERATION",
+      "p1": "We have extensive experience working with regions of the Republic of Kazakhstan, established and reliable logistics for interaction with medical organizations during 2019-2021 with public and private healthcare institutions under GVFMC and CSHI programs.",
+      "p2": "In the field of oncogenetics and immunohistochemistry (IHC), we have been cooperating with public and private healthcare institutions under GVFMC since 2022.",
+      "p3": "Connection to the laboratory information system (LIS K-LAB), integrated with medical information systems (DAMUMED, ZHETYSU).",
+      "p4": "Since 2019, more than 30,000 tests have been performed in all areas, including: Covid19, T-spotTB, enzyme immunoassays and general clinical analyses.",
+      "p5": "Since 2022, the laboratory has been consistently developing personalized diagnostics, implementing modern molecular genetic and immunohistochemical research methods.",
+      "statsTitle": "Comparison of cancer mutation detection rates with global standards:",
+      "colorectal": "Colorectal cancer",
+      "lung": "Lung cancer",
+      "melanoma": "Skin melanoma",
+      "bladder": "Bladder cancer",
+      "breast": "Breast cancer",
+      "ihcTitle": "Immunohistochemistry positive results percentage:",
+      "contactTitle": "Cooperation contacts"
+    },
+    "licensesSection": {
+      "title": "LICENSES AND PERMITS",
+      "licenseNumber": "Medical License No. 20014896",
+      "licenseSubtitle": "for the following types of activities:",
+      "item1": "Outpatient care for adults and/or children by specialty",
+      "item2": "Consultative and diagnostic care",
+      "item3": "Laboratory diagnostics: cytological, general clinical, biochemical, serological, immunological tests"
+    },
+    "labTestsSection": {
+      "title": "LIST OF LABORATORY TESTS PERFORMED",
+      "table1Title": "List of tests performed under GVFMC tariff schedule",
+      "table2Title": "List of tests performed on a commercial (paid) basis",
+      "colNumber": "#",
+      "colTestName": "Laboratory test name",
+      "colServiceCode": "Service code",
+      "colDeadline": "Turnaround time",
+      "colAnalysisName": "Test name",
+      "colMaterial": "Sample material",
+      "colMethod": "Method",
+      "colTerm": "Term",
+      "category1": "Genetic markers of sensitivity/resistance to targeted anticancer drugs",
+      "category2": "Genetic markers of predisposition to breast and ovarian cancer",
+      "category3": "Immunohistochemistry tests (IHC)",
+      "category4": "Liquid biopsy",
+      "category5": "Tuberculosis diagnostics",
+      "workingDays": "business days",
+      "upTo": "up to"
+    }
+  },
+  "analyses": {
+    "title": "Tests & Prices",
+    "searchPlaceholder": "Search tests",
+    "categories": "Tests by Category",
+    "price": "Price",
+    "collectionPrice": "Collection Fee",
+    "deadline": "Turnaround",
+    "days": "business days",
+    "back": "Back"
+  },
+  "patients": {
+    "title": "For Patients",
+    "pageTitle": "Patient Information",
+    "pageSubtitle": "Everything you need to know about testing at GammaLab",
+    "sections": {
+      "preparation": "Test Preparation",
+      "rules": "Specimen Collection Rules",
+      "deadlines": "Turnaround Times",
+      "faq": "Frequently Asked Questions",
+      "rights": "Patient Rights"
+    },
+    "preparationSection": {
+      "title": "HOW TO PREPARE FOR TESTS",
+      "igraTitle": "IGRA TESTS",
+      "igraSubtitle": "Gold standard for diagnosing latent tuberculosis infection (LTBI)",
+      "igraDesc": "IGRA tests are the best alternative to skin tests (Mantoux test and Diaskintest).",
+      "elispotTitle": "ELISPOT (T-SPOT.TB)",
+      "elispotDesc": "A blood test with high reliability that provides results within 2 days.",
+      "advantage1Title": "Suitable for Everyone",
+      "advantage1Desc": "Anyone can take the ELISPOT test. There are no contraindications for this test.",
+      "advantage2Title": "One Visit",
+      "advantage2Desc": "Only 1 visit to the laboratory is required — no need to return for result verification.",
+      "advantage3Title": "No Preparation",
+      "advantage3Desc": "No special preparation is required for the test.",
+      "generalPrepTitle": "General Recommendations",
+      "generalPrepList": [
+        "Blood should be drawn on an empty stomach (at least 8 hours after the last meal)",
+        "Avoid alcohol and fatty foods 24 hours before the test",
+        "Refrain from smoking 1 hour before blood collection",
+        "Rest for 10-15 minutes immediately before blood collection"
+      ]
+    },
+    "rulesSection": {
+      "title": "BLOOD COLLECTION RULES",
+      "mainRule": "Blood is collected from a vein into a vacutainer with NA heparin or Li heparin.",
+      "volumeTitle": "Blood volume required for testing:",
+      "volume1": "Adults and children 10 years and older: 6-8 ml",
+      "volume2": "Children 2-9 years: 4 ml",
+      "volume3": "Children under 2 years: 2 ml",
+      "importantTitle": "Important Information:",
+      "important1": "Blood collection is performed only at specialized collection points or at the laboratory",
+      "important2": "Disposable vacuum systems are used for patient safety",
+      "important3": "It is recommended not to remove the bandage for 10-15 minutes after blood collection"
+    },
+    "deadlinesSection": {
+      "title": "TEST TURNAROUND TIMES",
+      "tspotTitle": "T-SPOT.TB (ELISPOT)",
+      "tspotDeadline": "2-3 business days",
+      "pcrTitle": "PCR tests (KRAS, EGFR, BRAF, etc.)",
+      "pcrDeadline": "5-7 business days",
+      "ihcTitle": "Immunohistochemistry tests (IHC)",
+      "ihcDeadline": "5-14 business days",
+      "fishTitle": "FISH tests",
+      "fishDeadline": "up to 14 business days",
+      "note": "Turnaround times may vary depending on test complexity. Please confirm exact times when placing your order."
+    },
+    "faqSection": {
+      "title": "FREQUENTLY ASKED QUESTIONS",
+      "q1": "What is T-SPOT.TB and how is it different from Mantoux?",
+      "a1": "T-SPOT.TB is a modern immunological tuberculosis test performed using a blood sample. Unlike the Mantoux test, it doesn't require a follow-up visit, doesn't give false positives in BCG-vaccinated individuals, and has higher accuracy.",
+      "q2": "Do I need to prepare for the T-SPOT.TB test?",
+      "a2": "No special preparation is required. It is recommended to have blood drawn on an empty stomach or 3-4 hours after a light meal.",
+      "q3": "Can children take the T-SPOT.TB test?",
+      "a3": "Yes, the test can be performed on children of any age. The volume of blood collected depends on the child's age.",
+      "q4": "How do I receive my test results?",
+      "a4": "Results are sent to the patient's email. They can also be obtained in person at the laboratory or through the partner's personal account.",
+      "q5": "Do you accept tests under GVFMC/CSHI programs?",
+      "a5": "Yes, our laboratory participates in the GVFMC and CSHI programs. A referral from a doctor is required for free testing."
+    },
+    "rightsSection": {
+      "title": "PATIENT RIGHTS",
+      "intro": "In accordance with the legislation of the Republic of Kazakhstan, every patient has the right to:",
+      "right1Title": "Quality Medical Care",
+      "right1Desc": "Receiving medical services of proper quality in accordance with established standards",
+      "right2Title": "Informed Consent",
+      "right2Desc": "Receiving complete information about diagnostic methods, their risks, and alternatives before testing",
+      "right3Title": "Confidentiality",
+      "right3Desc": "Protection of personal data and medical confidentiality. Test results are provided only to the patient or authorized persons",
+      "right4Title": "Respectful Treatment",
+      "right4Desc": "Polite and attentive treatment from medical staff",
+      "right5Title": "Right to Appeal",
+      "right5Desc": "The ability to file a complaint in case of violation of your rights or inadequate service quality",
+      "contactTitle": "Contact for Inquiries",
+      "contactDesc": "If you have questions or complaints, please contact us:"
+    }
+  },
+  "contacts": {
+    "title": "Contacts",
+    "address": "Address",
+    "phones": "Phone Numbers",
+    "emailLabel": "Email",
+    "workingHours": "Working Hours",
+    "feedback": "Feedback",
+    "rateService": "Rate Our Services"
+  },
+  "contactsPage": {
+    "pageTitle": "Contacts",
+    "pageSubtitle": "Get in touch with us in any convenient way",
+    "address": "Address",
+    "workingHours": "Working Hours",
+    "weekdays": "Mon-Fri",
+    "saturday": "Sat",
+    "sunday": "Sun",
+    "closed": "Closed",
+    "emailLabel": "Email",
+    "phones": "Phone Numbers",
+    "messengers": "Messengers",
+    "feedbackTitle": "Feedback",
+    "feedbackSubtitle": "Leave your feedback or ask a question",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
+    "phone": "Phone Number",
+    "rateService": "Rate the quality of our services",
+    "yourRating": "Your rating",
+    "outOf": "out of",
+    "message": "Message",
+    "messagePlaceholder": "Write your feedback or question...",
+    "submit": "Submit",
+    "successMessage": "Thank you! Your message has been sent successfully."
+  },
+  "footer": {
+    "rights": "All Rights Reserved",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Use"
+  }
+}

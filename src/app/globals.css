@@ -1,26 +1,53 @@
 @import "tailwindcss";
 
+@theme inline {
+  /* GammaLab Brand Colors */
+  --color-primary: #209DA7;
+  --color-primary-dark: #1a8a93;
+  --color-secondary: #EC910C;
+  --color-secondary-dark: #d4820b;
+  --color-accent-yellow: #F5D88E;
+  --color-dark: #091D33;
+  --color-dark-light: #1a3a5c;
+  --color-white: #FFFFFF;
+  --color-light-bg: #F6F7F9;
+  --color-text: #3D3D3D;
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+
+  /* Fonts */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #091D33;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  line-height: 1.6;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
 }
