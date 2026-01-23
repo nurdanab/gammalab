@@ -1,10 +1,12 @@
 import { NextResponse } from 'next/server';
-import { clearSessionCookie } from '@/lib/auth';
+
+const ADMIN_COOKIE_NAME = 'admin_session';
 
 export async function POST() {
   try {
-    await clearSessionCookie();
-    return NextResponse.json({ success: true });
+    const response = NextResponse.json({ success: true });
+    response.cookies.delete(ADMIN_COOKIE_NAME);
+    return response;
   } catch (error) {
     console.error('Logout error:', error);
     return NextResponse.json(

@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyPassword, createSession, setSessionCookie } from '@/lib/auth';
+import { verifyPassword, createSession } from '@/lib/auth';
+
+const ADMIN_COOKIE_NAME = 'admin_session';
+const SESSION_DURATION = 24 * 60 * 60; // 24 hours in seconds
 
 export async function POST(request: NextRequest) {
   try {
@@ -22,9 +25,20 @@ export async function POST(request: NextRequest) {
     }
 
     const token = await createSession();
-    await setSessionCookie(token);
 
-    return NextResponse.json({ success: true });
+    // Set cookie directly on response
+    const response = NextResponse.json({ success: true });
+    response.cookies.set(ADMIN_COOKIE_NAME, token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: SESSION_DURATION,
+      path: '/',
+    });
+
+    console.log('Session cookie set successfully');
+
+    return response;
   } catch (error) {
     console.error('Login error:', error);
     return NextResponse.json(
