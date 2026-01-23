@@ -31,15 +31,22 @@ export async function verifyPassword(password: string): Promise<boolean> {
 
   // Use timing-safe comparison to prevent timing attacks
   try {
-    const passwordBuffer = Buffer.from(password);
-    const adminPasswordBuffer = Buffer.from(adminPassword);
+    const passwordBuffer = Buffer.from(password, 'utf8');
+    const adminPasswordBuffer = Buffer.from(adminPassword, 'utf8');
+
+    // Log lengths for debugging (remove in production if needed)
+    console.log('Password verification - input length:', passwordBuffer.length, 'expected length:', adminPasswordBuffer.length);
 
     if (passwordBuffer.length !== adminPasswordBuffer.length) {
+      console.log('Password length mismatch');
       return false;
     }
 
-    return timingSafeEqual(passwordBuffer, adminPasswordBuffer);
-  } catch {
+    const result = timingSafeEqual(passwordBuffer, adminPasswordBuffer);
+    console.log('Password verification result:', result);
+    return result;
+  } catch (error) {
+    console.error('Password verification error:', error);
     return false;
   }
 }
