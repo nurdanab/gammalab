@@ -724,25 +724,30 @@ export async function getSubmissionById(id: string): Promise<Submission | null> 
 
 export async function createSubmission(submission: SubmissionInsert): Promise<Submission | null> {
   const supabase = await createClient()
+
+  const insertData = {
+    type: submission.type,
+    first_name: submission.firstName,
+    last_name: submission.lastName || null,
+    email: submission.email || null,
+    phone: submission.phone,
+    message: submission.message || null,
+    rating: submission.rating || null,
+    analysis_id: submission.analysisId || null,
+    analysis_name: submission.analysisName || null,
+    preferred_date: submission.preferredDate || null,
+  }
+
+  console.log('Creating submission with data:', JSON.stringify(insertData, null, 2))
+
   const { data, error } = await supabase
     .from('submissions')
-    .insert({
-      type: submission.type,
-      first_name: submission.firstName,
-      last_name: submission.lastName || null,
-      email: submission.email || null,
-      phone: submission.phone,
-      message: submission.message || null,
-      rating: submission.rating || null,
-      analysis_id: submission.analysisId || null,
-      analysis_name: submission.analysisName || null,
-      preferred_date: submission.preferredDate || null,
-    } as never)
+    .insert(insertData as never)
     .select()
     .single()
 
   if (error) {
-    console.error('Error creating submission:', error)
+    console.error('Error creating submission:', error.message, error.details, error.hint, error.code)
     return null
   }
   return mapSubmissionRow(data as SubmissionRow)
