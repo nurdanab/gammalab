@@ -733,8 +733,8 @@ export async function getSubmissionById(id: string): Promise<Submission | null> 
 }
 
 export async function createSubmission(submission: SubmissionInsert): Promise<Submission | null> {
-  // Use simple client for public submissions (works better with Netlify Functions)
-  const supabase = createPublicClient()
+  // Use admin client to bypass RLS issues
+  const supabase = createAdminClient()
 
   const insertData = {
     type: submission.type,
