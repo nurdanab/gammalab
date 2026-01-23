@@ -704,7 +704,7 @@ function mapSubmissionRow(row: SubmissionRow): Submission {
 }
 
 export async function getSubmissions(): Promise<Submission[]> {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
   const { data, error } = await supabase
     .from('submissions')
     .select('*')
@@ -718,7 +718,7 @@ export async function getSubmissions(): Promise<Submission[]> {
 }
 
 export async function getSubmissionById(id: string): Promise<Submission | null> {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
   const { data, error } = await supabase
     .from('submissions')
     .select('*')
