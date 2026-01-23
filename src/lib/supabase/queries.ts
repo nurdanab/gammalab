@@ -1,4 +1,5 @@
 import { createClient } from './server'
+import { createAdminClient } from './admin'
 
 // ============ NEWS ============
 
@@ -144,7 +145,7 @@ export async function getNewsBySlug(slug: string): Promise<NewsItem | null> {
 }
 
 export async function createNews(news: NewsInsert): Promise<NewsItem | null> {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
   const { data, error } = await supabase
     .from('news')
     .insert(newsToDb(news) as never)
@@ -159,7 +160,7 @@ export async function createNews(news: NewsInsert): Promise<NewsItem | null> {
 }
 
 export async function updateNews(id: string, updates: NewsUpdate): Promise<NewsItem | null> {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
   const dbUpdates: Record<string, unknown> = {}
   if (updates.slug !== undefined) dbUpdates.slug = updates.slug
   if (updates.title !== undefined) dbUpdates.title = updates.title
@@ -191,7 +192,7 @@ export async function updateNews(id: string, updates: NewsUpdate): Promise<NewsI
 }
 
 export async function deleteNews(id: string): Promise<boolean> {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
   const { error } = await supabase
     .from('news')
     .delete()
@@ -426,7 +427,7 @@ export async function getAnalysesByCategory(categoryId: string): Promise<Analysi
 }
 
 export async function createAnalysis(analysis: AnalysisInsert): Promise<Analysis | null> {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
   const { data, error } = await supabase
     .from('analyses')
     .insert(analysisToDb(analysis) as never)
@@ -441,7 +442,7 @@ export async function createAnalysis(analysis: AnalysisInsert): Promise<Analysis
 }
 
 export async function updateAnalysis(id: string, updates: AnalysisUpdate): Promise<Analysis | null> {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
   const dbUpdates: Record<string, unknown> = {}
   if (updates.slug !== undefined) dbUpdates.slug = updates.slug
   if (updates.name !== undefined) dbUpdates.name = updates.name
@@ -478,7 +479,7 @@ export async function updateAnalysis(id: string, updates: AnalysisUpdate): Promi
 }
 
 export async function deleteAnalysis(id: string): Promise<boolean> {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
   const { error } = await supabase
     .from('analyses')
     .delete()
@@ -576,7 +577,7 @@ export async function getCategoryBySlug(slug: string): Promise<Category | null> 
 }
 
 export async function createCategory(category: CategoryInsert): Promise<Category | null> {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
   const { data, error } = await supabase
     .from('categories')
     .insert({
@@ -596,7 +597,7 @@ export async function createCategory(category: CategoryInsert): Promise<Category
 }
 
 export async function updateCategory(id: string, updates: CategoryUpdate): Promise<Category | null> {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
   const dbUpdates: Record<string, unknown> = {}
   if (updates.name !== undefined) dbUpdates.name = updates.name
   if (updates.nameKz !== undefined) dbUpdates.name_kz = updates.nameKz
@@ -618,7 +619,7 @@ export async function updateCategory(id: string, updates: CategoryUpdate): Promi
 }
 
 export async function deleteCategory(id: string): Promise<boolean> {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
   const { error } = await supabase
     .from('categories')
     .delete()
@@ -754,7 +755,7 @@ export async function createSubmission(submission: SubmissionInsert): Promise<Su
 }
 
 export async function deleteSubmission(id: string): Promise<boolean> {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
   const { error } = await supabase
     .from('submissions')
     .delete()
@@ -853,7 +854,7 @@ export async function getHomepageServiceById(id: string): Promise<HomepageServic
 }
 
 export async function createHomepageService(service: HomepageServiceInsert): Promise<HomepageService | null> {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
   const { data, error } = await supabase
     .from('homepage_services')
     .insert({
@@ -877,7 +878,7 @@ export async function createHomepageService(service: HomepageServiceInsert): Pro
 }
 
 export async function updateHomepageService(id: string, updates: HomepageServiceUpdate): Promise<HomepageService | null> {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
   const dbUpdates: Record<string, unknown> = {}
   if (updates.title !== undefined) dbUpdates.title = updates.title
   if (updates.titleKz !== undefined) dbUpdates.title_kz = updates.titleKz
@@ -903,7 +904,7 @@ export async function updateHomepageService(id: string, updates: HomepageService
 }
 
 export async function deleteHomepageService(id: string): Promise<boolean> {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
   const { error } = await supabase
     .from('homepage_services')
     .delete()
@@ -1029,7 +1030,7 @@ export async function getReviewById(id: string): Promise<Review | null> {
 }
 
 export async function createReview(review: ReviewInsert): Promise<Review | null> {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
   const { data, error } = await supabase
     .from('reviews')
     .insert({
@@ -1056,7 +1057,7 @@ export async function createReview(review: ReviewInsert): Promise<Review | null>
 }
 
 export async function updateReview(id: string, updates: ReviewUpdate): Promise<Review | null> {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
   const dbUpdates: Record<string, unknown> = {}
   if (updates.name !== undefined) dbUpdates.name = updates.name
   if (updates.nameKz !== undefined) dbUpdates.name_kz = updates.nameKz
@@ -1085,7 +1086,7 @@ export async function updateReview(id: string, updates: ReviewUpdate): Promise<R
 }
 
 export async function deleteReview(id: string): Promise<boolean> {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
   const { error } = await supabase
     .from('reviews')
     .delete()
@@ -1223,7 +1224,7 @@ export async function getFeaturedHomepageCategory(): Promise<HomepageCategory | 
 }
 
 export async function createHomepageCategory(category: HomepageCategoryInsert): Promise<HomepageCategory | null> {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
   const { data, error } = await supabase
     .from('homepage_categories')
     .insert({
@@ -1253,7 +1254,7 @@ export async function createHomepageCategory(category: HomepageCategoryInsert): 
 }
 
 export async function updateHomepageCategory(id: string, updates: HomepageCategoryUpdate): Promise<HomepageCategory | null> {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
   const dbUpdates: Record<string, unknown> = {}
   if (updates.name !== undefined) dbUpdates.name = updates.name
   if (updates.nameKz !== undefined) dbUpdates.name_kz = updates.nameKz
@@ -1285,7 +1286,7 @@ export async function updateHomepageCategory(id: string, updates: HomepageCatego
 }
 
 export async function deleteHomepageCategory(id: string): Promise<boolean> {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
   const { error } = await supabase
     .from('homepage_categories')
     .delete()
