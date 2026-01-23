@@ -1,5 +1,14 @@
 import { createClient } from './server'
 import { createAdminClient } from './admin'
+import { createClient as createSupabaseClient } from '@supabase/supabase-js'
+
+// Simple client for public operations (no cookies needed)
+function createPublicClient() {
+  return createSupabaseClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  )
+}
 
 // ============ NEWS ============
 
@@ -724,7 +733,8 @@ export async function getSubmissionById(id: string): Promise<Submission | null> 
 }
 
 export async function createSubmission(submission: SubmissionInsert): Promise<Submission | null> {
-  const supabase = await createClient()
+  // Use simple client for public submissions (works better with Netlify Functions)
+  const supabase = createPublicClient()
 
   const insertData = {
     type: submission.type,
