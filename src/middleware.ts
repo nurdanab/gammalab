@@ -13,6 +13,7 @@ function verifySessionToken(token: string): boolean {
   try {
     const secret = process.env.ADMIN_SESSION_SECRET || process.env.ADMIN_PASSWORD;
     if (!secret) {
+      console.log('Middleware: No secret found');
       return false;
     }
 
@@ -20,6 +21,7 @@ function verifySessionToken(token: string): boolean {
     const lastDotIndex = decoded.lastIndexOf('.');
 
     if (lastDotIndex === -1) {
+      console.log('Middleware: Invalid token format - no dot');
       return false;
     }
 
@@ -35,26 +37,32 @@ function verifySessionToken(token: string): boolean {
     const expectedSigBuffer = Buffer.from(expectedSignature);
 
     if (sigBuffer.length !== expectedSigBuffer.length) {
+      console.log('Middleware: Signature length mismatch');
       return false;
     }
 
     if (!timingSafeEqual(sigBuffer, expectedSigBuffer)) {
+      console.log('Middleware: Signature verification failed');
       return false;
     }
 
     // Check expiry
     const parts = data.split(':');
     if (parts.length !== 3 || parts[0] !== 'admin') {
+      console.log('Middleware: Invalid token data format');
       return false;
     }
 
     const expiry = parseInt(parts[2], 10);
     if (isNaN(expiry) || Date.now() > expiry) {
+      console.log('Middleware: Token expired');
       return false;
     }
 
+    console.log('Middleware: Token verified successfully');
     return true;
-  } catch {
+  } catch (error) {
+    console.log('Middleware: Token verification error', error);
     return false;
   }
 }
@@ -64,22 +72,31 @@ export default function middleware(request: NextRequest) {
 
   // Handle admin routes separately
   if (pathname.startsWith('/admin')) {
+    const token = request.cookies.get(ADMIN_COOKIE_NAME)?.value;
+    console.log('Middleware: Admin route accessed:', pathname, 'Has token:', !!token);
+
     // Allow access to login page
     if (pathname === '/admin/login') {
-      const token = request.cookies.get(ADMIN_COOKIE_NAME)?.value;
       // If already authenticated, redirect to dashboard
       if (token && verifySessionToken(token)) {
+        console.log('Middleware: Redirecting authenticated user from login to admin');
         return NextResponse.redirect(new URL('/admin', request.url));
       }
       return NextResponse.next();
     }
 
     // Check authentication for other admin routes
-    const token = request.cookies.get(ADMIN_COOKIE_NAME)?.value;
-    if (!token || !verifySessionToken(token)) {
+    if (!token) {
+      console.log('Middleware: No token, redirecting to login');
       return NextResponse.redirect(new URL('/admin/login', request.url));
     }
 
+    if (!verifySessionToken(token)) {
+      console.log('Middleware: Invalid token, redirecting to login');
+      return NextResponse.redirect(new URL('/admin/login', request.url));
+    }
+
+    console.log('Middleware: Access granted to', pathname);
     return NextResponse.next();
   }
 
