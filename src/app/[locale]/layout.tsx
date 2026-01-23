@@ -35,9 +35,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: '/',
     languages: {
-      'ru': '/ru',
-      'kz': '/kz',
-      'en': '/en',
+      'ru-KZ': '/ru',
+      'kk-KZ': '/kz',
+      'en-US': '/en',
     },
   },
   openGraph: {
