@@ -1,0 +1,68 @@
+[
+  {
+    "id": "service_1",
+    "title": "Лабораторные анализы",
+    "titleKz": "Зертханалық талдаулар",
+    "titleEn": "Laboratory Tests",
+    "description": "Более 500 видов анализов с высокой точностью результатов",
+    "descriptionKz": "Нәтижелердің жоғары дәлдігімен 500-ден астам талдау түрлері",
+    "descriptionEn": "Over 500 types of tests with high accuracy results",
+    "icon": "flask",
+    "order": 1
+  },
+  {
+    "id": "service_2",
+    "title": "Быстрые результаты",
+    "titleKz": "Жылдам нәтижелер",
+    "titleEn": "Fast Results",
+    "description": "Большинство анализов готовы в течение 24 часов",
+    "descriptionKz": "Көптеген талдаулар 24 сағат ішінде дайын",
+    "descriptionEn": "Most tests ready within 24 hours",
+    "icon": "clock",
+    "order": 2
+  },
+  {
+    "id": "service_3",
+    "title": "Онлайн-запись",
+    "titleKz": "Онлайн жазылу",
+    "titleEn": "Online Booking",
+    "description": "Удобная запись на анализы через сайт или по телефону",
+    "descriptionKz": "Сайт немесе телефон арқылы талдауларға ыңғайлы жазылу",
+    "descriptionEn": "Convenient test booking via website or phone",
+    "icon": "calendar",
+    "order": 3
+  },
+  {
+    "id": "service_4",
+    "title": "Выезд на дом",
+    "titleKz": "Үйге шығу",
+    "titleEn": "Home Visit",
+    "description": "Забор анализов у вас дома в удобное время",
+    "descriptionKz": "Ыңғайлы уақытта сіздің үйіңізде талдау жинау",
+    "descriptionEn": "Sample collection at your home at a convenient time",
+    "icon": "home",
+    "order": 4
+  },
+  {
+    "id": "service_5",
+    "title": "Современное оборудование",
+    "titleKz": "Заманауи жабдықтар",
+    "titleEn": "Modern Equipment",
+    "description": "Используем новейшее оборудование мировых производителей",
+    "descriptionKz": "Әлемдік өндірушілердің ең жаңа жабдықтарын қолданамыз",
+    "descriptionEn": "We use the latest equipment from world manufacturers",
+    "icon": "microscope",
+    "order": 5
+  },
+  {
+    "id": "service_6",
+    "title": "Квалифицированный персонал",
+    "titleKz": "Білікті персонал",
+    "titleEn": "Qualified Staff",
+    "description": "Опытные специалисты с медицинским образованием",
+    "descriptionKz": "Медициналық білімі бар тәжірибелі мамандар",
+    "descriptionEn": "Experienced specialists with medical education",
+    "icon": "users",
+    "order": 6
+  }
+]

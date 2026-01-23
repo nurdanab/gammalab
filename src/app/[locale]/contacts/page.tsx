@@ -1,11 +1,108 @@
 'use client';
 
 import { useState } from 'react';
-import { useTranslations } from 'next-intl';
-import { MapPin, Clock, Phone, Mail, MessageCircle, Star } from 'lucide-react';
+import { useLocale } from 'next-intl';
+import { Link } from '@/i18n/routing';
+import { MapPin, Clock, Phone, Mail, MessageCircle, Star, ExternalLink } from 'lucide-react';
+import { formatPhoneNumber } from '@/utils/phoneFormat';
+import { useReCaptcha } from '@/components/ReCaptchaProvider';
+
+type Locale = 'ru' | 'kz' | 'en';
+
+const translations = {
+  ru: {
+    home: 'Главная',
+    pageTitle: 'Контакты',
+    pageSubtitle: 'Свяжитесь с нами любым удобным способом',
+    address: 'Адрес',
+    addressValue: 'г. Алматы, ул. Ходжанова, 55а',
+    openIn2gis: 'Открыть в 2ГИС',
+    workingHours: 'Режим работы',
+    weekdays: 'Пн-Пт',
+    weekend: 'Сб-Вс',
+    closed: 'выходной',
+    emailLabel: 'Электронная почта',
+    phones: 'Телефоны',
+    messengers: 'Мессенджеры',
+    feedbackTitle: 'Обратная связь',
+    feedbackSubtitle: 'Оставьте ваш отзыв или задайте вопрос',
+    firstName: 'Имя',
+    lastName: 'Фамилия',
+    email: 'Электронная почта',
+    phone: 'Номер телефона',
+    rateService: 'Оцените качество наших услуг',
+    yourRating: 'Ваша оценка',
+    outOf: 'из',
+    message: 'Сообщение',
+    messagePlaceholder: 'Напишите ваш отзыв или вопрос...',
+    submit: 'Отправить',
+    submitting: 'Отправка...',
+    successMessage: 'Спасибо! Ваше сообщение успешно отправлено.',
+  },
+  kz: {
+    home: 'Басты бет',
+    pageTitle: 'Байланыс',
+    pageSubtitle: 'Бізбен кез келген ыңғайлы жолмен байланысыңыз',
+    address: 'Мекенжай',
+    addressValue: 'Алматы қ., Ходжанов к., 55а',
+    openIn2gis: '2ГИС-те ашу',
+    workingHours: 'Жұмыс уақыты',
+    weekdays: 'Дс-Жм',
+    weekend: 'Сб-Жс',
+    closed: 'демалыс',
+    emailLabel: 'Электрондық пошта',
+    phones: 'Телефондар',
+    messengers: 'Мессенджерлер',
+    feedbackTitle: 'Кері байланыс',
+    feedbackSubtitle: 'Пікіріңізді қалдырыңыз немесе сұрақ қойыңыз',
+    firstName: 'Аты',
+    lastName: 'Тегі',
+    email: 'Электрондық пошта',
+    phone: 'Телефон нөмірі',
+    rateService: 'Біздің қызмет сапасын бағалаңыз',
+    yourRating: 'Сіздің бағаңыз',
+    outOf: 'ішінен',
+    message: 'Хабарлама',
+    messagePlaceholder: 'Пікіріңізді немесе сұрағыңызды жазыңыз...',
+    submit: 'Жіберу',
+    submitting: 'Жіберілуде...',
+    successMessage: 'Рахмет! Сіздің хабарламаңыз сәтті жіберілді.',
+  },
+  en: {
+    home: 'Home',
+    pageTitle: 'Contacts',
+    pageSubtitle: 'Get in touch with us in any convenient way',
+    address: 'Address',
+    addressValue: 'Almaty, Khodzhanov St., 55a',
+    openIn2gis: 'Open in 2GIS',
+    workingHours: 'Working Hours',
+    weekdays: 'Mon-Fri',
+    weekend: 'Sat-Sun',
+    closed: 'closed',
+    emailLabel: 'Email',
+    phones: 'Phone Numbers',
+    messengers: 'Messengers',
+    feedbackTitle: 'Feedback',
+    feedbackSubtitle: 'Leave your feedback or ask a question',
+    firstName: 'First Name',
+    lastName: 'Last Name',
+    email: 'Email',
+    phone: 'Phone Number',
+    rateService: 'Rate the quality of our services',
+    yourRating: 'Your rating',
+    outOf: 'out of',
+    message: 'Message',
+    messagePlaceholder: 'Write your feedback or question...',
+    submit: 'Submit',
+    submitting: 'Submitting...',
+    successMessage: 'Thank you! Your message has been sent successfully.',
+  },
+};
 
 export default function ContactsPage() {
-  const t = useTranslations('contactsPage');
+  const locale = useLocale() as Locale;
+  const t = translations[locale] || translations.ru;
+
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
   const [formData, setFormData] = useState({
@@ -16,48 +113,91 @@ export default function ContactsPage() {
     message: '',
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState('');
+  const { executeRecaptcha } = useReCaptcha();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically send the form data to your backend
-    console.log({ ...formData, rating });
-    setIsSubmitted(true);
-    setTimeout(() => setIsSubmitted(false), 3000);
+    setIsSubmitting(true);
+    setError('');
+
+    try {
+      // Получаем токен reCAPTCHA
+      const recaptchaToken = await executeRecaptcha('contact_form');
+
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...formData, rating, type: 'contact', recaptchaToken }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || 'Ошибка отправки');
+      }
+
+      setIsSubmitted(true);
+      setFormData({ firstName: '', lastName: '', email: '', phone: '', message: '' });
+      setRating(0);
+      setTimeout(() => setIsSubmitted(false), 3000);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Ошибка отправки');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    if (name === 'phone') {
+      setFormData({ ...formData, phone: formatPhoneNumber(value) });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   const contactInfo = [
     {
       icon: MapPin,
-      title: t('address'),
-      lines: [
-        'г. Алматы, 8-й Микрорайон, 37/1',
-        'БЦ "Алматы Тауэрс", офис 305'
-      ],
+      title: t.address,
+      content: (
+        <div>
+          <p style={{ fontSize: '14px', color: '#6B7280', marginBottom: '8px' }}>
+            {t.addressValue}
+          </p>
+          <a
+            href="https://go.2gis.com/D23Va"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-[13px] font-medium"
+            style={{ color: '#209DA7' }}
+          >
+            <ExternalLink size={14} />
+            {t.openIn2gis}
+          </a>
+        </div>
+      ),
     },
     {
       icon: Clock,
-      title: t('workingHours'),
+      title: t.workingHours,
       lines: [
-        t('weekdays') + ': 09:00 - 18:00',
-        t('saturday') + ': 09:00 - 14:00',
-        t('sunday') + ': ' + t('closed')
+        `${t.weekdays}: 09:00 - 18:00`,
+        `${t.weekend}: ${t.closed}`
       ],
     },
     {
       icon: Mail,
-      title: t('emailLabel'),
+      title: t.emailLabel,
       lines: ['info@gammalab.kz', 'salem@gammalab.kz'],
       isLink: true,
       linkPrefix: 'mailto:',
     },
     {
       icon: Phone,
-      title: t('phones'),
-      lines: ['+7 (727) 346-85-25', '+7 (705) 100-03-33'],
+      title: t.phones,
+      lines: ['+7-705-100-03-33'],
       isLink: true,
       linkPrefix: 'tel:',
     },
@@ -65,76 +205,98 @@ export default function ContactsPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
-      {/* Hero Banner */}
+      {/* Hero Section */}
       <section
-        className="relative"
-        style={{
-          backgroundColor: '#209DA7',
-          padding: '60px 0'
-        }}
+        className="relative pt-[100px] sm:pt-[110px] lg:pt-[120px] pb-8 lg:pb-10"
+        style={{ backgroundColor: '#EEF6F6' }}
       >
-        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
-          <h1 className="text-white text-3xl lg:text-4xl font-semibold text-center">
-            {t('pageTitle')}
+        <div className="px-5 sm:px-8 md:px-12 lg:px-20">
+          {/* Breadcrumbs */}
+          <div className="flex items-center gap-2 mb-6">
+            <Link href="/" className="text-[13px]" style={{ color: '#9CA3AF' }}>
+              {t.home}
+            </Link>
+            <span className="text-[13px]" style={{ color: '#9CA3AF' }}>/</span>
+            <span className="text-[13px]" style={{ color: '#209DA7' }}>
+              {t.pageTitle}
+            </span>
+          </div>
+
+          {/* Title */}
+          <h1
+            className="text-[28px] sm:text-[36px] lg:text-[42px] font-semibold mb-4"
+            style={{ color: '#091D33' }}
+          >
+            {t.pageTitle}
           </h1>
-          <p className="text-white/80 text-center mt-4">
-            {t('pageSubtitle')}
+          <p
+            className="text-[15px] leading-[1.8] max-w-[600px]"
+            style={{ color: '#6B7280' }}
+          >
+            {t.pageSubtitle}
           </p>
         </div>
       </section>
 
       {/* Main Content */}
-      <section style={{ padding: '60px 0' }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <section className="bg-white px-5 sm:px-8 md:px-12 lg:px-20 py-12 lg:py-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
 
             {/* Left Side - Map & Contact Info */}
             <div>
-              {/* Map - OpenStreetMap (free) */}
-              <div
+              {/* Map - 2GIS Widget */}
+              <a
+                href="https://go.2gis.com/D23Va"
+                target="_blank"
+                rel="noopener noreferrer"
                 style={{
+                  display: 'block',
                   backgroundColor: 'white',
                   borderRadius: '16px',
                   overflow: 'hidden',
                   boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
                   marginBottom: '24px',
+                  textDecoration: 'none',
+                  cursor: 'pointer',
+                  transition: 'box-shadow 0.2s',
                 }}
+                className="hover:shadow-lg"
               >
-                <iframe
-                  src="https://www.openstreetmap.org/export/embed.html?bbox=76.92%2C43.23%2C76.94%2C43.24&layer=mapnik&marker=43.234%2C76.929"
-                  width="100%"
-                  height="280"
-                  style={{ border: 0 }}
-                  loading="lazy"
-                  title="GammaLab Location"
-                />
-                <div style={{ padding: '12px 16px', borderTop: '1px solid #f0f0f0', display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-                  <a
-                    href="https://2gis.kz/almaty/geo/9429940000646318"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ fontSize: '13px', color: '#209DA7', textDecoration: 'none' }}
-                  >
-                    2GIS
-                  </a>
-                  <a
-                    href="https://yandex.kz/maps/?pt=76.929,43.234&z=16&l=map"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ fontSize: '13px', color: '#209DA7', textDecoration: 'none' }}
-                  >
-                    Yandex
-                  </a>
-                  <a
-                    href="https://www.google.com/maps?q=43.234,76.929"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ fontSize: '13px', color: '#209DA7', textDecoration: 'none' }}
-                  >
-                    Google Maps
-                  </a>
+                <div style={{ position: 'relative' }}>
+                  <iframe
+                    src="https://www.openstreetmap.org/export/embed.html?bbox=76.86%2C43.20%2C76.89%2C43.22&layer=mapnik&marker=43.2077%2C76.8730"
+                    width="100%"
+                    height="280"
+                    style={{ border: 0, pointerEvents: 'none' }}
+                    loading="lazy"
+                    title="GammaLab - Ходжанова 55а"
+                  />
+                  {/* Clickable overlay */}
+                  <div
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      backgroundColor: 'transparent',
+                    }}
+                  />
                 </div>
-              </div>
+                <div style={{ padding: '16px', borderTop: '1px solid #f0f0f0' }}>
+                  <p style={{ fontSize: '14px', fontWeight: '500', color: '#091D33', marginBottom: '4px' }}>
+                    {t.addressValue}
+                  </p>
+                  <span
+                    className="inline-flex items-center gap-2"
+                    style={{
+                      fontSize: '13px',
+                      color: '#209DA7',
+                      fontWeight: '500',
+                    }}
+                  >
+                    <ExternalLink size={14} />
+                    {t.openIn2gis}
+                  </span>
+                </div>
+              </a>
 
               {/* Contact Info Cards */}
               <div
@@ -168,34 +330,38 @@ export default function ContactsPage() {
                           <h3 style={{ fontSize: '14px', fontWeight: '600', color: '#091D33', marginBottom: '4px' }}>
                             {item.title}
                           </h3>
-                          {item.lines.map((line, lineIndex) => (
-                            item.isLink ? (
-                              <a
-                                key={lineIndex}
-                                href={`${item.linkPrefix}${line.replace(/[^+\d@.a-zA-Z]/g, '')}`}
-                                style={{
-                                  display: 'block',
-                                  fontSize: '14px',
-                                  color: '#209DA7',
-                                  textDecoration: 'none',
-                                  marginBottom: '2px',
-                                }}
-                              >
-                                {line}
-                              </a>
-                            ) : (
-                              <p
-                                key={lineIndex}
-                                style={{
-                                  fontSize: '14px',
-                                  color: '#6B7280',
-                                  marginBottom: '2px',
-                                }}
-                              >
-                                {line}
-                              </p>
-                            )
-                          ))}
+                          {item.content ? (
+                            item.content
+                          ) : item.lines ? (
+                            item.lines.map((line, lineIndex) => (
+                              item.isLink ? (
+                                <a
+                                  key={lineIndex}
+                                  href={`${item.linkPrefix}${line.replace(/[^+\d@.a-zA-Z-]/g, '')}`}
+                                  style={{
+                                    display: 'block',
+                                    fontSize: '14px',
+                                    color: '#209DA7',
+                                    textDecoration: 'none',
+                                    marginBottom: '2px',
+                                  }}
+                                >
+                                  {line}
+                                </a>
+                              ) : (
+                                <p
+                                  key={lineIndex}
+                                  style={{
+                                    fontSize: '14px',
+                                    color: '#6B7280',
+                                    marginBottom: '2px',
+                                  }}
+                                >
+                                  {line}
+                                </p>
+                              )
+                            ))
+                          ) : null}
                         </div>
                       </div>
                     );
@@ -206,7 +372,7 @@ export default function ContactsPage() {
                 <div style={{ marginTop: '24px', paddingTop: '24px', borderTop: '1px solid #f0f0f0' }}>
                   <div className="flex items-center gap-3">
                     <MessageCircle size={18} style={{ color: '#209DA7' }} />
-                    <span style={{ fontSize: '14px', fontWeight: '600', color: '#091D33' }}>{t('messengers')}</span>
+                    <span style={{ fontSize: '14px', fontWeight: '600', color: '#091D33' }}>{t.messengers}</span>
                   </div>
                   <div className="flex gap-3 mt-3">
                     <a
@@ -263,18 +429,18 @@ export default function ContactsPage() {
               }}
             >
               <h2 style={{ fontSize: '20px', fontWeight: '600', color: '#091D33', marginBottom: '8px' }}>
-                {t('feedbackTitle')}
+                {t.feedbackTitle}
               </h2>
               <p style={{ fontSize: '14px', color: '#6B7280', marginBottom: '24px' }}>
-                {t('feedbackSubtitle')}
+                {t.feedbackSubtitle}
               </p>
 
               <form onSubmit={handleSubmit}>
                 {/* Name Fields */}
-                <div className="grid grid-cols-2 gap-4 mb-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                   <div>
                     <label style={{ fontSize: '13px', color: '#374151', marginBottom: '6px', display: 'block' }}>
-                      {t('firstName')}
+                      {t.firstName}
                     </label>
                     <input
                       type="text"
@@ -297,7 +463,7 @@ export default function ContactsPage() {
                   </div>
                   <div>
                     <label style={{ fontSize: '13px', color: '#374151', marginBottom: '6px', display: 'block' }}>
-                      {t('lastName')}
+                      {t.lastName}
                     </label>
                     <input
                       type="text"
@@ -322,7 +488,7 @@ export default function ContactsPage() {
                 {/* Email */}
                 <div className="mb-4">
                   <label style={{ fontSize: '13px', color: '#374151', marginBottom: '6px', display: 'block' }}>
-                    {t('email')}
+                    {t.email}
                   </label>
                   <input
                     type="email"
@@ -348,14 +514,14 @@ export default function ContactsPage() {
                 {/* Phone */}
                 <div className="mb-4">
                   <label style={{ fontSize: '13px', color: '#374151', marginBottom: '6px', display: 'block' }}>
-                    {t('phone')}
+                    {t.phone}
                   </label>
                   <input
                     type="tel"
                     name="phone"
                     value={formData.phone}
                     onChange={handleChange}
-                    placeholder="+7 (___) ___-__-__"
+                    placeholder="+7 700 123 45 67"
                     style={{
                       width: '100%',
                       padding: '12px 16px',
@@ -373,7 +539,7 @@ export default function ContactsPage() {
                 {/* Star Rating */}
                 <div className="mb-4">
                   <label style={{ fontSize: '13px', color: '#374151', marginBottom: '10px', display: 'block' }}>
-                    {t('rateService')}
+                    {t.rateService}
                   </label>
                   <div className="flex gap-2">
                     {[1, 2, 3, 4, 5].map((star) => (
@@ -402,7 +568,7 @@ export default function ContactsPage() {
                   </div>
                   {rating > 0 && (
                     <p style={{ fontSize: '13px', color: '#6B7280', marginTop: '8px' }}>
-                      {t('yourRating')}: {rating} {t('outOf')} 5
+                      {t.yourRating}: {rating} {t.outOf} 5
                     </p>
                   )}
                 </div>
@@ -410,14 +576,14 @@ export default function ContactsPage() {
                 {/* Message */}
                 <div className="mb-6">
                   <label style={{ fontSize: '13px', color: '#374151', marginBottom: '6px', display: 'block' }}>
-                    {t('message')}
+                    {t.message}
                   </label>
                   <textarea
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
                     rows={4}
-                    placeholder={t('messagePlaceholder')}
+                    placeholder={t.messagePlaceholder}
                     style={{
                       width: '100%',
                       padding: '12px 16px',
@@ -436,23 +602,41 @@ export default function ContactsPage() {
                 {/* Submit Button */}
                 <button
                   type="submit"
+                  disabled={isSubmitting}
                   style={{
                     width: '100%',
                     padding: '14px 24px',
-                    backgroundColor: '#209DA7',
+                    backgroundColor: isSubmitting ? '#9CA3AF' : '#209DA7',
                     color: 'white',
                     border: 'none',
                     borderRadius: '8px',
                     fontSize: '15px',
                     fontWeight: '500',
-                    cursor: 'pointer',
+                    cursor: isSubmitting ? 'not-allowed' : 'pointer',
                     transition: 'background-color 0.2s',
                   }}
-                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#1a8a93'}
-                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#209DA7'}
+                  onMouseEnter={(e) => !isSubmitting && (e.currentTarget.style.backgroundColor = '#1a8a93')}
+                  onMouseLeave={(e) => !isSubmitting && (e.currentTarget.style.backgroundColor = '#209DA7')}
                 >
-                  {t('submit')}
+                  {isSubmitting ? t.submitting : t.submit}
                 </button>
+
+                {/* Error Message */}
+                {error && (
+                  <div
+                    style={{
+                      marginTop: '16px',
+                      padding: '12px 16px',
+                      backgroundColor: '#FEE2E2',
+                      color: '#991B1B',
+                      borderRadius: '8px',
+                      fontSize: '14px',
+                      textAlign: 'center',
+                    }}
+                  >
+                    {error}
+                  </div>
+                )}
 
                 {/* Success Message */}
                 {isSubmitted && (
@@ -467,13 +651,12 @@ export default function ContactsPage() {
                       textAlign: 'center',
                     }}
                   >
-                    {t('successMessage')}
+                    {t.successMessage}
                   </div>
                 )}
               </form>
             </div>
           </div>
-        </div>
       </section>
     </div>
   );

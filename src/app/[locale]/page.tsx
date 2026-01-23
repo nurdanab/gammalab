@@ -1,798 +1,570 @@
 import Image from 'next/image';
-import { setRequestLocale } from 'next-intl/server';
+import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/routing';
+import { getHomepageServices, getHomepageCategories, getFeaturedHomepageCategory, getHomepageReviews, getFeaturedNewsFromCMS, type HomepageService, type HomepageCategory, type Review, type NewsItem } from '@/lib/data';
+import TestimonialsCarousel from '@/components/TestimonialsCarousel';
+import CategoriesSection from '@/components/CategoriesSection';
 
 type Props = {
   params: Promise<{ locale: string }>;
 };
 
+// Service icons mapping
+const serviceIcons: Record<string, React.ReactNode> = {
+  flask: (
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M9 3h6v6l4 8H5l4-8V3z"/>
+      <path d="M9 3h6"/>
+    </svg>
+  ),
+  clock: (
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <circle cx="12" cy="12" r="10"/>
+      <polyline points="12 6 12 12 16 14"/>
+    </svg>
+  ),
+  calendar: (
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+      <line x1="16" y1="2" x2="16" y2="6"/>
+      <line x1="8" y1="2" x2="8" y2="6"/>
+      <line x1="3" y1="10" x2="21" y2="10"/>
+    </svg>
+  ),
+  home: (
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+      <polyline points="9 22 9 12 15 12 15 22"/>
+    </svg>
+  ),
+  microscope: (
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M6 18h8"/>
+      <path d="M3 22h18"/>
+      <path d="M14 22a7 7 0 1 0 0-14h-1"/>
+      <path d="M9 14h2"/>
+      <path d="M9 12a2 2 0 0 1-2-2V6h6v4a2 2 0 0 1-2 2Z"/>
+      <path d="M12 6V3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3"/>
+    </svg>
+  ),
+  users: (
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+      <circle cx="9" cy="7" r="4"/>
+      <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+      <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+    </svg>
+  ),
+};
+
 export default async function HomePage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const t = await getTranslations('Home');
 
-  return <HomeContent />;
-}
+  // Fetch data from CMS
+  const [services, categories, featuredCategory, reviews, news] = await Promise.all([
+    getHomepageServices(),
+    getHomepageCategories(),
+    getFeaturedHomepageCategory(),
+    getHomepageReviews(),
+    getFeaturedNewsFromCMS(3),
+  ]);
 
-function HomeContent() {
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="relative min-h-[600px] lg:min-h-[700px]">
-        {/* Full Background Image */}
-        <div className="absolute inset-0">
-          <Image
-            src="/images/hero-doctor.png"
-            alt="Лаборатория GammaLab"
-            fill
-            className="object-cover object-center"
-            priority
-          />
-          {/* Gradient overlay for text readability */}
-          {/* <div
-            className="absolute inset-0"
-            style={{
-              background: 'linear-gradient(to right, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 35%, rgba(255,255,255,0.4) 60%, transparent 100%)'
-            }}
-          /> */}
-        </div>
+      <HeroSection locale={locale} />
 
-        {/* Content */}
-        <div
-          className="absolute"
-          style={{
-            left: '250px',
-            top: '60%',
-            transform: 'translateY(-50%)'
-          }}
-        >
-          {/* Text Content - Left side */}
+      {/* Stats Section */}
+      <StatsSection locale={locale} />
+
+      {/* Services Section */}
+      <ServicesSection services={services} locale={locale} />
+
+      {/* About Section */}
+      <AboutSection locale={locale} />
+
+      {/* Popular Analysis Section - временно отключено */}
+      {/* {categories.length > 0 && featuredCategory && (
+        <CategoriesSection
+          categories={categories}
+          featuredCategory={featuredCategory}
+          locale={locale}
+        />
+      )} */}
+
+      {/* Testimonials Section */}
+      {reviews.length > 0 && (
+        <TestimonialsSection reviews={reviews} locale={locale} />
+      )}
+
+      {/* News Section */}
+      {news.length > 0 && (
+        <NewsSection news={news} locale={locale} />
+      )}
+
+      {/* Quick Search Section */}
+      <QuickSearchSection locale={locale} />
+    </div>
+  );
+}
+
+// Hero Section Component
+function HeroSection({ locale }: { locale: string }) {
+  const texts = {
+    ru: {
+      badge: 'Медицинская лаборатория',
+      title1: 'Мы заботимся',
+      title2: 'о вашем здоровье',
+      description: 'Современная диагностическая лаборатория с высокоточным оборудованием. Мы предоставляем широкий спектр лабораторных исследований для точной диагностики.',
+      cta: 'Связаться с нами',
+    },
+    kz: {
+      badge: 'Медициналық зертхана',
+      title1: 'Біз сіздің',
+      title2: 'денсаулығыңызға қамқорлық жасаймыз',
+      description: 'Жоғары дәлдіктегі жабдықтармен жабдықталған заманауи диагностикалық зертхана. Дәл диагностика үшін зертханалық зерттеулердің кең спектрін ұсынамыз.',
+      cta: 'Бізбен байланысыңыз',
+    },
+    en: {
+      badge: 'Medical Laboratory',
+      title1: 'We care',
+      title2: 'about your health',
+      description: 'Modern diagnostic laboratory with high-precision equipment. We provide a wide range of laboratory tests for accurate diagnostics.',
+      cta: 'Contact us',
+    },
+  };
+
+  const t = texts[locale as keyof typeof texts] || texts.ru;
+
+  return (
+    <section className="relative min-h-[500px] sm:min-h-[550px] lg:min-h-[700px]">
+      <div className="absolute inset-0">
+        <Image
+          src="/images/hero-doctor.png"
+          alt="GammaLab Laboratory"
+          fill
+          className="object-cover object-center"
+          priority
+        />
+      </div>
+
+      <div className="absolute inset-0 flex items-center">
+        <div className="container-main" style={{ paddingTop: '60px' }}>
           <div className="max-w-lg">
-              {/* Badge */}
-              <div
-                className="inline-flex items-center gap-2"
-                style={{
-                  backgroundColor: 'white',
-                  padding: '8px 18px',
-                  borderRadius: '24px',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-                  marginBottom: '16px'
-                }}
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#209DA7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
-                </svg>
-                <span className="text-[12px] font-medium" style={{ color: '#3D3D3D' }}>
-                  Медицинская лаборатория
-                </span>
-              </div>
+            <div
+              className="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm mb-4"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#209DA7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+              </svg>
+              <span className="text-xs font-medium text-gray-700">
+                {t.badge}
+              </span>
+            </div>
 
-              {/* Heading */}
-              <h1 className="text-3xl lg:text-4xl xl:text-[44px] font-semibold leading-[1.2]" style={{ color: '#091D33', marginBottom: '10px' }}>
-                Мы заботимся
-                <br />
-                о вашем здоровье
-              </h1>
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-[44px] font-semibold leading-[1.2] text-[#091D33] mb-2 lg:mb-3">
+              {t.title1}
+              <br />
+              {t.title2}
+            </h1>
 
-              {/* Description */}
-              <p className="text-[14px] lg:text-[15px] leading-[1.8] max-w-[500px]" style={{ color: '#3D3D3D', marginBottom: '40px' }}>
-                Современная диагностическая лаборатория с высокоточным оборудованием. Мы предоставляем широкий спектр лабораторных исследований для точной диагностики.
-              </p>
+            <p className="text-sm lg:text-[15px] leading-[1.8] text-gray-700 mb-6 lg:mb-10 max-w-[500px]">
+              {t.description}
+            </p>
 
-              {/* CTA Button */}
             <Link
               href="/contacts"
-              className="inline-block text-white hover:opacity-90 transition-all text-[14px] font-medium"
-              style={{ backgroundColor: '#EC910C', padding: '12px 30px', borderRadius: '24px' }}
+              className="inline-block text-white hover:opacity-90 transition-all text-sm font-medium bg-[#EC910C] px-6 lg:px-8 py-3 rounded-full"
             >
-              Связаться с нами
+              {t.cta}
             </Link>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
+  );
+}
 
-      {/* Stats Section */}
-      <section className="bg-white" style={{ padding: '80px 0' }}>
-        <div style={{ paddingLeft: '80px', paddingRight: '80px' }}>
-          <div className="flex items-center justify-center">
-            {/* Stat 1 */}
-            <div className="text-center" style={{ padding: '0 60px' }}>
-              <div className="text-[48px] font-semibold" style={{ color: '#209DA7' }}>+5120</div>
-              <div className="text-[14px]" style={{ color: '#6B7280' }}>Довольных пациентов</div>
+// Stats Section Component
+function StatsSection({ locale }: { locale: string }) {
+  const stats = {
+    ru: [
+      { value: '+15 000', label: 'Довольных пациентов' },
+      { value: '+30 000', label: 'Проведенных исследований' },
+      { value: '+10', label: 'Лет опыта' },
+    ],
+    kz: [
+      { value: '+15 000', label: 'Қанағаттанған пациенттер' },
+      { value: '+30 000', label: 'Жүргізілген зерттеулер' },
+      { value: '+10', label: 'Жыл тәжірибе' },
+    ],
+    en: [
+      { value: '+15,000', label: 'Satisfied patients' },
+      { value: '+30,000', label: 'Tests conducted' },
+      { value: '+10', label: 'Years of experience' },
+    ],
+  };
+
+  const items = stats[locale as keyof typeof stats] || stats.ru;
+
+  return (
+    <section className="bg-white">
+      <div className="container-main py-12 lg:py-20">
+        <div className="flex flex-wrap items-center justify-center gap-6 lg:gap-0">
+        {items.map((stat, index) => (
+          <div key={index} className="flex items-center">
+            <div className="text-center px-4 sm:px-8 lg:px-12 xl:px-16">
+              <div className="text-3xl sm:text-4xl lg:text-[48px] font-semibold text-[#209DA7]">
+                {stat.value}
+              </div>
+              <div className="text-xs lg:text-sm text-gray-500">{stat.label}</div>
             </div>
-
-            {/* Divider */}
-            <div style={{ width: '1px', height: '60px', backgroundColor: '#E5E7EB' }} />
-
-            {/* Stat 2 */}
-            <div className="text-center" style={{ padding: '0 60px' }}>
-              <div className="text-[48px] font-semibold" style={{ color: '#209DA7' }}>+26</div>
-              <div className="text-[14px]" style={{ color: '#6B7280' }}>Филиалов</div>
-            </div>
-
-            {/* Divider */}
-            <div style={{ width: '1px', height: '60px', backgroundColor: '#E5E7EB' }} />
-
-            {/* Stat 3 */}
-            <div className="text-center" style={{ padding: '0 60px' }}>
-              <div className="text-[48px] font-semibold" style={{ color: '#209DA7' }}>+53</div>
-              <div className="text-[14px]" style={{ color: '#6B7280' }}>Врачей</div>
-            </div>
-
-            {/* Divider */}
-            <div style={{ width: '1px', height: '60px', backgroundColor: '#E5E7EB' }} />
-
-            {/* Stat 4 */}
-            <div className="text-center" style={{ padding: '0 60px' }}>
-              <div className="text-[48px] font-semibold" style={{ color: '#209DA7' }}>+10</div>
-              <div className="text-[14px]" style={{ color: '#6B7280' }}>Лет опыта</div>
-            </div>
+            {index < items.length - 1 && (
+              <div className="hidden lg:block w-px h-14 bg-gray-200" />
+            )}
           </div>
+        ))}
         </div>
-      </section>
+      </div>
+    </section>
+  );
+}
 
-      {/* Services Section */}
-      <section className="bg-white" style={{ padding: '60px 80px', paddingBottom: '100px' }}>
+// Services Section Component
+function ServicesSection({ services, locale }: { services: HomepageService[]; locale: string }) {
+  const getTitle = (service: HomepageService) => {
+    return locale === 'kz' ? service.titleKz : locale === 'en' ? service.titleEn : service.title;
+  };
+
+  const getDescription = (service: HomepageService) => {
+    return locale === 'kz' ? service.descriptionKz : locale === 'en' ? service.descriptionEn : service.description;
+  };
+
+  const sectionTexts = {
+    ru: { title1: 'Основные услуги', title2: 'Gammalab', description: 'Мы предоставляем широкий спектр лабораторных услуг для точной диагностики вашего здоровья.' },
+    kz: { title1: 'Негізгі қызметтер', title2: 'Gammalab', description: 'Сіздің денсаулығыңызды дәл диагностикалау үшін зертханалық қызметтердің кең спектрін ұсынамыз.' },
+    en: { title1: 'Main services', title2: 'Gammalab', description: 'We provide a wide range of laboratory services for accurate diagnosis of your health.' },
+  };
+
+  const t = sectionTexts[locale as keyof typeof sectionTexts] || sectionTexts.ru;
+
+  return (
+    <section className="bg-white">
+      <div className="container-main py-10 lg:py-16 pb-16 lg:pb-24">
         {/* Main container with circles */}
         <div
-          className="relative overflow-hidden"
-          style={{
-            backgroundColor: '#209DA7',
-            borderRadius: '24px',
-            padding: '80px 50px',
-            paddingBottom: '170px'
-          }}
+          className="relative overflow-hidden bg-[#209DA7] rounded-2xl lg:rounded-3xl p-6 sm:p-8 lg:p-10 pb-28 sm:pb-32 lg:pb-36"
         >
-          {/* Decorative circles */}
-          <div
-            className="absolute"
-            style={{
-              width: '300px',
-              height: '300px',
-              borderRadius: '50%',
-              border: '150px solid rgba(9, 29, 51, 0.08)',
-              top: '-100px',
-              left: '-50px'
-            }}
-          />
-          <div
-            className="absolute"
-            style={{
-              width: '190px',
-              height: '190px',
-              borderRadius: '50%',
-              border: '100px solid rgba(236, 145, 12, 0.1)',
-              top: '30px',
-              left: '300px'
-            }}
-          />
-          <div
-            className="absolute"
-            style={{
-              width: '350px',
-              height: '350px',
-              borderRadius: '50%',
-              border: '200px solid rgba(9, 29, 51, 0.06)',
-              bottom: '-120px',
-              right: '-80px'
-            }}
-          />
-          <div
-            className="absolute"
-            style={{
-              width: '200px',
-              height: '200px',
-              borderRadius: '50%',
-              border: '100px solid rgba(236, 145, 12, 0.08)',
-              bottom: '100px',
-              right: '190px'
-            }}
-          />
+        {/* Decorative circles */}
+        <div className="absolute -top-24 -left-12 w-72 h-72 rounded-full border-[120px] lg:border-[150px] border-[rgba(9,29,51,0.08)]" />
+        <div className="absolute top-8 left-72 w-40 h-40 rounded-full border-[80px] lg:border-[100px] border-[rgba(236,145,12,0.1)] hidden lg:block" />
+        <div className="absolute -bottom-28 -right-20 w-80 h-80 rounded-full border-[160px] lg:border-[200px] border-[rgba(9,29,51,0.06)]" />
+        <div className="absolute bottom-24 right-40 w-48 h-48 rounded-full border-[80px] lg:border-[100px] border-[rgba(236,145,12,0.08)] hidden lg:block" />
 
-          {/* Header */}
-          <div className="relative flex justify-between items-start">
-            <h2 className="text-[32px] font-semibold text-white leading-[1.2]">
-              Основные услуги
-              <br />
-              Gammalab
-            </h2>
-            <p className="text-white text-[14px] leading-[1.8] max-w-[450px]" style={{ opacity: 0.9 }}>
-              Lorem Ipsum является стандартным фиктивным текстом в этой отрасли с 1500-х годов, когда неизвестный печатник взял набор шрифтов и перемешал их, чтобы создать образец шрифтов.
-            </p>
-          </div>
-        </div>
-
-        {/* Service Cards - outside the overflow container */}
-        <div className="relative grid grid-cols-4 gap-5" style={{ marginTop: '-100px', padding: '0 100px', zIndex: 10 }}>
-              {/* Card 1 */}
-              <div className="bg-white rounded-2xl text-center shadow-lg" style={{ padding: '32px 20px' }}>
-                <div className="flex justify-center mb-6">
-                  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#209DA7" strokeWidth="2">
-                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                    <polyline points="9 22 9 12 15 12 15 22"/>
-                  </svg>
-                </div>
-                <h3 className="text-[16px] font-semibold mb-3" style={{ color: '#091D33' }}>
-                  Общая<br />диагностика
-                </h3>
-                <p className="text-[12px] leading-[1.7]" style={{ color: '#6B7280' }}>
-                  Комплексное обследование организма с использованием современного оборудования.
-                </p>
-              </div>
-
-              {/* Card 2 */}
-              <div className="bg-white rounded-2xl text-center shadow-lg" style={{ padding: '32px 20px' }}>
-                <div className="flex justify-center mb-6">
-                  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#209DA7" strokeWidth="2">
-                    <circle cx="12" cy="8" r="5"/>
-                    <path d="M12 13v8"/>
-                  </svg>
-                </div>
-                <h3 className="text-[16px] font-semibold mb-3" style={{ color: '#091D33' }}>
-                  Поддержка<br />беременности
-                </h3>
-                <p className="text-[12px] leading-[1.7]" style={{ color: '#6B7280' }}>
-                  Полное сопровождение беременности и подготовка к родам.
-                </p>
-              </div>
-
-              {/* Card 3 */}
-              <div className="bg-white rounded-2xl text-center shadow-lg" style={{ padding: '32px 20px' }}>
-                <div className="flex justify-center mb-6">
-                  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#209DA7" strokeWidth="2">
-                    <rect x="3" y="3" width="18" height="18" rx="2"/>
-                    <path d="M7 7h10M7 12h10M7 17h6"/>
-                  </svg>
-                </div>
-                <h3 className="text-[16px] font-semibold mb-3" style={{ color: '#091D33' }}>
-                  Нутрициологическая<br />поддержка
-                </h3>
-                <p className="text-[12px] leading-[1.7]" style={{ color: '#6B7280' }}>
-                  Индивидуальные программы питания и витаминотерапии.
-                </p>
-              </div>
-
-              {/* Card 4 */}
-              <div className="bg-white rounded-2xl text-center shadow-lg" style={{ padding: '32px 20px' }}>
-                <div className="flex justify-center mb-6">
-                  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#209DA7" strokeWidth="2">
-                    <rect x="3" y="3" width="18" height="18" rx="2"/>
-                    <path d="M12 8v8"/>
-                    <path d="M8 12h8"/>
-                  </svg>
-                </div>
-                <h3 className="text-[16px] font-semibold mb-3" style={{ color: '#091D33' }}>
-                  Фармацевтическая<br />помощь
-                </h3>
-                <p className="text-[12px] leading-[1.7]" style={{ color: '#6B7280' }}>
-                  Консультации по лекарственным препаратам и их взаимодействию.
-                </p>
-              </div>
-        </div>
-      </section>
-
-      {/* About Section - Удобные и быстрые анализы */}
-      <section className="relative bg-white overflow-hidden" style={{ padding: '80px 80px' }}>
-        {/* Background decorative circle */}
-        <div
-          className="absolute"
-          style={{
-            width: '500px',
-            height: '500px',
-            borderRadius: '50%',
-            border: '3px solid rgba(220, 220, 220, 0.3)',
-            top: '5%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)'
-          }}
-        />
-        <div
-          className="absolute"
-          style={{
-            width: '300px',
-            height: '300px',
-            borderRadius: '50%',
-            border: '3px solid rgba(220, 220, 220, 0.3)',
-            top: '5%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)'
-          }}
-        />
-
-        <div className="relative text-center max-w-[700px]" style={{ marginBottom: '60px', marginLeft: 'auto', marginRight: 'auto' }}>
-          {/* Small label */}
-          <p className="text-[12px] uppercase tracking-widest mb-4" style={{ color: '#9CA3AF' }}>
-            О нас
-          </p>
-
-          {/* Main heading */}
-          <h2 className="text-[36px] font-semibold mb-6" style={{ color: '#091D33' }}>
-            Удобные и быстрые анализы
+        {/* Header */}
+        <div className="relative flex flex-col lg:flex-row lg:justify-between lg:items-start gap-4 lg:gap-8">
+          <h2 className="text-2xl sm:text-[28px] lg:text-[32px] font-semibold text-white leading-[1.2]">
+            {t.title1}
+            <br />
+            {t.title2}
           </h2>
+          <p className="text-white text-sm leading-[1.8] lg:max-w-[400px] opacity-90">
+            {t.description}
+          </p>
+        </div>
+      </div>
 
-          {/* Description */}
-          <p className="text-[14px] leading-[1.8]" style={{ color: '#6B7280' }}>
-            «Будьте здоровы!» — как часто мы говорим и слышим эти слова. Однако одного пожелания мало. За здоровьем необходимо следить. Ключевую роль в этом играет качественная лабораторная диагностика. Что может обеспечить это качество?
+        {/* Service Cards */}
+        <div className="relative grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-5 -mt-16 sm:-mt-20 lg:-mt-20 z-10 mx-4 sm:mx-8 lg:mx-12">
+          {services.slice(0, 4).map((service) => (
+            <div
+              key={service.id}
+              className="bg-white rounded-xl lg:rounded-2xl text-center shadow-lg p-4 sm:p-5 lg:p-6"
+            >
+              <div className="flex justify-center mb-4 lg:mb-6 text-[#209DA7]">
+                {serviceIcons[service.icon] || serviceIcons.flask}
+              </div>
+              <h3 className="text-sm lg:text-base font-semibold mb-2 lg:mb-3 text-[#091D33] line-clamp-2">
+                {getTitle(service)}
+              </h3>
+              <p className="text-[11px] lg:text-xs leading-[1.7] text-gray-500 line-clamp-3">
+                {getDescription(service)}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// About Section Component
+function AboutSection({ locale }: { locale: string }) {
+  const content = {
+    ru: {
+      label: 'О нас',
+      title: 'Удобные и быстрые анализы',
+      description: '«Будьте здоровы!» — как часто мы говорим и слышим эти слова. Однако одного пожелания мало. За здоровьем необходимо следить. Ключевую роль в этом играет качественная лабораторная диагностика.',
+      features: [
+        { title: 'Быстро', subtitle: 'Экономия времени и скорость' },
+        { title: 'Качественно', subtitle: 'Качество и достоверность' },
+        { title: 'Точно', subtitle: 'Профессионализм и технологичность' },
+        { title: 'Удобно', subtitle: 'Удобство и комфорт' },
+      ],
+    },
+    kz: {
+      label: 'Біз туралы',
+      title: 'Ыңғайлы және жылдам анализдер',
+      description: '«Дені сау болыңыз!» — біз бұл сөздерді жиі айтамыз және естиміз. Бірақ бір тілек жеткіліксіз. Денсаулықты қадағалау керек. Сапалы зертханалық диагностика бұнда шешуші рөл атқарады.',
+      features: [
+        { title: 'Жылдам', subtitle: 'Уақытты үнемдеу және жылдамдық' },
+        { title: 'Сапалы', subtitle: 'Сапа және дәлдік' },
+        { title: 'Дәл', subtitle: 'Кәсіпқойлық және технологиялық' },
+        { title: 'Ыңғайлы', subtitle: 'Ыңғайлылық және жайлылық' },
+      ],
+    },
+    en: {
+      label: 'About us',
+      title: 'Convenient and fast tests',
+      description: '"Be healthy!" - how often we say and hear these words. However, one wish is not enough. Health needs to be monitored. Quality laboratory diagnostics plays a key role in this.',
+      features: [
+        { title: 'Fast', subtitle: 'Time saving and speed' },
+        { title: 'Quality', subtitle: 'Quality and reliability' },
+        { title: 'Accurate', subtitle: 'Professionalism and technology' },
+        { title: 'Convenient', subtitle: 'Convenience and comfort' },
+      ],
+    },
+  };
+
+  const t = content[locale as keyof typeof content] || content.ru;
+
+  const featureIcons = [
+    <svg key="clock" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+    <svg key="check" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>,
+    <svg key="thumb" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>,
+    <svg key="smile" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>,
+  ];
+
+  return (
+    <section className="relative bg-white overflow-hidden">
+      {/* Background decorative circles */}
+      <div className="absolute top-[5%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] lg:w-[500px] h-[300px] lg:h-[500px] rounded-full border-[3px] border-gray-200/30" />
+      <div className="absolute top-[5%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[180px] lg:w-[300px] h-[180px] lg:h-[300px] rounded-full border-[3px] border-gray-200/30" />
+
+      <div className="container-main py-12 lg:py-20">
+        <div className="relative text-center max-w-[700px] mx-auto mb-10 lg:mb-16">
+          <p className="text-xs uppercase tracking-widest mb-3 lg:mb-4 text-gray-400">
+            {t.label}
+          </p>
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold mb-4 lg:mb-6 text-[#091D33]">
+            {t.title}
+          </h2>
+          <p className="text-sm leading-[1.8] text-gray-500">
+            {t.description}
           </p>
         </div>
 
         {/* Features */}
-        <div className="relative grid grid-cols-4 gap-8" style={{ padding: '0 70px' }}>
-          {/* Feature 1 - Быстро */}
-          <div className="text-center">
-            <div className="flex justify-center mb-6">
-              <div
-                className="flex items-center justify-center"
-                style={{
-                  width: '70px',
-                  height: '70px',
-                  borderRadius: '10%',
-                  backgroundColor: '#209DA7'
-                }}
-              >
-                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-                  <circle cx="12" cy="12" r="10"/>
-                  <polyline points="12 6 12 12 16 14"/>
-                </svg>
+        <div className="relative grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+          {t.features.map((feature, index) => (
+            <div key={index} className="text-center">
+              <div className="flex justify-center mb-4 lg:mb-6">
+                <div className="pulse-icon flex items-center justify-center w-14 h-14 lg:w-[70px] lg:h-[70px] rounded-[10%] bg-[#209DA7]">
+                  {featureIcons[index]}
+                </div>
               </div>
-            </div>
-            <h3 className="text-[18px] font-semibold mb-3" style={{ color: '#091D33' }}>Быстро</h3>
-            <p className="text-[13px]" style={{ color: '#6B7280' }}>Экономия времени и скорость</p>
-          </div>
-
-          {/* Feature 2 - Качественно */}
-          <div className="text-center">
-            <div className="flex justify-center mb-6">
-              <div
-                className="flex items-center justify-center"
-                style={{
-                  width: '70px',
-                  height: '70px',
-                  borderRadius: '10%',
-                  backgroundColor: '#209DA7'
-                }}
-              >
-                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                  <polyline points="22 4 12 14.01 9 11.01"/>
-                </svg>
-              </div>
-            </div>
-            <h3 className="text-[18px] font-semibold mb-3" style={{ color: '#091D33' }}>Качественно</h3>
-            <p className="text-[13px]" style={{ color: '#6B7280' }}>Качество и достоверность</p>
-          </div>
-
-          {/* Feature 3 - Точно */}
-          <div className="text-center">
-            <div className="flex justify-center mb-6">
-              <div
-                className="flex items-center justify-center"
-                style={{
-                  width: '70px',
-                  height: '70px',
-                  borderRadius: '10%',
-                  backgroundColor: '#209DA7'
-                }}
-              >
-                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-                  <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/>
-                </svg>
-              </div>
-            </div>
-            <h3 className="text-[18px] font-semibold mb-3" style={{ color: '#091D33' }}>Точно</h3>
-            <p className="text-[13px]" style={{ color: '#6B7280' }}>Профессионализм и технологичность</p>
-          </div>
-
-          {/* Feature 4 - Удобно */}
-          <div className="text-center">
-            <div className="flex justify-center mb-6">
-              <div
-                className="flex items-center justify-center"
-                style={{
-                  width: '70px',
-                  height: '70px',
-                  borderRadius: '10%',
-                  backgroundColor: '#209DA7'
-                }}
-              >
-                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-                  <circle cx="12" cy="12" r="10"/>
-                  <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
-                  <line x1="9" y1="9" x2="9.01" y2="9"/>
-                  <line x1="15" y1="9" x2="15.01" y2="9"/>
-                </svg>
-              </div>
-            </div>
-            <h3 className="text-[18px] font-semibold mb-3" style={{ color: '#091D33' }}>Удобно</h3>
-            <p className="text-[13px]" style={{ color: '#6B7280' }}>Удобство и комфорт</p>
-          </div>
-        </div>
-      </section>
-
-      {/* Popular Analysis Section */}
-      <section className="bg-white" style={{ padding: '60px 80px' }}>
-        <div
-          className="relative overflow-hidden"
-          style={{
-            backgroundColor: '#EEF6F6',
-            borderRadius: '24px',
-            padding: '60px'
-          }}
-        >
-          {/* Background decorative icon */}
-          <div
-            className="absolute"
-            style={{
-              right: '60px',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              opacity: 0.1
-            }}
-          >
-            <svg width="200" height="200" viewBox="0 0 24 24" fill="#209DA7" stroke="none">
-              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-            </svg>
-          </div>
-
-          <div className="relative flex gap-16">
-            {/* Left - Categories */}
-            <div className="flex flex-col gap-4" style={{ minWidth: '220px' }}>
-              <a href="#" className="text-[13px] uppercase tracking-wider font-medium" style={{ color: '#9CA3AF' }}>
-                Лабораторный анализ
-              </a>
-              <a href="#" className="text-[13px] uppercase tracking-wider font-medium" style={{ color: '#209DA7' }}>
-                Кардиология
-              </a>
-              <a href="#" className="text-[13px] uppercase tracking-wider font-medium" style={{ color: '#9CA3AF' }}>
-                Гинекология
-              </a>
-              <a href="#" className="text-[13px] uppercase tracking-wider font-medium" style={{ color: '#9CA3AF' }}>
-                Патология
-              </a>
-              <a href="#" className="text-[13px] uppercase tracking-wider font-medium" style={{ color: '#9CA3AF' }}>
-                Педиатрия
-              </a>
-              <a href="#" className="text-[13px] uppercase tracking-wider font-medium" style={{ color: '#9CA3AF' }}>
-                Неврология
-              </a>
-            </div>
-
-            {/* Right - Content */}
-            <div className="flex-1" style={{ maxWidth: '500px' }}>
-              <h3 className="text-[32px] font-semibold mb-6" style={{ color: '#091D33' }}>
-                Кардиология
+              <h3 className="text-base lg:text-lg font-semibold mb-2 lg:mb-3 text-[#091D33]">
+                {feature.title}
               </h3>
+              <p className="text-xs lg:text-sm text-gray-500">{feature.subtitle}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
 
-              <p className="text-[14px] leading-[1.8] mb-4" style={{ color: '#6B7280' }}>
-                Комплексная диагностика сердечно-сосудистой системы. Современные методы исследования позволяют выявить заболевания на ранних стадиях.
-              </p>
+// Testimonials Section Component
+function TestimonialsSection({ reviews, locale }: { reviews: Review[]; locale: string }) {
+  // Prepare avatar positions for decoration with animations
+  const avatarPositions = [
+    { top: '0', left: '50%', transform: 'translateX(-50%)', size: 'w-16 h-16 sm:w-20 sm:h-20 lg:w-[90px] lg:h-[90px]', animation: 'float-1 4s ease-in-out infinite' },
+    { top: '70px', left: '20px', size: 'w-12 h-12 sm:w-14 sm:h-14 lg:w-[70px] lg:h-[70px]', animation: 'float-2 5s ease-in-out infinite 0.5s' },
+    { top: '50px', right: '30px', size: 'w-14 h-14 sm:w-16 sm:h-16 lg:w-[80px] lg:h-[80px]', animation: 'float-3 6s ease-in-out infinite 1s' },
+    { bottom: '30px', left: '50px', size: 'w-12 h-12 sm:w-14 sm:h-14 lg:w-[75px] lg:h-[75px]', animation: 'float-2 4.5s ease-in-out infinite 0.3s' },
+    { bottom: '10px', right: '60px', size: 'w-10 h-10 sm:w-12 sm:h-12 lg:w-[65px] lg:h-[65px]', animation: 'float-1 5.5s ease-in-out infinite 0.7s' },
+  ];
 
-              <p className="text-[14px] leading-[1.8] mb-6" style={{ color: '#6B7280' }}>
-                Профессиональная команда кардиологов обеспечивает точную диагностику и индивидуальный подход к каждому пациенту.
-              </p>
+  return (
+    <section
+      className="relative overflow-hidden"
+      style={{ background: 'linear-gradient(135deg, #EEF6F6 0%, #E8F4F4 100%)' }}
+    >
+      {/* Background decorative circle with pulse */}
+      <div
+        className="absolute -right-24 top-1/2 w-[250px] sm:w-[300px] lg:w-[400px] h-[250px] sm:h-[300px] lg:h-[400px] rounded-full border-2 border-[rgba(32,157,167,0.15)]"
+        style={{ animation: 'pulse-circle 3s ease-in-out infinite' }}
+      />
 
-              {/* Tags */}
-              <div className="flex items-center gap-4 mb-8">
-                <span className="text-[13px]" style={{ color: '#209DA7' }}>ЭКГ диагностика</span>
-                <span style={{ color: '#D1D5DB' }}>|</span>
-                <span className="text-[13px]" style={{ color: '#209DA7' }}>Холтер мониторинг</span>
-                <span style={{ color: '#D1D5DB' }}>|</span>
-                <span className="text-[13px]" style={{ color: '#209DA7' }}>УЗИ сердца</span>
-              </div>
-
-              {/* Button */}
-              <button
-                className="text-white text-[13px] font-medium uppercase tracking-wider"
+      <div className="container-main py-10 sm:py-12 lg:py-20">
+        <div className="relative flex flex-col lg:flex-row items-center gap-8 lg:gap-16">
+        {/* Left - Photos decoration */}
+        <div className="relative w-full sm:w-[280px] lg:w-[350px] h-[180px] sm:h-[220px] lg:h-[300px] hidden sm:block flex-shrink-0">
+          {reviews.slice(0, 5).map((review, index) => {
+            const pos = avatarPositions[index];
+            return (
+              <div
+                key={review.id}
+                className={`absolute overflow-hidden rounded-full border-[3px] border-white shadow-lg ${pos.size}`}
                 style={{
-                  backgroundColor: '#209DA7',
-                  padding: '14px 32px',
-                  borderRadius: '8px'
+                  top: pos.top,
+                  left: pos.left,
+                  right: pos.right,
+                  bottom: pos.bottom,
+                  transform: pos.transform,
+                  animation: pos.animation,
                 }}
               >
-                Подробнее
-              </button>
-            </div>
-          </div>
+                {review.photo ? (
+                  <Image src={review.photo} alt="" fill className="object-cover" />
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-br from-[#209DA7] to-[#1a7d85] flex items-center justify-center text-white text-base sm:text-lg font-semibold">
+                    {review.name.charAt(0)}
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
-      </section>
 
-      {/* Testimonials Section */}
-      <section
-        className="relative overflow-hidden"
-        style={{
-          background: 'linear-gradient(135deg, #EEF6F6 0%, #E8F4F4 100%)',
-          padding: '80px 80px'
-        }}
-      >
-        {/* Background decorative circle */}
-        <div
-          className="absolute"
-          style={{
-            width: '400px',
-            height: '400px',
-            borderRadius: '50%',
-            border: '2px solid rgba(32, 157, 167, 0.1)',
-            right: '-100px',
-            top: '50%',
-            transform: 'translateY(-50%)'
-          }}
-        />
-
-        <div className="relative flex items-center gap-20">
-          {/* Left - Photos */}
-          <div className="relative" style={{ width: '350px', height: '300px' }}>
-            {/* Photo 1 - Top */}
-            <div
-              className="absolute overflow-hidden"
-              style={{
-                width: '90px',
-                height: '90px',
-                borderRadius: '50%',
-                border: '3px solid white',
-                top: '0',
-                left: '50%',
-                transform: 'translateX(-50%)',
-                boxShadow: '0 4px 15px rgba(0,0,0,0.1)'
-              }}
-            >
-              <Image src="https://i.pravatar.cc/150?img=1" alt="Пациент" fill className="object-cover" />
-            </div>
-
-            {/* Photo 2 - Left */}
-            <div
-              className="absolute overflow-hidden"
-              style={{
-                width: '70px',
-                height: '70px',
-                borderRadius: '50%',
-                border: '3px solid white',
-                top: '80px',
-                left: '30px',
-                boxShadow: '0 4px 15px rgba(0,0,0,0.1)'
-              }}
-            >
-              <Image src="https://i.pravatar.cc/150?img=5" alt="Пациент" fill className="object-cover" />
-            </div>
-
-            {/* Photo 3 - Right */}
-            <div
-              className="absolute overflow-hidden"
-              style={{
-                width: '80px',
-                height: '80px',
-                borderRadius: '50%',
-                border: '3px solid white',
-                top: '60px',
-                right: '40px',
-                boxShadow: '0 4px 15px rgba(0,0,0,0.1)'
-              }}
-            >
-              <Image src="https://i.pravatar.cc/150?img=8" alt="Пациент" fill className="object-cover" />
-            </div>
-
-            {/* Photo 4 - Bottom Left */}
-            <div
-              className="absolute overflow-hidden"
-              style={{
-                width: '75px',
-                height: '75px',
-                borderRadius: '50%',
-                border: '3px solid white',
-                bottom: '40px',
-                left: '60px',
-                boxShadow: '0 4px 15px rgba(0,0,0,0.1)'
-              }}
-            >
-              <Image src="https://i.pravatar.cc/150?img=12" alt="Пациент" fill className="object-cover" />
-            </div>
-
-            {/* Photo 5 - Bottom Right */}
-            <div
-              className="absolute overflow-hidden"
-              style={{
-                width: '65px',
-                height: '65px',
-                borderRadius: '50%',
-                border: '3px solid white',
-                bottom: '20px',
-                right: '80px',
-                boxShadow: '0 4px 15px rgba(0,0,0,0.1)'
-              }}
-            >
-              <Image src="https://i.pravatar.cc/150?img=20" alt="Пациент" fill className="object-cover" />
-            </div>
-          </div>
-
-          {/* Right - Testimonial */}
-          <div className="flex-1" style={{ maxWidth: '500px' }}>
-            {/* Quote icon */}
-            <div className="mb-4">
-              <svg width="40" height="32" viewBox="0 0 40 32" fill="#209DA7">
-                <path d="M0 20.8C0 27.2 4.8 32 11.2 32c4.8 0 8.8-4 8.8-8.8 0-4.8-4-8.8-8.8-8.8-1.6 0-2.4 0-3.2.8C8.8 6.4 14.4 1.6 20 0L16.8 0C7.2 3.2 0 11.2 0 20.8zm20 0c0 6.4 4.8 11.2 11.2 11.2 4.8 0 8.8-4 8.8-8.8 0-4.8-4-8.8-8.8-8.8-1.6 0-2.4 0-3.2.8C28.8 6.4 34.4 1.6 40 0L36.8 0C27.2 3.2 20 11.2 20 20.8z"/>
-              </svg>
-            </div>
-
-            {/* Quote text */}
-            <p className="text-[16px] leading-[1.8] mb-6" style={{ color: '#6B7280' }}>
-              Очень довольна качеством обслуживания в лаборатории GammaLab. Результаты анализов получила быстро, персонал вежливый и профессиональный. Рекомендую всем!
-            </p>
-
-            {/* Author */}
-            <div className="mb-6">
-              <p className="text-[18px] font-semibold" style={{ color: '#091D33' }}>Анна Иванова</p>
-              <p className="text-[12px] uppercase tracking-wider" style={{ color: '#209DA7' }}>Пациент</p>
-            </div>
-
-            {/* Dots */}
-            <div className="flex gap-2">
-              <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#209DA7' }} />
-              <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#D1D5DB' }} />
-              <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#D1D5DB' }} />
-            </div>
-          </div>
+          {/* Right - Testimonial carousel */}
+          <TestimonialsCarousel reviews={reviews} locale={locale} />
         </div>
-      </section>
+      </div>
+    </section>
+  );
+}
 
-      {/* News Section */}
-      <section className="bg-white" style={{ padding: '80px 80px' }}>
-        {/* Header */}
-        <h2 className="text-[28px] font-semibold mb-10" style={{ color: '#091D33' }}>
-          Наши последние новости
-        </h2>
+// News Section Component
+function NewsSection({ news, locale }: { news: NewsItem[]; locale: string }) {
+  const getTitle = (item: NewsItem) => {
+    return locale === 'kz' ? item.titleKz : locale === 'en' ? item.titleEn : item.title;
+  };
 
-        {/* News Cards */}
-        <div className="grid grid-cols-3 gap-6 mb-12">
-          {/* Card 1 */}
-          <div>
-            <div className="relative mb-5 overflow-hidden" style={{ borderRadius: '8px', height: '180px' }}>
+  const getExcerpt = (item: NewsItem) => {
+    return locale === 'kz' ? item.excerptKz : locale === 'en' ? item.excerptEn : item.excerpt;
+  };
+
+  const sectionTexts = {
+    ru: { title: 'Наши последние новости', readMore: 'Читать далее', allNews: 'Все новости' },
+    kz: { title: 'Біздің соңғы жаңалықтар', readMore: 'Толығырақ оқу', allNews: 'Барлық жаңалықтар' },
+    en: { title: 'Our latest news', readMore: 'Read more', allNews: 'All news' },
+  };
+
+  const t = sectionTexts[locale as keyof typeof sectionTexts] || sectionTexts.ru;
+
+  return (
+    <section className="bg-white">
+      <div className="container-main py-12 lg:py-20">
+        <h2 className="text-xl sm:text-2xl lg:text-[28px] font-semibold mb-8 lg:mb-10 text-[#091D33]">
+          {t.title}
+      </h2>
+
+      {/* News Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6 mb-10 lg:mb-12">
+        {news.map((item) => (
+          <Link key={item.id} href={`/news/${item.slug}`} className="group">
+            <div className="relative mb-4 lg:mb-5 overflow-hidden rounded-lg h-[160px] lg:h-[180px]">
               <Image
-                src="/images/news-1.jpg"
-                alt="Здоровье сердца"
+                src={item.image}
+                alt={getTitle(item)}
                 fill
-                className="object-cover"
+                className="object-cover group-hover:scale-105 transition-transform duration-300"
               />
             </div>
-            <h3 className="text-[15px] font-semibold mb-2" style={{ color: '#091D33' }}>
-              10 продуктов для здоровья сердца
+            <h3 className="text-sm lg:text-[15px] font-semibold mb-2 text-[#091D33] group-hover:text-[#209DA7] transition-colors line-clamp-2">
+              {getTitle(item)}
             </h3>
-            <p className="text-[13px] leading-[1.7] mb-4" style={{ color: '#9CA3AF' }}>
-              Узнайте какие продукты помогут сохранить здоровье вашей сердечно-сосудистой системы.
+            <p className="text-xs lg:text-[13px] leading-[1.7] mb-3 lg:mb-4 text-gray-400 line-clamp-2">
+              {getExcerpt(item)}
             </p>
-            <a href="#" className="text-[13px] font-medium" style={{ color: '#209DA7' }}>
-              Читать далее
-            </a>
-          </div>
-
-          {/* Card 2 */}
-          <div>
-            <div className="relative mb-5 overflow-hidden" style={{ borderRadius: '8px', height: '180px' }}>
-              <Image
-                src="/images/news-2.jpg"
-                alt="Релаксация"
-                fill
-                className="object-cover"
-              />
-            </div>
-            <h3 className="text-[15px] font-semibold mb-2" style={{ color: '#091D33' }}>
-              Как справиться со стрессом
-            </h3>
-            <p className="text-[13px] leading-[1.7] mb-4" style={{ color: '#9CA3AF' }}>
-              Эффективные методы релаксации и управления стрессом в повседневной жизни.
-            </p>
-            <a href="#" className="text-[13px] font-medium" style={{ color: '#209DA7' }}>
-              Читать далее
-            </a>
-          </div>
-
-          {/* Card 3 */}
-          <div>
-            <div className="relative mb-5 overflow-hidden" style={{ borderRadius: '8px', height: '180px' }}>
-              <Image
-                src="/images/news-3.jpg"
-                alt="Иммунитет"
-                fill
-                className="object-cover"
-              />
-            </div>
-            <h3 className="text-[15px] font-semibold mb-2" style={{ color: '#091D33' }}>
-              Укрепление иммунитета
-            </h3>
-            <p className="text-[13px] leading-[1.7] mb-4" style={{ color: '#9CA3AF' }}>
-              Лучшие способы укрепить иммунную систему и защитить организм от инфекций.
-            </p>
-            <a href="#" className="text-[13px] font-medium" style={{ color: '#209DA7' }}>
-              Читать далее
-            </a>
-          </div>
-        </div>
+            <span className="text-xs lg:text-[13px] font-medium text-[#209DA7]">
+              {t.readMore}
+            </span>
+          </Link>
+        ))}
+      </div>
 
         {/* Button */}
         <div className="text-center">
-          <button
-            className="inline-flex items-center gap-2 text-[12px] font-medium uppercase tracking-wider"
-            style={{
-              border: '1px solid #209DA7',
-              color: '#209DA7',
-              padding: '12px 28px',
-              borderRadius: '6px',
-              backgroundColor: 'transparent'
-            }}
+          <Link
+            href="/news"
+            className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-wider border border-[#209DA7] text-[#209DA7] px-6 lg:px-7 py-3 rounded-md bg-transparent hover:bg-[#209DA7] hover:text-white transition-colors"
           >
-            Все новости
+            {t.allNews}
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M5 12h14M12 5l7 7-7 7"/>
             </svg>
-          </button>
+          </Link>
         </div>
-      </section>
+      </div>
+    </section>
+  );
+}
 
-      {/* Newsletter / Quick Search Section */}
-      <section
-        className="relative overflow-hidden"
-        style={{
-          backgroundColor: '#209DA7',
-          padding: '70px 80px'
-        }}
-      >
-        {/* Subtle background decoration */}
-        <div
-          className="absolute"
-          style={{
-            width: '400px',
-            height: '400px',
-            borderRadius: '50%',
-            backgroundColor: 'rgba(255, 255, 255, 0.03)',
-            left: '-100px',
-            top: '50%',
-            transform: 'translateY(-50%)'
-          }}
-        />
+// Quick Search Section Component
+function QuickSearchSection({ locale }: { locale: string }) {
+  const content = {
+    ru: { label: 'Быстрый поиск', title1: 'Найдите нужный', title2: 'анализ быстро', placeholder: 'Введите название анализа', button: 'Найти' },
+    kz: { label: 'Жылдам іздеу', title1: 'Қажетті анализді', title2: 'тез табыңыз', placeholder: 'Анализ атауын енгізіңіз', button: 'Табу' },
+    en: { label: 'Quick search', title1: 'Find the right', title2: 'test quickly', placeholder: 'Enter test name', button: 'Find' },
+  };
 
-        <div className="relative flex items-center justify-between">
+  const t = content[locale as keyof typeof content] || content.ru;
+
+  return (
+    <section className="relative overflow-hidden bg-[#209DA7]">
+      {/* Background decoration */}
+      <div className="absolute -left-24 top-1/2 -translate-y-1/2 w-[300px] lg:w-[400px] h-[300px] lg:h-[400px] rounded-full bg-white/5" />
+
+      <div className="container-main py-12 lg:py-[70px]">
+        <div className="relative flex flex-col lg:flex-row items-center lg:justify-between gap-6 lg:gap-8">
           {/* Left - Text */}
-          <div>
-            <p
-              className="text-[11px] uppercase tracking-widest mb-3"
-              style={{ color: 'rgba(255, 255, 255, 0.7)' }}
-            >
-              Быстрый поиск
+          <div className="text-center lg:text-left">
+            <p className="text-[10px] lg:text-[11px] uppercase tracking-widest mb-2 lg:mb-3 text-white/70">
+              {t.label}
             </p>
-            <h2 className="text-[32px] font-semibold text-white leading-[1.3]">
-              Найдите нужный
-              <br />
-              анализ быстро
+            <h2 className="text-2xl sm:text-[28px] lg:text-[32px] font-semibold text-white leading-[1.3]">
+              {t.title1}
+              <br className="hidden lg:block" />{' '}
+              {t.title2}
             </h2>
           </div>
 
           {/* Right - Search Input */}
-          <div
-            className="flex items-center"
-            style={{
-              backgroundColor: 'rgba(255, 255, 255, 0.15)',
-              borderRadius: '50px',
-              padding: '6px 6px 6px 28px',
-              minWidth: '420px'
-            }}
+          <form
+            action={`/${locale}/analyses`}
+            method="get"
+            className="flex items-center w-full lg:w-auto bg-white/15 rounded-full p-1.5 lg:p-1.5 pl-5 lg:pl-7 min-w-0 lg:min-w-[420px]"
           >
             <input
               type="text"
-              placeholder="Введите название анализа"
-              className="flex-1 bg-transparent outline-none text-[14px]"
-              style={{ color: 'white' }}
+              name="search"
+              placeholder={t.placeholder}
+              className="flex-1 bg-transparent outline-none text-sm text-white placeholder:text-white/60 min-w-0"
             />
             <button
-              className="text-[12px] font-medium uppercase tracking-wider"
-              style={{
-                backgroundColor: 'white',
-                color: '#091D33',
-                padding: '14px 28px',
-                borderRadius: '50px'
-              }}
+              type="submit"
+              className="text-xs font-medium uppercase tracking-wider bg-white text-[#091D33] px-5 lg:px-7 py-3 lg:py-3.5 rounded-full hover:bg-gray-100 transition-colors whitespace-nowrap"
             >
-              Найти
+              {t.button}
             </button>
-          </div>
+          </form>
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
   );
 }

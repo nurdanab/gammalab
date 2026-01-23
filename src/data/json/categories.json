@@ -1,0 +1,114 @@
+[
+  {
+    "id": "general",
+    "slug": "general",
+    "name": "Общеклинические исследования",
+    "nameKz": "Жалпы клиникалық зерттеулер",
+    "nameEn": "General Clinical Studies"
+  },
+  {
+    "id": "immunology",
+    "slug": "immunology",
+    "name": "Иммунологические исследования",
+    "nameKz": "Иммунологиялық зерттеулер",
+    "nameEn": "Immunological Studies"
+  },
+  {
+    "id": "histology",
+    "slug": "histology",
+    "name": "Гистологические исследования",
+    "nameKz": "Гистологиялық зерттеулер",
+    "nameEn": "Histological Studies"
+  },
+  {
+    "id": "molecular",
+    "slug": "molecular",
+    "name": "Молекулярно-генетические исследования",
+    "nameKz": "Молекулалық-генетикалық зерттеулер",
+    "nameEn": "Molecular Genetic Studies"
+  },
+  {
+    "id": "hormones",
+    "slug": "hormones",
+    "name": "Гормоны",
+    "nameKz": "Гормондар",
+    "nameEn": "Hormones"
+  },
+  {
+    "id": "pcr",
+    "slug": "pcr",
+    "name": "ПЦР исследования",
+    "nameKz": "ПТР зерттеулері",
+    "nameEn": "PCR Studies"
+  },
+  {
+    "id": "ifa",
+    "slug": "ifa",
+    "name": "ИФА исследования",
+    "nameKz": "ИФА зерттеулері",
+    "nameEn": "ELISA Studies"
+  },
+  {
+    "id": "ihc",
+    "slug": "ihc",
+    "name": "Иммуногистохимия (ИГХ)",
+    "nameKz": "Иммуногистохимия (ИГХ)",
+    "nameEn": "Immunohistochemistry (IHC)"
+  },
+  {
+    "id": "biochemistry",
+    "slug": "biochemistry",
+    "name": "Биохимия",
+    "nameKz": "Биохимия",
+    "nameEn": "Biochemistry"
+  },
+  {
+    "id": "oncology",
+    "slug": "oncology",
+    "name": "Онкомаркеры",
+    "nameKz": "Онкомаркерлер",
+    "nameEn": "Tumor Markers"
+  },
+  {
+    "id": "hematology",
+    "slug": "hematology",
+    "name": "Гематология",
+    "nameKz": "Гематология",
+    "nameEn": "Hematology"
+  },
+  {
+    "id": "autoimmune",
+    "slug": "autoimmune",
+    "name": "Диагностика аутоиммунных заболеваний",
+    "nameKz": "Аутоиммунды аурулардың диагностикасы",
+    "nameEn": "Autoimmune Disease Diagnostics"
+  },
+  {
+    "id": "covid",
+    "slug": "covid",
+    "name": "Исследования на COVID-19",
+    "nameKz": "COVID-19 зерттеулері",
+    "nameEn": "COVID-19 Testing"
+  },
+  {
+    "id": "tuberculosis",
+    "slug": "tuberculosis",
+    "name": "Диагностика туберкулеза",
+    "nameKz": "Туберкулез диагностикасы",
+    "nameEn": "Tuberculosis Diagnostics"
+  },
+  {
+    "id": "pregnancy",
+    "slug": "pregnancy",
+    "name": "Диагностика беременности",
+    "nameKz": "Жүктілік диагностикасы",
+    "nameEn": "Pregnancy Diagnostics"
+  },
+  {
+    "id": "prenatal",
+    "slug": "prenatal",
+    "name": "Пренатальный скрининг",
+    "nameKz": "Пренаталдық скрининг",
+    "nameEn": "Prenatal Screening"
+  }
+]

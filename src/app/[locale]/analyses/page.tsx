@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useMemo, useRef, useEffect } from 'react';
+import { useState, useMemo, useRef, useEffect, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Link } from '@/i18n/routing';
 import { useLocale } from 'next-intl';
 import {
@@ -68,12 +69,43 @@ function getAnalysisPreparation(analysis: Analysis, locale: Locale): string {
 }
 
 export default function AnalysesPage() {
+  return (
+    <Suspense fallback={<AnalysesPageSkeleton />}>
+      <AnalysesPageContent />
+    </Suspense>
+  );
+}
+
+function AnalysesPageSkeleton() {
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <div className="pt-[140px] sm:pt-[160px] px-5 sm:px-8 md:px-12 lg:px-20 pb-10" style={{ backgroundColor: '#209DA7' }}>
+        <div className="h-8 w-48 bg-white/20 rounded mb-6" />
+        <div className="h-12 w-full max-w-[400px] bg-white/20 rounded mb-8" />
+        <div className="h-14 w-full max-w-[600px] bg-white/10 rounded-full" />
+      </div>
+    </div>
+  );
+}
+
+function AnalysesPageContent() {
   const locale = useLocale() as Locale;
-  const [searchQuery, setSearchQuery] = useState('');
+  const searchParams = useSearchParams();
+  const initialSearch = searchParams.get('search') || '';
+
+  const [searchQuery, setSearchQuery] = useState(initialSearch);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [expandedAnalysis, setExpandedAnalysis] = useState<string | null>(null);
   const [visibleCount, setVisibleCount] = useState(10);
   const printRef = useRef<HTMLDivElement>(null);
+
+  // Update searchQuery when URL param changes
+  useEffect(() => {
+    const search = searchParams.get('search') || '';
+    if (search !== searchQuery) {
+      setSearchQuery(search);
+    }
+  }, [searchParams]);
 
   const toggleAnalysis = (analysisId: string) => {
     setExpandedAnalysis(prev => prev === analysisId ? null : analysisId);
@@ -259,7 +291,7 @@ export default function AnalysesPage() {
 
         <div class="footer">
           GammaLab - ${locale === 'kz' ? 'Диагностикалық зертхана' : locale === 'en' ? 'Diagnostic Laboratory' : 'Диагностическая лаборатория'}<br>
-          +7 727 346 8525 | Salem@Gammalab.kz
+          +7-705-100-03-33 | Salem@Gammalab.kz
         </div>
       </body>
       </html>
@@ -352,7 +384,7 @@ export default function AnalysesPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header Section */}
-      <div style={{ backgroundColor: '#209DA7', padding: '160px 80px 40px' }}>
+      <div className="pt-[140px] sm:pt-[160px] px-5 sm:px-8 md:px-12 lg:px-20 pb-10 lg:pb-12" style={{ backgroundColor: '#209DA7' }}>
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-white/70 text-[13px] mb-6">
           <Link href="/" className="hover:text-white transition-colors">
@@ -362,17 +394,16 @@ export default function AnalysesPage() {
           <span className="text-white">{getPageTitle()}</span>
         </div>
 
-        <h1 className="text-[36px] font-semibold text-white mb-8">
+        <h1 className="text-[28px] sm:text-[32px] lg:text-[36px] font-semibold text-white mb-6 lg:mb-8">
           {getPageTitle()}
         </h1>
 
         {/* Search */}
         <div
-          className="flex items-center bg-white"
+          className="flex items-center bg-white w-full max-w-[600px]"
           style={{
             borderRadius: '50px',
-            padding: '8px 8px 8px 24px',
-            maxWidth: '600px'
+            padding: '6px 6px 6px 20px',
           }}
         >
           <input
@@ -398,9 +429,9 @@ export default function AnalysesPage() {
       </div>
 
       {/* Main Content */}
-      <div className="flex" style={{ padding: '40px 80px' }}>
+      <div className="flex flex-col lg:flex-row px-5 sm:px-8 md:px-12 lg:px-20 py-10 lg:py-16 gap-8 lg:gap-12">
         {/* Sidebar */}
-        <aside style={{ width: '320px', flexShrink: 0, paddingRight: '40px' }}>
+        <aside className="w-full lg:w-[280px] xl:w-[320px] lg:flex-shrink-0">
           <h2 className="text-[16px] font-semibold mb-6" style={{ color: '#091D33' }}>
             {getCategoriesTitle()}
           </h2>
@@ -470,39 +501,38 @@ export default function AnalysesPage() {
                   {/* Card Header - Always Visible */}
                   <button
                     onClick={() => toggleAnalysis(analysis.id)}
-                    className="w-full text-left"
-                    style={{ padding: '24px 28px' }}
+                    className="w-full text-left p-4 lg:p-6"
                   >
-                    <div className="flex items-start justify-between gap-8">
+                    <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4 lg:gap-8">
                       {/* Left - Category Tag and Name */}
                       <div className="flex-1">
                         {category && (
                           <span
-                            className="inline-block text-[11px] font-medium uppercase tracking-wider mb-3"
+                            className="inline-block text-[11px] font-medium uppercase tracking-wider mb-2 lg:mb-3"
                             style={{ color: '#209DA7' }}
                           >
                             {getCategoryName(category, locale)}
                           </span>
                         )}
-                        <h3 className="text-[16px] font-medium" style={{ color: '#091D33' }}>
+                        <h3 className="text-[15px] lg:text-[16px] font-medium" style={{ color: '#091D33' }}>
                           {getAnalysisName(analysis, locale)}
                         </h3>
                       </div>
 
                       {/* Right - Price and Details */}
-                      <div className="flex items-center gap-8">
+                      <div className="flex items-center justify-between lg:justify-end gap-4 lg:gap-8 flex-wrap">
                         {/* Price */}
-                        <div className="text-center" style={{ minWidth: '100px' }}>
-                          <div className="text-[11px] uppercase text-gray-400 mb-1">
+                        <div className="text-left lg:text-center">
+                          <div className="text-[10px] lg:text-[11px] uppercase text-gray-400 mb-1">
                             {labels.price}
                           </div>
-                          <div className="text-[18px] font-semibold" style={{ color: '#091D33' }}>
+                          <div className="text-[16px] lg:text-[18px] font-semibold" style={{ color: '#091D33' }}>
                             {formatPrice(analysis.price)} ₸
                           </div>
                         </div>
 
-                        {/* Collection Price */}
-                        <div className="text-center" style={{ minWidth: '100px' }}>
+                        {/* Collection Price - hidden on mobile */}
+                        <div className="hidden sm:block text-center">
                           <div className="text-[11px] uppercase text-gray-400 mb-1">
                             {labels.collection}
                           </div>
@@ -512,13 +542,13 @@ export default function AnalysesPage() {
                         </div>
 
                         {/* Deadline */}
-                        <div className="text-center" style={{ minWidth: '120px' }}>
-                          <div className="text-[11px] uppercase text-gray-400 mb-1">
+                        <div className="text-left lg:text-center">
+                          <div className="text-[10px] lg:text-[11px] uppercase text-gray-400 mb-1">
                             {labels.deadline}
                           </div>
-                          <div className="flex items-center justify-center gap-1">
+                          <div className="flex items-center justify-start lg:justify-center gap-1">
                             <Clock className="w-4 h-4 text-gray-400" />
-                            <span className="text-[14px]" style={{ color: '#6B7280' }}>
+                            <span className="text-[13px] lg:text-[14px]" style={{ color: '#6B7280' }}>
                               {getAnalysisDeadline(analysis, locale)}
                             </span>
                           </div>
@@ -526,17 +556,17 @@ export default function AnalysesPage() {
 
                         {/* Expand Icon */}
                         <div
-                          className="flex items-center justify-center transition-transform"
+                          className="flex items-center justify-center transition-transform flex-shrink-0"
                           style={{
-                            width: '36px',
-                            height: '36px',
+                            width: '32px',
+                            height: '32px',
                             borderRadius: '50%',
                             backgroundColor: isExpanded ? '#209DA7' : '#F3F4F6',
                             transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)'
                           }}
                         >
                           <ChevronDown
-                            className="w-5 h-5"
+                            className="w-4 h-4"
                             style={{ color: isExpanded ? 'white' : '#6B7280' }}
                           />
                         </div>
@@ -547,12 +577,12 @@ export default function AnalysesPage() {
                   {/* Expanded Content */}
                   {isExpanded && (
                     <div
-                      className="border-t border-gray-100"
-                      style={{ padding: '28px', backgroundColor: '#FAFBFC' }}
+                      className="border-t border-gray-100 p-5 lg:p-7"
+                      style={{ backgroundColor: '#FAFBFC' }}
                     >
-                      <div className="grid grid-cols-3 gap-6">
+                      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                         {/* Description */}
-                        <div className="col-span-2">
+                        <div className="lg:col-span-2">
                           <div className="flex items-center gap-2 mb-3">
                             <FileText className="w-4 h-4" style={{ color: '#209DA7' }} />
                             <h4 className="text-[14px] font-semibold" style={{ color: '#091D33' }}>
@@ -647,7 +677,7 @@ export default function AnalysesPage() {
 
                             {/* Phone */}
                             <a
-                              href="tel:+77273468525"
+                              href="tel:+77051000333"
                               onClick={(e) => e.stopPropagation()}
                               className="w-full flex items-center justify-center gap-2 text-[14px] font-medium mt-3 transition-colors hover:opacity-70"
                               style={{
@@ -657,7 +687,7 @@ export default function AnalysesPage() {
                                 borderRadius: '10px'
                               }}
                             >
-                              +7 727 346 8525
+                              +7-705-100-03-33
                             </a>
                           </div>
                         </div>

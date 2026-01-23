@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Link, usePathname, useRouter } from '@/i18n/routing';
 import { locales, Locale } from '@/i18n/config';
@@ -15,23 +15,141 @@ import {
   Search,
 } from 'lucide-react';
 
+const translations: Record<string, Record<string, string>> = {
+  ru: {
+    home: 'Главная',
+    about: 'О нас',
+    services: 'Услуги и анализы',
+    patients: 'Пациентам',
+    doctors: 'Врачам',
+    contacts: 'Контакты',
+    more: 'Еще',
+    news: 'Новости и акции',
+    testLocations: 'Где пройти тест?',
+    submitAnalysis: 'Сдать анализ',
+    login: 'Войти',
+    search: 'Поиск',
+    searchPlaceholder: 'Введите название анализа или услуги...',
+    find: 'Найти',
+    popularQueries: 'Популярные запросы:',
+    tag1: 'Общий анализ крови',
+    tag2: 'Биохимия',
+    tag3: 'Гормоны',
+    tag4: 'ПЦР тесты',
+    tag5: 'Аллергология',
+    address: 'Ходжанова, д. 55а',
+    phone: '+7-705-100-03-33',
+  },
+  kz: {
+    home: 'Басты бет',
+    about: 'Біз туралы',
+    services: 'Қызметтер мен анализдер',
+    patients: 'Пациенттерге',
+    doctors: 'Дәрігерлерге',
+    contacts: 'Байланыс',
+    more: 'Тағы',
+    news: 'Жаңалықтар мен акциялар',
+    testLocations: 'Тест қайда тапсыруға болады?',
+    submitAnalysis: 'Анализ тапсыру',
+    login: 'Кіру',
+    search: 'Іздеу',
+    searchPlaceholder: 'Анализ немесе қызмет атауын енгізіңіз...',
+    find: 'Табу',
+    popularQueries: 'Танымал сұраулар:',
+    tag1: 'Жалпы қан анализі',
+    tag2: 'Биохимия',
+    tag3: 'Гормондар',
+    tag4: 'ПТР тесттер',
+    tag5: 'Аллергология',
+    address: 'Ходжанов к., 55а үй',
+    phone: '+7-705-100-03-33',
+  },
+  en: {
+    home: 'Home',
+    about: 'About',
+    services: 'Services & Tests',
+    patients: 'For Patients',
+    doctors: 'For Doctors',
+    contacts: 'Contacts',
+    more: 'More',
+    news: 'News & Promotions',
+    testLocations: 'Where to get tested?',
+    submitAnalysis: 'Submit Analysis',
+    login: 'Login',
+    search: 'Search',
+    searchPlaceholder: 'Enter analysis or service name...',
+    find: 'Find',
+    popularQueries: 'Popular queries:',
+    tag1: 'Complete Blood Count',
+    tag2: 'Biochemistry',
+    tag3: 'Hormones',
+    tag4: 'PCR Tests',
+    tag5: 'Allergology',
+    address: 'Khodzhanov St., 55a',
+    phone: '+7-705-100-03-33',
+  },
+};
+
 export default function Header() {
   const pathname = usePathname();
   const router = useRouter();
   const currentLocale = useLocale() as Locale;
+  const t = translations[currentLocale] || translations.ru;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLangOpen, setIsLangOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMoreOpen, setIsMoreOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // Close dropdowns when clicking outside
+  useEffect(() => {
+    const handleClickOutside = () => {
+      setIsLangOpen(false);
+      setIsMoreOpen(false);
+    };
+
+    if (isLangOpen || isMoreOpen) {
+      document.addEventListener('click', handleClickOutside);
+      return () => document.removeEventListener('click', handleClickOutside);
+    }
+  }, [isLangOpen, isMoreOpen]);
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMenuOpen]);
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/analyses?search=${encodeURIComponent(searchQuery.trim())}`);
+      setIsSearchOpen(false);
+      setSearchQuery('');
+    }
+  };
+
+  const handleTagSearch = (tag: string) => {
+    router.push(`/analyses?search=${encodeURIComponent(tag)}`);
+    setIsSearchOpen(false);
+    setSearchQuery('');
+  };
 
   const moreMenuItems = [
-    { href: '/news', label: 'Новости и акции' },
-    { href: '/test-locations', label: 'Где пройти тест?' },
-    { href: '/submit-analysis', label: 'Сдать анализ' },
+    { href: '/news', label: t.news },
+    { href: '/test-locations', label: t.testLocations },
+    { href: '/submit-analysis', label: t.submitAnalysis },
   ];
 
   const handleLocaleChange = (locale: Locale) => {
     router.replace(pathname, { locale });
+    setIsLangOpen(false);
   };
 
   const localeNames: Record<Locale, string> = {
@@ -41,12 +159,13 @@ export default function Header() {
   };
 
   const navItems = [
-    { href: '/', label: 'Главная' },
-    { href: '/about', label: 'О нас' },
-    { href: '/analyses', label: 'Услуги и анализы' },
-    { href: '/patients', label: 'Пациентам' },
-    { href: '/contacts', label: 'Контакты' },
-    { href: '/more', label: 'Еще', hasDropdown: true },
+    { href: '/', label: t.home },
+    { href: '/about', label: t.about },
+    { href: '/analyses', label: t.services },
+    { href: '/patients', label: t.patients },
+    { href: '/doctors', label: t.doctors },
+    { href: '/contacts', label: t.contacts },
+    { href: '/more', label: t.more, hasDropdown: true },
   ];
 
   const isActive = (href: string) => {
@@ -55,67 +174,65 @@ export default function Header() {
   };
 
   return (
-    <header className="absolute top-0 left-0 right-0 z-50">
-      {/* Top Bar */}
+    <header className="sticky top-0 left-0 right-0 z-50">
+      {/* Top Bar - белый фон */}
       <div className="bg-white">
-        <div style={{ paddingLeft: '80px', paddingRight: '80px', paddingBottom: '40px' }}>
-          <div className="flex items-center justify-between" style={{ height: '70px' }}>
-            {/* Logo - Left */}
+        <div className="container-main pb-10 lg:pb-14">
+          <div className="flex items-center justify-between h-[60px] lg:h-[70px]">
+            {/* Logo */}
             <Link href="/" className="flex items-center shrink-0">
               <Image
                 src="/images/logo-gammalab.png"
                 alt="GammaLab"
-                width={140}
-                height={55}
-                className="h-10 w-auto"
+                width={160}
+                height={60}
+                className="h-9 sm:h-10 lg:h-11 w-auto"
                 priority
               />
             </Link>
 
-            {/* Right side - Contacts + Login + Language */}
-            <div className="hidden lg:flex items-center gap-6">
-              {/* Contact Info */}
+            {/* Desktop: Contacts + Language */}
+            <div className="hidden lg:flex items-center gap-6 xl:gap-8">
               <a
                 href="mailto:Salem@Gammalab.kz"
-                className="flex items-center gap-2 text-gray-500 hover:text-primary transition-colors text-[13px] font-light"
+                className="flex items-center gap-2 text-gray-500 hover:text-primary transition-colors text-[13px]"
               >
-                <Mail className="h-3.5 w-3.5 text-primary" />
+                <Mail className="h-4 w-4 text-primary flex-shrink-0" />
                 <span>Salem@Gammalab.kz</span>
               </a>
-              <span className="flex items-center gap-2 text-gray-500 text-[13px] font-light">
-                <MapPin className="h-3.5 w-3.5 text-primary" />
-                <span>8-й Микрорайон, 37/1</span>
+              <span className="flex items-center gap-2 text-gray-500 text-[13px]">
+                <MapPin className="h-4 w-4 text-primary flex-shrink-0" />
+                <span>{t.address}</span>
               </span>
               <a
-                href="tel:+77273468525"
-                className="flex items-center gap-2 text-gray-500 hover:text-primary transition-colors text-[13px] font-light"
+                href="tel:+77051000333"
+                className="flex items-center gap-2 text-gray-500 hover:text-primary transition-colors text-[13px]"
               >
-                <Phone className="h-3.5 w-3.5 text-primary" />
-                <span>+7 727 346 8525</span>
+                <Phone className="h-4 w-4 text-primary flex-shrink-0" />
+                <span>{t.phone}</span>
               </a>
 
               {/* Language Switcher */}
               <div className="relative">
                 <button
-                  onClick={() => setIsLangOpen(!isLangOpen)}
-                  className="flex items-center cursor-pointer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsLangOpen(!isLangOpen);
+                  }}
+                  className="flex items-center gap-1 text-gray-500 hover:text-primary transition-colors"
                 >
-                  <span className="text-gray-500 text-[13px] font-light">{localeNames[currentLocale]}</span>
-                  <ChevronDown className="h-3 w-3 text-gray-400 ml-1" />
+                  <span className="text-[13px]">{localeNames[currentLocale]}</span>
+                  <ChevronDown className={`h-3.5 w-3.5 transition-transform ${isLangOpen ? 'rotate-180' : ''}`} />
                 </button>
                 {isLangOpen && (
-                  <div className="absolute right-0 top-full mt-2 bg-white border border-gray-100 rounded-xl shadow-lg min-w-[140px] z-50" style={{ padding: '8px 0' }}>
+                  <div className="absolute right-0 top-full mt-2 bg-white border border-gray-100 rounded-xl shadow-lg min-w-[140px] py-2 z-50">
                     {locales.map((locale) => (
                       <button
                         key={locale}
-                        onClick={() => {
-                          handleLocaleChange(locale);
-                          setIsLangOpen(false);
-                        }}
-                        className={`block w-full text-left hover:bg-gray-50 transition-colors text-[13px] ${
-                          currentLocale === locale ? 'text-primary font-normal' : 'text-gray-500 font-light'
+                        onClick={() => handleLocaleChange(locale)}
+                        className={`block w-full text-left px-5 py-2.5 text-[13px] hover:bg-gray-50 transition-colors ${
+                          currentLocale === locale ? 'text-primary font-medium' : 'text-gray-600'
                         }`}
-                        style={{ padding: '10px 20px' }}
                       >
                         {locale === 'ru' && 'Русский'}
                         {locale === 'kz' && 'Қазақша'}
@@ -127,78 +244,262 @@ export default function Header() {
               </div>
             </div>
 
-            {/* Mobile: Login + Language + Menu */}
-            <div className="flex items-center gap-4 lg:hidden">
-              <div className="hidden md:flex items-center gap-4">
-                <Link
-                  href="/login"
-                  className="border border-primary text-primary px-7 py-2 rounded-full text-[13px] font-normal"
+            {/* Mobile/Tablet: Menu Button */}
+            <div className="flex items-center gap-3 lg:hidden">
+              {/* Language - visible on tablet */}
+              <div className="hidden sm:block relative">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsLangOpen(!isLangOpen);
+                  }}
+                  className="flex items-center gap-1 text-gray-500 text-[13px]"
                 >
-                  Войти
-                </Link>
-                <div className="flex items-center cursor-pointer">
-                  <span className="text-gray-500 text-[13px] font-light">{localeNames[currentLocale]}</span>
-                  <ChevronDown className="h-3 w-3 text-gray-400 ml-1" />
-                </div>
+                  <span>{localeNames[currentLocale]}</span>
+                  <ChevronDown className={`h-3 w-3 transition-transform ${isLangOpen ? 'rotate-180' : ''}`} />
+                </button>
+                {isLangOpen && (
+                  <div className="absolute right-0 top-full mt-2 bg-white border border-gray-100 rounded-lg shadow-lg min-w-[130px] py-1 z-50">
+                    {locales.map((locale) => (
+                      <button
+                        key={locale}
+                        onClick={() => handleLocaleChange(locale)}
+                        className={`block w-full text-left px-4 py-2 text-[13px] hover:bg-gray-50 transition-colors ${
+                          currentLocale === locale ? 'text-primary font-medium' : 'text-gray-600'
+                        }`}
+                      >
+                        {locale === 'ru' && 'Русский'}
+                        {locale === 'kz' && 'Қазақша'}
+                        {locale === 'en' && 'English'}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
+
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="p-2 text-gray-500 hover:text-primary transition-colors"
+                className="p-2 text-gray-600 hover:text-primary transition-colors"
+                aria-label={isMenuOpen ? 'Закрыть меню' : 'Открыть меню'}
               >
-                {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+                {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
               </button>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Navigation Bar - Floating */}
-      <div className="relative hidden md:block" style={{ paddingLeft: '250px', paddingRight: '250px' }}>
-        <div
-          className="bg-white"
-          style={{
-            borderRadius: '8px',
-            transform: 'translateY(-50%)',
-            position: 'relative',
-            zIndex: 40,
-            boxShadow: '0 8px 20px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.06)'
-          }}
-        >
-          <div className="flex items-center justify-center" style={{ height: '64px', padding: '0 40px' }}>
-            {/* Nav Links with dividers */}
-            <div className="flex items-center">
-              {navItems.map((item, index) => (
-                <div key={item.href} className="flex items-center">
-                  {item.hasDropdown ? (
-                    <div className="relative">
-                      <button
-                        onClick={() => setIsMoreOpen(!isMoreOpen)}
-                        className="flex items-center gap-1 text-[14px] transition-colors hover:opacity-70 cursor-pointer"
-                        style={{
-                          color: isMoreOpen ? '#209DA7' : '#091D33',
-                          fontWeight: 400,
-                          padding: '10px 24px'
-                        }}
+      {/* Floating Navigation Bar - только для desktop и tablet */}
+      <div className="hidden lg:block relative">
+        <div className="container-main">
+          {/* Плавающая панель навигации */}
+          <div
+            className="absolute left-1/2 -translate-x-1/2 bg-white rounded-xl z-40"
+            style={{
+              top: '-36px',
+              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04)',
+            }}
+          >
+            <div className="flex items-center justify-center h-[72px] px-8 xl:px-10">
+              <nav className="flex items-center">
+                {navItems.map((item, index) => (
+                  <div key={item.href} className="flex items-center">
+                    {item.hasDropdown ? (
+                      <div className="relative">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setIsMoreOpen(!isMoreOpen);
+                          }}
+                          className={`flex items-center gap-1.5 px-5 xl:px-6 py-2.5 text-[14px] transition-colors hover:text-primary whitespace-nowrap ${
+                            isMoreOpen ? 'text-primary' : 'text-[#091D33]'
+                          }`}
+                        >
+                          {item.label}
+                          <ChevronDown className={`h-3.5 w-3.5 transition-transform ${isMoreOpen ? 'rotate-180' : ''}`} />
+                        </button>
+                        {isMoreOpen && (
+                          <div
+                            className="absolute left-1/2 -translate-x-1/2 top-full mt-3 bg-white rounded-xl shadow-lg border border-gray-100 min-w-[220px] py-2 z-50"
+                            style={{ boxShadow: '0 8px 24px rgba(0, 0, 0, 0.12)' }}
+                          >
+                            {moreMenuItems.map((menuItem) => (
+                              <Link
+                                key={menuItem.href}
+                                href={menuItem.href}
+                                className="block px-5 py-3 text-[14px] text-gray-600 hover:text-primary hover:bg-gray-50 transition-colors"
+                                onClick={() => setIsMoreOpen(false)}
+                              >
+                                {menuItem.label}
+                              </Link>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <Link
+                        href={item.href}
+                        className={`px-5 xl:px-6 py-2.5 text-[14px] transition-colors hover:text-primary whitespace-nowrap ${
+                          isActive(item.href) ? 'text-primary font-medium' : 'text-[#091D33]'
+                        }`}
                       >
                         {item.label}
-                        <ChevronDown className={`h-3 w-3 transition-transform ${isMoreOpen ? 'rotate-180' : ''}`} />
+                      </Link>
+                    )}
+                    {index < navItems.length - 1 && (
+                      <div className="w-px h-[14px] bg-gray-200" />
+                    )}
+                  </div>
+                ))}
+
+                {/* Divider before Search */}
+                <div className="w-px h-[14px] bg-gray-200" />
+
+                {/* Search Button */}
+                <button
+                  onClick={() => setIsSearchOpen(!isSearchOpen)}
+                  className="flex items-center gap-2 px-5 xl:px-6 py-2.5 text-[14px] text-[#091D33] hover:text-primary transition-colors whitespace-nowrap"
+                >
+                  <Search className="h-4 w-4 text-primary" />
+                  <span className="italic">{t.search}</span>
+                </button>
+              </nav>
+            </div>
+
+            {/* Search Dropdown */}
+            {isSearchOpen && (
+              <div className="border-t border-gray-100 px-6 py-5">
+                <form onSubmit={handleSearch} className="flex items-center gap-4">
+                  <Search className="h-5 w-5 text-primary flex-shrink-0" />
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder={t.searchPlaceholder}
+                    className="flex-1 text-[15px] outline-none bg-transparent text-[#091D33]"
+                    autoFocus
+                  />
+                  <button
+                    type="submit"
+                    className="px-6 py-2.5 bg-primary text-white rounded-full text-[14px] font-medium hover:bg-primary-dark transition-colors"
+                  >
+                    {t.find}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsSearchOpen(false);
+                      setSearchQuery('');
+                    }}
+                    className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                  >
+                    <X className="h-5 w-5 text-gray-400" />
+                  </button>
+                </form>
+                <div className="mt-4 pt-4 border-t border-gray-100">
+                  <p className="text-[12px] text-gray-400 mb-3">{t.popularQueries}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {[t.tag1, t.tag2, t.tag3, t.tag4, t.tag5].map((tag) => (
+                      <button
+                        key={tag}
+                        type="button"
+                        onClick={() => handleTagSearch(tag)}
+                        className="px-4 py-2 bg-gray-50 hover:bg-primary hover:text-white rounded-full text-[13px] text-[#091D33] transition-colors"
+                      >
+                        {tag}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile Menu Overlay */}
+      {isMenuOpen && (
+        <div
+          className="fixed inset-0 bg-black/20 z-40 lg:hidden"
+          onClick={() => setIsMenuOpen(false)}
+        />
+      )}
+
+      {/* Mobile Menu - Slide Panel */}
+      <div
+        className={`fixed top-0 right-0 h-full w-[280px] sm:w-[320px] bg-white z-50 transform transition-transform duration-300 ease-in-out lg:hidden ${
+          isMenuOpen ? 'translate-x-0' : 'translate-x-full'
+        }`}
+      >
+        <div className="flex flex-col h-full">
+          {/* Mobile Menu Header */}
+          <div className="flex items-center justify-between p-4 border-b border-gray-100">
+            <Link href="/" onClick={() => setIsMenuOpen(false)}>
+              <Image
+                src="/images/logo-gammalab.png"
+                alt="GammaLab"
+                width={120}
+                height={45}
+                className="h-8 w-auto"
+              />
+            </Link>
+            <button
+              onClick={() => setIsMenuOpen(false)}
+              className="p-2 text-gray-500 hover:text-primary transition-colors"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+
+          {/* Mobile Menu Content */}
+          <div className="flex-1 overflow-y-auto">
+            {/* Contact Info */}
+            <div className="p-4 border-b border-gray-100">
+              <div className="flex flex-col gap-3">
+                <a
+                  href="tel:+77051000333"
+                  className="flex items-center gap-3 text-gray-600 text-sm"
+                >
+                  <Phone className="h-4 w-4 text-primary" />
+                  <span>{t.phone}</span>
+                </a>
+                <a
+                  href="mailto:Salem@Gammalab.kz"
+                  className="flex items-center gap-3 text-gray-600 text-sm"
+                >
+                  <Mail className="h-4 w-4 text-primary" />
+                  <span>Salem@Gammalab.kz</span>
+                </a>
+                <span className="flex items-center gap-3 text-gray-600 text-sm">
+                  <MapPin className="h-4 w-4 text-primary" />
+                  <span>{t.address}</span>
+                </span>
+              </div>
+            </div>
+
+            {/* Navigation */}
+            <nav className="p-4">
+              <div className="flex flex-col gap-1">
+                {navItems.map((item) => (
+                  item.hasDropdown ? (
+                    <div key={item.href}>
+                      <button
+                        onClick={() => setIsMoreOpen(!isMoreOpen)}
+                        className={`flex items-center justify-between w-full py-3 text-[15px] font-medium ${
+                          isMoreOpen ? 'text-primary' : 'text-gray-700'
+                        }`}
+                      >
+                        {item.label}
+                        <ChevronDown className={`h-4 w-4 transition-transform ${isMoreOpen ? 'rotate-180' : ''}`} />
                       </button>
                       {isMoreOpen && (
-                        <div
-                          className="absolute left-1/2 -translate-x-1/2 top-full mt-3 bg-white rounded-xl shadow-lg z-50"
-                          style={{
-                            minWidth: '220px',
-                            padding: '8px 0',
-                            boxShadow: '0 8px 20px rgba(0, 0, 0, 0.12)'
-                          }}
-                        >
+                        <div className="pl-4 pb-2 flex flex-col gap-1">
                           {moreMenuItems.map((menuItem) => (
                             <Link
                               key={menuItem.href}
                               href={menuItem.href}
-                              className="block text-[14px] text-gray-700 hover:text-primary hover:bg-gray-50 transition-colors"
-                              style={{ padding: '12px 20px' }}
-                              onClick={() => setIsMoreOpen(false)}
+                              className="py-2 text-[14px] text-gray-500 hover:text-primary transition-colors"
+                              onClick={() => setIsMenuOpen(false)}
                             >
                               {menuItem.label}
                             </Link>
@@ -208,183 +509,54 @@ export default function Header() {
                     </div>
                   ) : (
                     <Link
+                      key={item.href}
                       href={item.href}
-                      className="flex items-center gap-1 text-[14px] transition-colors hover:opacity-70"
-                      style={{
-                        color: isActive(item.href) ? '#209DA7' : '#091D33',
-                        fontWeight: isActive(item.href) ? 500 : 400,
-                        padding: '10px 24px'
-                      }}
+                      className={`py-3 text-[15px] font-medium transition-colors ${
+                        isActive(item.href) ? 'text-primary' : 'text-gray-700 hover:text-primary'
+                      }`}
+                      onClick={() => setIsMenuOpen(false)}
                     >
                       {item.label}
                     </Link>
-                  )}
-                  {index < navItems.length - 1 && (
-                    <div style={{ width: '1px', height: '14px', backgroundColor: '#DCDCDC' }} />
-                  )}
-                </div>
-              ))}
-
-              {/* Divider before Search */}
-              {/* <div style={{ width: '1px', height: '14px', backgroundColor: '#DCDCDC' }} /> */}
-
-              {/* Search */}
-              <button
-                onClick={() => setIsSearchOpen(!isSearchOpen)}
-                className="flex items-center gap-2 transition-colors text-[14px] hover:opacity-70"
-                style={{ padding: '12px 24px' }}
-              >
-                <Search className="h-4 w-4" style={{ color: '#209DA7' }} />
-                <span style={{ color: '#091D33', fontStyle: 'italic' }}>Поиск</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Search Modal */}
-        {isSearchOpen && (
-          <div
-            className="absolute left-0 right-0 bg-white shadow-2xl"
-            style={{
-              marginLeft: '80px',
-              marginRight: '80px',
-              marginTop: '8px',
-              borderRadius: '16px',
-              padding: '24px 32px',
-              zIndex: 50
-            }}
-          >
-            <div className="flex items-center gap-4">
-              <Search className="h-5 w-5" style={{ color: '#209DA7' }} />
-              <input
-                type="text"
-                placeholder="Введите название анализа или услуги..."
-                className="flex-1 text-[16px] outline-none"
-                style={{ color: '#091D33' }}
-                autoFocus
-              />
-              <button
-                onClick={() => setIsSearchOpen(false)}
-                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-              >
-                <X className="h-5 w-5 text-gray-400" />
-              </button>
-            </div>
-            <div className="mt-4 pt-4 border-t border-gray-100">
-              <p className="text-[12px] text-gray-400 mb-3">Популярные запросы:</p>
-              <div className="flex flex-wrap gap-2">
-                {['Общий анализ крови', 'Биохимия', 'Гормоны', 'ПЦР тесты', 'УЗИ'].map((tag) => (
-                  <span
-                    key={tag}
-                    className="px-3 py-1.5 bg-gray-50 rounded-full text-[13px] cursor-pointer hover:bg-gray-100 transition-colors"
-                    style={{ color: '#091D33' }}
-                  >
-                    {tag}
-                  </span>
+                  )
                 ))}
               </div>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Mobile Menu */}
-      {isMenuOpen && (
-        <div className="md:hidden bg-white border-t border-gray-100">
-          <div className="mx-auto max-w-7xl px-4 py-4">
-            {/* Mobile Contact */}
-            <div className="flex flex-col gap-3 pb-4 border-b border-gray-100 mb-4">
-              <a
-                href="mailto:Salem@Gammalab.kz"
-                className="flex items-center gap-2 text-text text-sm"
-              >
-                <Mail className="h-4 w-4 text-primary" />
-                <span>Salem@Gammalab.kz</span>
-              </a>
-              <a
-                href="tel:+77273468525"
-                className="flex items-center gap-2 text-text text-sm"
-              >
-                <Phone className="h-4 w-4 text-primary" />
-                <span>+7 727 346 8525</span>
-              </a>
-            </div>
-
-            {/* Mobile Nav */}
-            <nav className="flex flex-col gap-2">
-              {navItems.map((item) => (
-                item.hasDropdown ? (
-                  <div key={item.href}>
-                    <button
-                      onClick={() => setIsMoreOpen(!isMoreOpen)}
-                      className={`py-2 font-medium flex items-center gap-1 w-full text-left ${
-                        isMoreOpen ? 'text-primary' : 'text-text'
-                      }`}
-                    >
-                      {item.label}
-                      <ChevronDown className={`h-4 w-4 transition-transform ${isMoreOpen ? 'rotate-180' : ''}`} />
-                    </button>
-                    {isMoreOpen && (
-                      <div className="pl-4 flex flex-col gap-1 mt-1">
-                        {moreMenuItems.map((menuItem) => (
-                          <Link
-                            key={menuItem.href}
-                            href={menuItem.href}
-                            className="py-2 text-sm text-gray-600 hover:text-primary"
-                            onClick={() => setIsMenuOpen(false)}
-                          >
-                            {menuItem.label}
-                          </Link>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className={`py-2 font-medium ${
-                      isActive(item.href) ? 'text-primary' : 'text-text'
-                    }`}
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    {item.label}
-                  </Link>
-                )
-              ))}
             </nav>
+          </div>
 
-            {/* Mobile Language & Login */}
-            <div className="flex flex-col gap-3 pt-4 mt-4 border-t border-gray-100">
-              <div className="flex items-center gap-2">
-                {locales.map((locale) => (
-                  <button
-                    key={locale}
-                    onClick={() => {
-                      handleLocaleChange(locale);
-                      setIsMenuOpen(false);
-                    }}
-                    className={`px-3 py-1 rounded text-sm ${
-                      currentLocale === locale
-                        ? 'bg-primary text-white'
-                        : 'bg-gray-100 text-text'
-                    }`}
-                  >
-                    {localeNames[locale]}
-                  </button>
-                ))}
-              </div>
-              <Link
-                href="/login"
-                className="border-2 border-primary text-primary px-6 py-3 rounded-full text-center font-medium"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Войти
-              </Link>
+          {/* Mobile Menu Footer */}
+          <div className="p-4 border-t border-gray-100">
+            {/* Language Switcher */}
+            <div className="flex items-center gap-2 mb-4 sm:hidden">
+              {locales.map((locale) => (
+                <button
+                  key={locale}
+                  onClick={() => {
+                    handleLocaleChange(locale);
+                    setIsMenuOpen(false);
+                  }}
+                  className={`px-3 py-1.5 rounded-md text-sm transition-colors ${
+                    currentLocale === locale
+                      ? 'bg-primary text-white'
+                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  }`}
+                >
+                  {localeNames[locale]}
+                </button>
+              ))}
             </div>
+
+            {/* Login Button */}
+            <Link
+              href="/login"
+              className="block w-full py-3 text-center border-2 border-primary text-primary rounded-full font-medium hover:bg-primary hover:text-white transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              {t.login}
+            </Link>
           </div>
         </div>
-      )}
+      </div>
     </header>
   );
 }

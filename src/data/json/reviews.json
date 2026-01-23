@@ -1,0 +1,68 @@
+[
+  {
+    "id": "review_1",
+    "name": "Алия Касымова",
+    "nameKz": "Алия Қасымова",
+    "nameEn": "Aliya Kasymova",
+    "text": "Отличная лаборатория! Быстро, качественно и профессионально. Результаты пришли в тот же день. Персонал очень вежливый и внимательный.",
+    "textKz": "Тамаша зертхана! Тез, сапалы және кәсіби. Нәтижелер сол күні келді. Персонал өте сыпайы және мұқият.",
+    "textEn": "Excellent laboratory! Fast, quality and professional. Results came the same day. Staff is very polite and attentive.",
+    "rating": 4,
+    "date": "2026-01-10",
+    "showOnHomepage": true,
+    "order": 1,
+    "photo": "https://static-cse.canva.com/blob/191106/00_verzosa_winterlandscapes_jakob-owens-tb-2640x1485.jpg"
+  },
+  {
+    "id": "review_2",
+    "name": "Марат Ахметов",
+    "nameKz": "Марат Ахметов",
+    "nameEn": "Marat Akhmetov",
+    "text": "Пользуюсь услугами GammaLab уже год. Всегда довольна результатами. Особенно нравится возможность получить результаты онлайн.",
+    "textKz": "GammaLab қызметтерін бір жылдан бері пайдаланып келемін. Нәтижелерге әрқашан ризамын. Әсіресе нәтижелерді онлайн алу мүмкіндігі ұнайды.",
+    "textEn": "I have been using GammaLab services for a year now. Always satisfied with the results. I especially like the ability to get results online.",
+    "rating": 5,
+    "date": "2026-01-08",
+    "showOnHomepage": true,
+    "order": 2
+  },
+  {
+    "id": "review_3",
+    "name": "Динара Сейтова",
+    "nameKz": "Динара Сейтова",
+    "nameEn": "Dinara Seitova",
+    "text": "Очень удобное расположение филиала, парковка рядом. Анализы сдала за 10 минут, никаких очередей. Рекомендую!",
+    "textKz": "Филиалдың орналасуы өте ыңғайлы, тұрақ жанында. Анализдерді 10 минутта тапсырдым, ешқандай кезек жоқ. Ұсынамын!",
+    "textEn": "Very convenient branch location, parking nearby. Tests done in 10 minutes, no queues. I recommend!",
+    "rating": 5,
+    "date": "2026-01-05",
+    "showOnHomepage": true,
+    "order": 3
+  },
+  {
+    "id": "review_4",
+    "name": "Арман Жумабеков",
+    "nameKz": "Арман Жұмабеков",
+    "nameEn": "Arman Zhumabekov",
+    "text": "Сдавал комплексный анализ крови. Результат получил на следующий день. Цены адекватные, качество отличное.",
+    "textKz": "Қанның кешенді анализін тапсырдым. Нәтижені келесі күні алдым. Бағалар қолайлы, сапасы керемет.",
+    "textEn": "Did a comprehensive blood test. Got the result the next day. Prices are reasonable, quality is excellent.",
+    "rating": 4,
+    "date": "2026-01-03",
+    "showOnHomepage": true,
+    "order": 4
+  },
+  {
+    "id": "review_5",
+    "name": "Гульнара Тасмагамбетова",
+    "nameKz": "Гүлнара Тасмағамбетова",
+    "nameEn": "Gulnara Tasmagambetova",
+    "text": "Приятно удивлена качеством обслуживания. Медсестра взяла кровь очень аккуратно, даже не почувствовала. Буду обращаться снова.",
+    "textKz": "Қызмет көрсету сапасына қуандым. Медбике қанды өте ұқыпты алды, сезінбедім де. Қайта хабарласамын.",
+    "textEn": "Pleasantly surprised by the quality of service. The nurse took blood very carefully, I didn't even feel it. Will come again.",
+    "rating": 5,
+    "date": "2026-01-01",
+    "showOnHomepage": false,
+    "order": 5
+  }
+]

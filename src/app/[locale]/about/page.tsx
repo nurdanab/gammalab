@@ -612,28 +612,30 @@ export default function AboutPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
-      {/* Hero Banner */}
+      {/* Hero Section */}
       <section
-        className="relative"
-        style={{
-          backgroundColor: '#209DA7',
-          padding: '60px 0'
-        }}
+        className="relative pt-[140px] sm:pt-[160px] lg:pt-[180px] pb-8 lg:pb-12"
+        style={{ backgroundColor: '#EEF6F6' }}
       >
-        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
-          <h1 className="text-white text-3xl lg:text-4xl font-semibold text-center">
+        <div className="px-5 sm:px-8 md:px-12 lg:px-20 text-center">
+          <h1
+            className="text-[28px] sm:text-[36px] lg:text-[42px] font-semibold mb-4"
+            style={{ color: '#091D33' }}
+          >
             {t('pageTitle')}
           </h1>
-          <p className="text-white/80 text-center mt-4">
+          <p
+            className="text-[15px] leading-[1.8] max-w-[600px] mx-auto"
+            style={{ color: '#6B7280' }}
+          >
             {t('pageSubtitle')}
           </p>
         </div>
       </section>
 
       {/* Main Content */}
-      <section style={{ padding: '60px 0' }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
-          <div className="flex flex-col lg:flex-row gap-8">
+      <section className="bg-white px-5 sm:px-8 md:px-12 lg:px-20 py-12 lg:py-20">
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
             {/* Sidebar Navigation */}
             <aside
               className="lg:w-72 flex-shrink-0"
@@ -675,10 +677,10 @@ export default function AboutPage() {
             <main className="flex-1">
               {/* Content Box */}
               <div
+                className="p-6 sm:p-8 lg:p-[50px_60px]"
                 style={{
                   backgroundColor: '#e8f5f6',
-                  borderRadius: '12px',
-                  padding: '50px 60px'
+                  borderRadius: '12px'
                 }}
               >
                 <h2
@@ -704,7 +706,6 @@ export default function AboutPage() {
               </div>
             </main>
           </div>
-        </div>
       </section>
     </div>
   );

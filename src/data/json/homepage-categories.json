@@ -1,0 +1,176 @@
+[
+  {
+    "id": "hcat_1",
+    "name": "Кардиология",
+    "nameKz": "Кардиология",
+    "nameEn": "Cardiology",
+    "description": "Комплексная диагностика сердечно-сосудистой системы. Современные методы исследования позволяют выявить заболевания на ранних стадиях.",
+    "descriptionKz": "Жүрек-қан тамырлары жүйесінің кешенді диагностикасы. Заманауи зерттеу әдістері аурулардың ерте сатысында анықтауға мүмкіндік береді.",
+    "descriptionEn": "Comprehensive cardiovascular system diagnostics. Modern research methods allow for early detection of diseases.",
+    "description2": "Профессиональная команда кардиологов обеспечивает точную диагностику и индивидуальный подход к каждому пациенту.",
+    "description2Kz": "Кардиологтардың кәсіби командасы дәл диагностика және әр пациентке жеке тәсілді қамтамасыз етеді.",
+    "description2En": "Our professional team of cardiologists provides accurate diagnostics and an individual approach to each patient.",
+    "tags": [
+      "ЭКГ диагностика",
+      "Холтер мониторинг",
+      "УЗИ сердца"
+    ],
+    "tagsKz": [
+      "ЭКГ диагностикасы",
+      "Холтер мониторинг",
+      "Жүрек УДЗ"
+    ],
+    "tagsEn": [
+      "ECG diagnostics",
+      "Holter monitoring",
+      "Heart ultrasound"
+    ],
+    "order": 1,
+    "featured": true
+  },
+  {
+    "id": "hcat_2",
+    "name": "Лабораторный анализ",
+    "nameKz": "Зертханалық талдау",
+    "nameEn": "Laboratory tests",
+    "description": "Широкий спектр лабораторных исследований для точной диагностики. Более 500 видов анализов с использованием современного оборудования.",
+    "descriptionKz": "Дәл диагностика үшін зертханалық зерттеулердің кең спектрі. Заманауи жабдықтарды пайдалана отырып, 500-ден астам талдау түрлері.",
+    "descriptionEn": "Wide range of laboratory tests for accurate diagnostics. Over 500 types of analyses using modern equipment.",
+    "description2": "Результаты большинства анализов готовы в течение 24 часов.",
+    "description2Kz": "Көптеген талдаулардың нәтижелері 24 сағат ішінде дайын.",
+    "description2En": "Results of most tests are ready within 24 hours.",
+    "tags": [
+      "Общий анализ крови",
+      "Биохимия",
+      "Гормоны"
+    ],
+    "tagsKz": [
+      "Жалпы қан анализі",
+      "Биохимия",
+      "Гормондар"
+    ],
+    "tagsEn": [
+      "Complete blood count",
+      "Biochemistry",
+      "Hormones"
+    ],
+    "order": 2,
+    "featured": false
+  },
+  {
+    "id": "hcat_3",
+    "name": "Гинекология",
+    "nameKz": "Гинекология",
+    "nameEn": "Gynecology",
+    "description": "Комплексная диагностика женского здоровья. Современные методы исследования и индивидуальный подход.",
+    "descriptionKz": "Әйелдер денсаулығының кешенді диагностикасы. Заманауи зерттеу әдістері және жеке тәсіл.",
+    "descriptionEn": "Comprehensive women's health diagnostics. Modern research methods and individual approach.",
+    "description2": "Профессиональная команда специалистов обеспечивает качественную диагностику.",
+    "description2Kz": "Мамандардың кәсіби командасы сапалы диагностиканы қамтамасыз етеді.",
+    "description2En": "Professional team of specialists provides quality diagnostics.",
+    "tags": [
+      "УЗИ малого таза",
+      "Анализы на гормоны",
+      "ПЦР диагностика"
+    ],
+    "tagsKz": [
+      "Кіші жамбас УДЗ",
+      "Гормондарға анализ",
+      "ПТР диагностикасы"
+    ],
+    "tagsEn": [
+      "Pelvic ultrasound",
+      "Hormone tests",
+      "PCR diagnostics"
+    ],
+    "order": 3,
+    "featured": false
+  },
+  {
+    "id": "hcat_4",
+    "name": "Патология",
+    "nameKz": "Патология",
+    "nameEn": "Pathology",
+    "description": "Гистологические и цитологические исследования для точной диагностики заболеваний.",
+    "descriptionKz": "Аурулардың дәл диагностикасы үшін гистологиялық және цитологиялық зерттеулер.",
+    "descriptionEn": "Histological and cytological studies for accurate diagnosis of diseases.",
+    "description2": "Современное оборудование и опытные специалисты.",
+    "description2Kz": "Заманауи жабдықтар және тәжірибелі мамандар.",
+    "description2En": "Modern equipment and experienced specialists.",
+    "tags": [
+      "Гистология",
+      "Цитология",
+      "Биопсия"
+    ],
+    "tagsKz": [
+      "Гистология",
+      "Цитология",
+      "Биопсия"
+    ],
+    "tagsEn": [
+      "Histology",
+      "Cytology",
+      "Biopsy"
+    ],
+    "order": 4,
+    "featured": false
+  },
+  {
+    "id": "hcat_5",
+    "name": "Педиатрия",
+    "nameKz": "Педиатрия",
+    "nameEn": "Pediatrics",
+    "description": "Специализированные анализы для детей всех возрастов с учетом особенностей детского организма.",
+    "descriptionKz": "Балалар ағзасының ерекшеліктерін ескере отырып, барлық жастағы балаларға арналған мамандандырылған талдаулар.",
+    "descriptionEn": "Specialized tests for children of all ages, taking into account the characteristics of the child's body.",
+    "description2": "Комфортные условия и опытный персонал для работы с детьми.",
+    "description2Kz": "Балалармен жұмыс істеуге арналған жайлы жағдайлар және тәжірибелі персонал.",
+    "description2En": "Comfortable conditions and experienced staff for working with children.",
+    "tags": [
+      "Детские анализы",
+      "Вакцинация",
+      "Скрининг"
+    ],
+    "tagsKz": [
+      "Балалар анализдері",
+      "Вакцинация",
+      "Скрининг"
+    ],
+    "tagsEn": [
+      "Children's tests",
+      "Vaccination",
+      "Screening"
+    ],
+    "order": 5,
+    "featured": false
+  },
+  {
+    "id": "hcat_6",
+    "name": "Неврология",
+    "nameKz": "Неврология",
+    "nameEn": "Neurology",
+    "description": "Диагностика заболеваний нервной системы с использованием современных методов исследования.",
+    "descriptionKz": "Заманауи зерттеу әдістерін қолдана отырып, жүйке жүйесі ауруларының диагностикасы.",
+    "descriptionEn": "Diagnosis of nervous system diseases using modern research methods.",
+    "description2": "Комплексный подход к диагностике неврологических заболеваний.",
+    "description2Kz": "Неврологиялық аурулардың диагностикасына кешенді тәсіл.",
+    "description2En": "Comprehensive approach to the diagnosis of neurological diseases.",
+    "tags": [
+      "ЭЭГ",
+      "МРТ",
+      "Нейровизуализация"
+    ],
+    "tagsKz": [
+      "ЭЭГ",
+      "МРТ",
+      "Нейровизуализация"
+    ],
+    "tagsEn": [
+      "EEG",
+      "MRI",
+      "Neuroimaging"
+    ],
+    "order": 6,
+    "featured": false
+  }
+]

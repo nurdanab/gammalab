@@ -1,596 +1,417 @@
-import { setRequestLocale } from 'next-intl/server';
+'use client';
+
 import { Link } from '@/i18n/routing';
+import { useLocale } from 'next-intl';
 import {
   MapPin,
   Phone,
   Clock,
-  Navigation,
-  Search,
+  ExternalLink,
 } from 'lucide-react';
 
-type Props = {
-  params: Promise<{ locale: string }>;
+const translations: Record<string, Record<string, string>> = {
+  ru: {
+    home: 'Главная',
+    title: 'Где пройти тест?',
+    subtitle: 'Посетите наш филиал GammaLab для сдачи анализов.',
+    ourBranch: 'Наш филиал',
+    address: 'Адрес',
+    addressValue: 'г. Алматы, ул. Ходжанова, д. 55а',
+    openIn2gis: 'Открыть в 2ГИС',
+    phone: 'Телефон',
+    workingHours: 'Режим работы',
+    weekdays: 'Пн-Пт',
+    weekend: 'Сб-Вс',
+    closed: 'выходной',
+    tspotCollection: 'Забор на T-SPOT',
+    otherMaterials: 'Прием материалов',
+    onlineBooking: 'Онлайн-запись',
+    onlineBookingDesc: 'Запишитесь на удобное время онлайн и избегайте очередей. Экономьте своё время.',
+    book: 'Записаться',
+    hotline: 'Горячая линия',
+    hotlineDesc: 'Позвоните нам для консультации или уточнения информации о наших услугах.',
+  },
+  kz: {
+    home: 'Басты бет',
+    title: 'Тестті қайда тапсыруға болады?',
+    subtitle: 'Анализ тапсыру үшін GammaLab филиалына келіңіз.',
+    ourBranch: 'Біздің филиал',
+    address: 'Мекенжай',
+    addressValue: 'Алматы қ., Ходжанов к., 55а үй',
+    openIn2gis: '2ГИС-те ашу',
+    phone: 'Телефон',
+    workingHours: 'Жұмыс уақыты',
+    weekdays: 'Дс-Жм',
+    weekend: 'Сб-Жс',
+    closed: 'демалыс',
+    tspotCollection: 'T-SPOT алу',
+    otherMaterials: 'Материалдар қабылдау',
+    onlineBooking: 'Онлайн жазылу',
+    onlineBookingDesc: 'Ыңғайлы уақытқа онлайн жазылыңыз және кезекте тұрмаңыз. Уақытыңызды үнемдеңіз.',
+    book: 'Жазылу',
+    hotline: 'Ыстық желі',
+    hotlineDesc: 'Кеңес алу немесе қызметтеріміз туралы ақпарат алу үшін бізге қоңырау шалыңыз.',
+  },
+  en: {
+    home: 'Home',
+    title: 'Where to get tested?',
+    subtitle: 'Visit our GammaLab branch for testing.',
+    ourBranch: 'Our branch',
+    address: 'Address',
+    addressValue: 'Almaty, Khodzhanov St., 55a',
+    openIn2gis: 'Open in 2GIS',
+    phone: 'Phone',
+    workingHours: 'Working hours',
+    weekdays: 'Mon-Fri',
+    weekend: 'Sat-Sun',
+    closed: 'closed',
+    tspotCollection: 'T-SPOT collection',
+    otherMaterials: 'Materials reception',
+    onlineBooking: 'Online booking',
+    onlineBookingDesc: 'Book a convenient time online and avoid queues. Save your time.',
+    book: 'Book now',
+    hotline: 'Hotline',
+    hotlineDesc: 'Call us for consultation or more information about our services.',
+  },
 };
 
-export default async function TestLocationsPage({ params }: Props) {
-  const { locale } = await params;
-  setRequestLocale(locale);
+export default function TestLocationsPage() {
+  const locale = useLocale() as 'ru' | 'kz' | 'en';
+  const t = translations[locale] || translations.ru;
 
-  return <TestLocationsContent />;
-}
-
-const locations = [
-  {
-    id: 1,
-    name: 'GammaLab - Центральный',
-    address: '8-й Микрорайон, 37/1',
-    city: 'Алматы',
-    phone: '+7 727 346 8525',
-    workingHours: 'Пн-Пт: 7:00 - 20:00, Сб: 8:00 - 16:00',
-    isMain: true,
-    services: ['Все виды анализов', 'Забор крови на дому', 'Экспресс-тесты'],
-  },
-  {
-    id: 2,
-    name: 'GammaLab - Достык',
-    address: 'пр. Достык, 89',
-    city: 'Алматы',
-    phone: '+7 727 346 8526',
-    workingHours: 'Пн-Пт: 7:30 - 19:00, Сб: 8:00 - 15:00',
-    isMain: false,
-    services: ['Общие анализы', 'Биохимия', 'Гормоны'],
-  },
-  {
-    id: 3,
-    name: 'GammaLab - Сайран',
-    address: 'ул. Утеген Батыра, 126',
-    city: 'Алматы',
-    phone: '+7 727 346 8527',
-    workingHours: 'Пн-Пт: 7:00 - 18:00, Сб: 8:00 - 14:00',
-    isMain: false,
-    services: ['Общие анализы', 'ПЦР-тесты', 'Аллергология'],
-  },
-  {
-    id: 4,
-    name: 'GammaLab - Жетысу',
-    address: 'мкр. Жетысу-2, 85',
-    city: 'Алматы',
-    phone: '+7 727 346 8528',
-    workingHours: 'Пн-Пт: 7:30 - 18:00, Сб: 8:00 - 14:00',
-    isMain: false,
-    services: ['Общие анализы', 'Биохимия', 'Коагулограмма'],
-  },
-  {
-    id: 5,
-    name: 'GammaLab - Астана',
-    address: 'пр. Мангилик Ел, 54',
-    city: 'Астана',
-    phone: '+7 717 246 8525',
-    workingHours: 'Пн-Пт: 7:00 - 19:00, Сб: 8:00 - 15:00',
-    isMain: false,
-    services: ['Все виды анализов', 'Забор крови на дому', 'Экспресс-тесты'],
-  },
-  {
-    id: 6,
-    name: 'GammaLab - Шымкент',
-    address: 'ул. Тауке хана, 45',
-    city: 'Шымкент',
-    phone: '+7 725 246 8525',
-    workingHours: 'Пн-Пт: 7:30 - 18:00, Сб: 8:00 - 14:00',
-    isMain: false,
-    services: ['Общие анализы', 'Биохимия', 'Гормоны'],
-  },
-];
-
-const cities = ['Все города', 'Алматы', 'Астана', 'Шымкент'];
-
-function TestLocationsContent() {
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
       <section
-        className="relative"
-        style={{
-          backgroundColor: '#EEF6F6',
-          paddingTop: '180px',
-          paddingBottom: '80px',
-        }}
+        className="relative pt-[100px] sm:pt-[110px] lg:pt-[120px] pb-8 lg:pb-10"
+        style={{ backgroundColor: '#EEF6F6' }}
       >
-        <div style={{ paddingLeft: '80px', paddingRight: '80px' }}>
+        <div className="px-5 sm:px-8 md:px-12 lg:px-20">
           {/* Breadcrumbs */}
           <div className="flex items-center gap-2 mb-6">
             <Link href="/" className="text-[13px]" style={{ color: '#9CA3AF' }}>
-              Главная
+              {t.home}
             </Link>
             <span className="text-[13px]" style={{ color: '#9CA3AF' }}>/</span>
             <span className="text-[13px]" style={{ color: '#209DA7' }}>
-              Где пройти тест?
+              {t.title}
             </span>
           </div>
 
           {/* Title */}
           <h1
-            className="text-[42px] font-semibold mb-4"
+            className="text-[28px] sm:text-[36px] lg:text-[42px] font-semibold mb-4"
             style={{ color: '#091D33' }}
           >
-            Где пройти тест?
+            {t.title}
           </h1>
           <p
             className="text-[15px] leading-[1.8] max-w-[600px]"
             style={{ color: '#6B7280' }}
           >
-            Найдите ближайший филиал GammaLab для сдачи анализов. Мы работаем
-            в крупнейших городах Казахстана и постоянно расширяем сеть.
+            {t.subtitle}
           </p>
         </div>
       </section>
 
-      {/* Search and Filter Section */}
-      <section className="bg-white" style={{ padding: '40px 80px' }}>
-        <div className="flex items-center justify-between gap-6">
-          {/* Search */}
-          <div
-            className="flex items-center flex-1"
-            style={{
-              backgroundColor: '#F9FAFB',
-              borderRadius: '12px',
-              padding: '14px 20px',
-              maxWidth: '400px',
-            }}
+      {/* Branch Section */}
+      <section className="bg-white px-5 sm:px-8 md:px-12 lg:px-20 py-10 lg:py-16">
+        <div className="max-w-[900px] mx-auto">
+          <h2
+            className="text-[20px] sm:text-[24px] font-semibold mb-6"
+            style={{ color: '#091D33' }}
           >
-            <Search className="h-5 w-5" style={{ color: '#9CA3AF' }} />
-            <input
-              type="text"
-              placeholder="Поиск по адресу..."
-              className="flex-1 bg-transparent outline-none text-[14px] ml-3"
-              style={{ color: '#091D33' }}
-            />
-          </div>
+            {t.ourBranch}
+          </h2>
 
-          {/* City Filter */}
-          <div className="flex items-center gap-3">
-            {cities.map((city, index) => (
-              <button
-                key={city}
-                className="text-[13px] font-medium transition-colors"
-                style={{
-                  backgroundColor: index === 0 ? '#209DA7' : '#F3F4F6',
-                  color: index === 0 ? 'white' : '#6B7280',
-                  padding: '10px 20px',
-                  borderRadius: '20px',
-                }}
-              >
-                {city}
-              </button>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Map and Locations Section */}
-      <section className="bg-white" style={{ padding: '0 80px 60px' }}>
-        <div className="flex gap-8">
-          {/* Map Placeholder */}
-          <div
-            className="relative overflow-hidden"
-            style={{
-              flex: '1',
-              minHeight: '500px',
-              backgroundColor: '#E5E7EB',
-              borderRadius: '16px',
-            }}
-          >
-            {/* Map placeholder with pattern */}
-            <div
-              className="absolute inset-0 flex items-center justify-center"
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+            {/* Map - 2GIS Widget */}
+            <a
+              href="https://go.2gis.com/D23Va"
+              target="_blank"
+              rel="noopener noreferrer"
               style={{
-                background: 'linear-gradient(135deg, #EEF6F6 0%, #E0EDED 100%)',
+                display: 'block',
+                backgroundColor: 'white',
+                borderRadius: '16px',
+                overflow: 'hidden',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+                textDecoration: 'none',
+                cursor: 'pointer',
+                transition: 'box-shadow 0.2s',
               }}
+              className="hover:shadow-lg"
             >
-              <div className="text-center">
-                <MapPin
-                  className="mx-auto mb-4"
-                  style={{ color: '#209DA7', width: '48px', height: '48px' }}
+              <div style={{ position: 'relative' }}>
+                <iframe
+                  src="https://www.openstreetmap.org/export/embed.html?bbox=76.86%2C43.20%2C76.89%2C43.22&layer=mapnik&marker=43.2077%2C76.8730"
+                  width="100%"
+                  height="280"
+                  style={{ border: 0, pointerEvents: 'none' }}
+                  loading="lazy"
+                  title="GammaLab - Ходжанова 55а"
                 />
-                <p className="text-[16px] font-medium" style={{ color: '#091D33' }}>
-                  Интерактивная карта
-                </p>
-                <p className="text-[13px]" style={{ color: '#6B7280' }}>
-                  Здесь будет отображаться карта с филиалами
-                </p>
-              </div>
-            </div>
-
-            {/* Map pins simulation */}
-            <div
-              className="absolute"
-              style={{
-                width: '40px',
-                height: '40px',
-                backgroundColor: '#209DA7',
-                borderRadius: '50% 50% 50% 0',
-                transform: 'rotate(-45deg)',
-                top: '30%',
-                left: '40%',
-                boxShadow: '0 4px 12px rgba(32, 157, 167, 0.4)',
-              }}
-            />
-            <div
-              className="absolute"
-              style={{
-                width: '30px',
-                height: '30px',
-                backgroundColor: '#EC910C',
-                borderRadius: '50% 50% 50% 0',
-                transform: 'rotate(-45deg)',
-                top: '50%',
-                left: '60%',
-                boxShadow: '0 4px 12px rgba(236, 145, 12, 0.4)',
-              }}
-            />
-            <div
-              className="absolute"
-              style={{
-                width: '30px',
-                height: '30px',
-                backgroundColor: '#EC910C',
-                borderRadius: '50% 50% 50% 0',
-                transform: 'rotate(-45deg)',
-                top: '45%',
-                left: '25%',
-                boxShadow: '0 4px 12px rgba(236, 145, 12, 0.4)',
-              }}
-            />
-          </div>
-
-          {/* Locations List */}
-          <div style={{ width: '420px' }}>
-            <h3
-              className="text-[18px] font-semibold mb-5"
-              style={{ color: '#091D33' }}
-            >
-              Наши филиалы ({locations.length})
-            </h3>
-
-            <div
-              className="flex flex-col gap-4 overflow-y-auto pr-2"
-              style={{ maxHeight: '450px' }}
-            >
-              {locations.map((location) => (
+                {/* Clickable overlay */}
                 <div
-                  key={location.id}
-                  className="cursor-pointer transition-all hover:shadow-md"
                   style={{
-                    backgroundColor: location.isMain ? '#EEF6F6' : '#F9FAFB',
-                    borderRadius: '12px',
-                    padding: '20px',
-                    border: location.isMain ? '2px solid #209DA7' : '1px solid transparent',
+                    position: 'absolute',
+                    inset: 0,
+                    backgroundColor: 'transparent',
+                  }}
+                />
+              </div>
+              <div style={{ padding: '16px', borderTop: '1px solid #f0f0f0' }}>
+                <p style={{ fontSize: '14px', fontWeight: '500', color: '#091D33', marginBottom: '4px' }}>
+                  {t.addressValue}
+                </p>
+                <span
+                  className="inline-flex items-center gap-2"
+                  style={{
+                    fontSize: '13px',
+                    color: '#209DA7',
+                    fontWeight: '500',
                   }}
                 >
-                  <div className="flex items-start justify-between mb-3">
-                    <div>
-                      <h4
-                        className="text-[15px] font-semibold mb-1"
-                        style={{ color: '#091D33' }}
-                      >
-                        {location.name}
-                      </h4>
-                      {location.isMain && (
-                        <span
-                          className="text-[10px] uppercase tracking-wider font-medium"
-                          style={{
-                            backgroundColor: '#209DA7',
-                            color: 'white',
-                            padding: '3px 8px',
-                            borderRadius: '10px',
-                          }}
-                        >
-                          Главный офис
-                        </span>
-                      )}
-                    </div>
-                    <button
-                      className="p-2 rounded-full transition-colors"
-                      style={{ backgroundColor: 'rgba(32, 157, 167, 0.1)' }}
-                    >
-                      <Navigation
-                        className="h-4 w-4"
-                        style={{ color: '#209DA7' }}
-                      />
-                    </button>
-                  </div>
+                  <ExternalLink size={14} />
+                  {t.openIn2gis}
+                </span>
+              </div>
+            </a>
 
-                  <div className="flex flex-col gap-2">
-                    <div className="flex items-center gap-2">
-                      <MapPin
-                        className="h-4 w-4 shrink-0"
-                        style={{ color: '#9CA3AF' }}
-                      />
-                      <span className="text-[13px]" style={{ color: '#6B7280' }}>
-                        {location.address}, {location.city}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Phone
-                        className="h-4 w-4 shrink-0"
-                        style={{ color: '#9CA3AF' }}
-                      />
-                      <a
-                        href={`tel:${location.phone.replace(/\s/g, '')}`}
-                        className="text-[13px] hover:underline"
-                        style={{ color: '#209DA7' }}
-                      >
-                        {location.phone}
-                      </a>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Clock
-                        className="h-4 w-4 shrink-0"
-                        style={{ color: '#9CA3AF' }}
-                      />
-                      <span className="text-[13px]" style={{ color: '#6B7280' }}>
-                        {location.workingHours}
-                      </span>
-                    </div>
-                  </div>
+            {/* Branch Info */}
+            <div
+              style={{
+                backgroundColor: '#F9FAFB',
+                borderRadius: '16px',
+                padding: '24px',
+              }}
+            >
+              <h3
+                className="text-[18px] font-semibold mb-5"
+                style={{ color: '#091D33' }}
+              >
+                GammaLab
+              </h3>
 
-                  {/* Services Tags */}
-                  <div className="flex flex-wrap gap-2 mt-3">
-                    {location.services.map((service) => (
-                      <span
-                        key={service}
-                        className="text-[11px]"
-                        style={{
-                          backgroundColor: 'rgba(32, 157, 167, 0.1)',
-                          color: '#209DA7',
-                          padding: '4px 10px',
-                          borderRadius: '12px',
-                        }}
-                      >
-                        {service}
-                      </span>
-                    ))}
+              <div className="flex flex-col gap-4">
+                {/* Address */}
+                <div className="flex items-start gap-3">
+                  <div
+                    style={{
+                      width: '36px',
+                      height: '36px',
+                      borderRadius: '50%',
+                      backgroundColor: '#e8f5f6',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexShrink: 0,
+                    }}
+                  >
+                    <MapPin size={16} style={{ color: '#209DA7' }} />
+                  </div>
+                  <div>
+                    <p style={{ fontSize: '13px', fontWeight: '600', color: '#091D33', marginBottom: '2px' }}>
+                      {t.address}
+                    </p>
+                    <p style={{ fontSize: '14px', color: '#6B7280' }}>
+                      {t.addressValue}
+                    </p>
                   </div>
                 </div>
-              ))}
+
+                {/* Phone */}
+                <div className="flex items-start gap-3">
+                  <div
+                    style={{
+                      width: '36px',
+                      height: '36px',
+                      borderRadius: '50%',
+                      backgroundColor: '#e8f5f6',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexShrink: 0,
+                    }}
+                  >
+                    <Phone size={16} style={{ color: '#209DA7' }} />
+                  </div>
+                  <div>
+                    <p style={{ fontSize: '13px', fontWeight: '600', color: '#091D33', marginBottom: '2px' }}>
+                      {t.phone}
+                    </p>
+                    <a
+                      href="tel:+77051000333"
+                      style={{ fontSize: '14px', color: '#209DA7', textDecoration: 'none' }}
+                    >
+                      +7-705-100-03-33
+                    </a>
+                  </div>
+                </div>
+
+                {/* Working Hours */}
+                <div className="flex items-start gap-3">
+                  <div
+                    style={{
+                      width: '36px',
+                      height: '36px',
+                      borderRadius: '50%',
+                      backgroundColor: '#e8f5f6',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexShrink: 0,
+                    }}
+                  >
+                    <Clock size={16} style={{ color: '#209DA7' }} />
+                  </div>
+                  <div>
+                    <p style={{ fontSize: '13px', fontWeight: '600', color: '#091D33', marginBottom: '4px' }}>
+                      {t.workingHours}
+                    </p>
+                    <div className="flex flex-col gap-1">
+                      <p style={{ fontSize: '13px', color: '#6B7280' }}>
+                        {t.weekdays}: <span style={{ color: '#209DA7', fontWeight: '500' }}>09:00 - 18:00</span>
+                      </p>
+                      <p style={{ fontSize: '13px', color: '#6B7280' }}>
+                        {t.tspotCollection}: <span style={{ color: '#209DA7', fontWeight: '500' }}>09:00 - 12:00</span>
+                      </p>
+                      <p style={{ fontSize: '13px', color: '#6B7280' }}>
+                        {t.otherMaterials}: <span style={{ color: '#209DA7', fontWeight: '500' }}>09:00 - 17:00</span>
+                      </p>
+                      <p style={{ fontSize: '13px', color: '#6B7280' }}>
+                        {t.weekend}: <span style={{ color: '#209DA7', fontWeight: '500' }}>{t.closed}</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Info Cards Section */}
-      <section
-        className="bg-white"
-        style={{ padding: '40px 80px 80px' }}
-      >
-        <div className="grid grid-cols-3 gap-6">
-          {/* Card 1 */}
-          <div
-            style={{
-              backgroundColor: '#F9FAFB',
-              borderRadius: '16px',
-              padding: '32px',
-            }}
-          >
+      <section className="bg-white px-5 sm:px-8 md:px-12 lg:px-20 pb-12 lg:pb-20">
+        <div className="max-w-[900px] mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+            {/* Card 1 - Online Booking */}
             <div
-              className="flex items-center justify-center mb-5"
               style={{
-                width: '60px',
-                height: '60px',
-                backgroundColor: '#209DA7',
-                borderRadius: '12px',
+                backgroundColor: '#F9FAFB',
+                borderRadius: '16px',
+                padding: '24px',
               }}
             >
-              <svg
-                width="28"
-                height="28"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="white"
-                strokeWidth="2"
+              <div
+                className="flex items-center justify-center mb-5"
+                style={{
+                  width: '50px',
+                  height: '50px',
+                  backgroundColor: '#EC910C',
+                  borderRadius: '12px',
+                }}
               >
-                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-                <polyline points="9 22 9 12 15 12 15 22" />
-              </svg>
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="white"
+                  strokeWidth="2"
+                >
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                  <line x1="16" y1="2" x2="16" y2="6" />
+                  <line x1="8" y1="2" x2="8" y2="6" />
+                  <line x1="3" y1="10" x2="21" y2="10" />
+                </svg>
+              </div>
+              <h3
+                className="text-[16px] sm:text-[18px] font-semibold mb-3"
+                style={{ color: '#091D33' }}
+              >
+                {t.onlineBooking}
+              </h3>
+              <p className="text-[12px] sm:text-[13px] leading-[1.7]" style={{ color: '#6B7280' }}>
+                {t.onlineBookingDesc}
+              </p>
+              <button
+                className="text-[12px] sm:text-[13px] font-medium mt-4 inline-flex items-center gap-2"
+                style={{ color: '#EC910C' }}
+              >
+                {t.book}
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </button>
             </div>
-            <h3
-              className="text-[18px] font-semibold mb-3"
-              style={{ color: '#091D33' }}
-            >
-              Забор на дому
-            </h3>
-            <p className="text-[13px] leading-[1.7]" style={{ color: '#6B7280' }}>
-              Закажите выезд медсестры на дом для забора анализов.
-              Удобно, быстро и безопасно.
-            </p>
-            <button
-              className="text-[13px] font-medium mt-4 inline-flex items-center gap-2"
-              style={{ color: '#209DA7' }}
-            >
-              Заказать выезд
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </button>
-          </div>
 
-          {/* Card 2 */}
-          <div
-            style={{
-              backgroundColor: '#F9FAFB',
-              borderRadius: '16px',
-              padding: '32px',
-            }}
-          >
+            {/* Card 2 - Hotline */}
             <div
-              className="flex items-center justify-center mb-5"
               style={{
-                width: '60px',
-                height: '60px',
-                backgroundColor: '#EC910C',
-                borderRadius: '12px',
+                backgroundColor: '#F9FAFB',
+                borderRadius: '16px',
+                padding: '24px',
               }}
             >
-              <svg
-                width="28"
-                height="28"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="white"
-                strokeWidth="2"
+              <div
+                className="flex items-center justify-center mb-5"
+                style={{
+                  width: '50px',
+                  height: '50px',
+                  backgroundColor: '#091D33',
+                  borderRadius: '12px',
+                }}
               >
-                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-                <line x1="16" y1="2" x2="16" y2="6" />
-                <line x1="8" y1="2" x2="8" y2="6" />
-                <line x1="3" y1="10" x2="21" y2="10" />
-              </svg>
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="white"
+                  strokeWidth="2"
+                >
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                </svg>
+              </div>
+              <h3
+                className="text-[16px] sm:text-[18px] font-semibold mb-3"
+                style={{ color: '#091D33' }}
+              >
+                {t.hotline}
+              </h3>
+              <p className="text-[12px] sm:text-[13px] leading-[1.7]" style={{ color: '#6B7280' }}>
+                {t.hotlineDesc}
+              </p>
+              <a
+                href="tel:+77051000333"
+                className="text-[12px] sm:text-[13px] font-medium mt-4 inline-flex items-center gap-2"
+                style={{ color: '#091D33' }}
+              >
+                +7-705-100-03-33
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </a>
             </div>
-            <h3
-              className="text-[18px] font-semibold mb-3"
-              style={{ color: '#091D33' }}
-            >
-              Онлайн-запись
-            </h3>
-            <p className="text-[13px] leading-[1.7]" style={{ color: '#6B7280' }}>
-              Запишитесь на удобное время онлайн и избегайте очередей.
-              Экономьте своё время.
-            </p>
-            <button
-              className="text-[13px] font-medium mt-4 inline-flex items-center gap-2"
-              style={{ color: '#EC910C' }}
-            >
-              Записаться
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </button>
-          </div>
-
-          {/* Card 3 */}
-          <div
-            style={{
-              backgroundColor: '#F9FAFB',
-              borderRadius: '16px',
-              padding: '32px',
-            }}
-          >
-            <div
-              className="flex items-center justify-center mb-5"
-              style={{
-                width: '60px',
-                height: '60px',
-                backgroundColor: '#091D33',
-                borderRadius: '12px',
-              }}
-            >
-              <svg
-                width="28"
-                height="28"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="white"
-                strokeWidth="2"
-              >
-                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-              </svg>
-            </div>
-            <h3
-              className="text-[18px] font-semibold mb-3"
-              style={{ color: '#091D33' }}
-            >
-              Горячая линия
-            </h3>
-            <p className="text-[13px] leading-[1.7]" style={{ color: '#6B7280' }}>
-              Позвоните нам для консультации или уточнения информации
-              о наших услугах.
-            </p>
-            <a
-              href="tel:+77273468525"
-              className="text-[13px] font-medium mt-4 inline-flex items-center gap-2"
-              style={{ color: '#091D33' }}
-            >
-              +7 727 346 8525
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </a>
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section
-        className="relative overflow-hidden"
-        style={{
-          backgroundColor: '#209DA7',
-          padding: '70px 80px',
-        }}
-      >
-        {/* Background decoration */}
-        <div
-          className="absolute"
-          style={{
-            width: '400px',
-            height: '400px',
-            borderRadius: '50%',
-            backgroundColor: 'rgba(255, 255, 255, 0.03)',
-            left: '-100px',
-            top: '50%',
-            transform: 'translateY(-50%)',
-          }}
-        />
-
-        <div className="relative flex items-center justify-between">
-          {/* Left - Text */}
-          <div>
-            <p
-              className="text-[11px] uppercase tracking-widest mb-3"
-              style={{ color: 'rgba(255, 255, 255, 0.7)' }}
-            >
-              Не нашли удобный филиал?
-            </p>
-            <h2 className="text-[32px] font-semibold text-white leading-[1.3]">
-              Закажите выезд
-              <br />
-              медсестры на дом
-            </h2>
-          </div>
-
-          {/* Right - Button */}
-          <button
-            className="text-[14px] font-medium"
-            style={{
-              backgroundColor: 'white',
-              color: '#091D33',
-              padding: '16px 36px',
-              borderRadius: '50px',
-            }}
-          >
-            Заказать выезд на дом
-          </button>
-        </div>
-      </section>
     </div>
   );
 }

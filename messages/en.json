@@ -252,9 +252,12 @@
       "title": "BLOOD COLLECTION RULES",
       "mainRule": "Blood is collected from a vein into a vacutainer with NA heparin or Li heparin.",
       "volumeTitle": "Blood volume required for testing:",
-      "volume1": "Adults and children 10 years and older: 6-8 ml",
-      "volume2": "Children 2-9 years: 4 ml",
-      "volume3": "Children under 2 years: 2 ml",
+      "volumeAmount1": "6-8 ml",
+      "volumeAmount2": "4 ml",
+      "volumeAmount3": "2 ml",
+      "volume1": "Adults and children 10 years and older",
+      "volume2": "Children 2-9 years",
+      "volume3": "Children under 2 years",
       "importantTitle": "Important Information:",
       "important1": "Blood collection is performed only at specialized collection points or at the laboratory",
       "important2": "Disposable vacuum systems are used for patient safety",
@@ -312,6 +315,7 @@
     "rateService": "Rate Our Services"
   },
   "contactsPage": {
+    "home": "Home",
     "pageTitle": "Contacts",
     "pageSubtitle": "Get in touch with us in any convenient way",
     "address": "Address",

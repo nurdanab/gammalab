@@ -39,8 +39,8 @@ export default function PatientsPage() {
   return (
     <div className="flex flex-col min-h-screen bg-white">
       {/* Hero */}
-      <section style={{ backgroundColor: '#209DA7', padding: '170px 0 40px' }}>
-        <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 20px', textAlign: 'center' }}>
+      <section className="pt-[140px] sm:pt-[160px] lg:pt-[170px] pb-8 lg:pb-10" style={{ backgroundColor: '#209DA7' }}>
+        <div className="px-5 sm:px-8 md:px-12 lg:px-20 text-center">
           {/* Navigation */}
           <nav className="flex flex-wrap justify-center items-center" style={{ gap: '24px' }}>
             {sections.map((section, index) => (
@@ -69,8 +69,8 @@ export default function PatientsPage() {
       </section>
 
       {/* Content */}
-      <main style={{ padding: '60px 0' }}>
-        <div style={{ maxWidth: '800px', margin: '0 auto', padding: '0 20px' }}>
+      <main className="py-12 lg:py-20 px-5 sm:px-8 md:px-12 lg:px-20">
+        <div className="max-w-[800px] mx-auto">
 
           {/* Подготовка к анализам */}
           <section id="preparation" style={{ marginBottom: '80px' }}>
@@ -119,12 +119,7 @@ export default function PatientsPage() {
             </div>
 
             {/* Преимущества */}
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(3, 1fr)',
-              gap: '16px',
-              marginBottom: '32px'
-            }} className="grid-cols-1 md:grid-cols-3">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
               {[1, 2, 3].map((num) => (
                 <div key={num} style={{
                   padding: '20px',
@@ -179,28 +174,19 @@ export default function PatientsPage() {
               {t('rulesSection.volumeTitle')}
             </h3>
 
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(3, 1fr)',
-              gap: '12px',
-              marginBottom: '32px'
-            }} className="grid-cols-1 md:grid-cols-3">
-              {[
-                { num: 1, ml: '6-8 мл' },
-                { num: 2, ml: '4 мл' },
-                { num: 3, ml: '2 мл' }
-              ].map((item) => (
-                <div key={item.num} style={{
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-8">
+              {[1, 2, 3].map((num) => (
+                <div key={num} style={{
                   padding: '20px',
                   borderRadius: '8px',
                   backgroundColor: '#f8fafa',
                   textAlign: 'center'
                 }}>
                   <div style={{ color: '#209DA7', fontSize: '20px', fontWeight: '700', marginBottom: '4px' }}>
-                    {item.ml}
+                    {t(`rulesSection.volumeAmount${num}`)}
                   </div>
                   <div style={{ color: '#6b7280', fontSize: '13px' }}>
-                    {t(`rulesSection.volume${item.num}`)}
+                    {t(`rulesSection.volume${num}`)}
                   </div>
                 </div>
               ))}
