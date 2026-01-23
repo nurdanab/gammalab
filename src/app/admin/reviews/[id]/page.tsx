@@ -4,6 +4,7 @@ import { useState, useEffect, use } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Save, Star } from 'lucide-react';
+import ImageUpload from '@/components/admin/ImageUpload';
 
 interface Review {
   id: string;
@@ -362,29 +363,11 @@ export default function EditReviewPage({ params }: { params: Promise<{ id: strin
                 />
               </div>
 
-              <div>
-                <label style={labelStyle}>Фото (URL)</label>
-                <input
-                  type="text"
-                  value={formData.photo || ''}
-                  onChange={(e) => updateField('photo', e.target.value)}
-                  style={inputStyle}
-                  placeholder="/images/reviews/person.jpg"
-                />
-                <p style={{ fontSize: '12px', color: '#9CA3AF', marginTop: '4px' }}>
-                  Путь к фото в папке public
-                </p>
-                {formData.photo && (
-                  <div style={{ marginTop: '8px', borderRadius: '8px', overflow: 'hidden', width: '80px', height: '80px' }}>
-                    <img
-                      src={formData.photo}
-                      alt="Preview"
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                      onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                    />
-                  </div>
-                )}
-              </div>
+              <ImageUpload
+                value={formData.photo || ''}
+                onChange={(url) => updateField('photo', url)}
+                folder="reviews"
+              />
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', paddingTop: '8px' }}>
                 <input

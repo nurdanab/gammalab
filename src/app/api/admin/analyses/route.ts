@@ -66,12 +66,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Auto-generate ID and slug
-    const id = `analysis_${Date.now()}`;
     const slug = generateSlug(data.name);
 
     const analysis = await createAnalysis({
-      id,
       slug,
       name: data.name,
       nameKz: data.nameKz || data.name,

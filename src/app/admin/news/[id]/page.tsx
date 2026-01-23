@@ -4,6 +4,7 @@ import { useState, useEffect, use } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Save } from 'lucide-react';
+import ImageUpload from '@/components/admin/ImageUpload';
 
 interface NewsItem {
   id: string;
@@ -370,28 +371,11 @@ export default function EditNewsPage({ params }: { params: Promise<{ id: string 
                 />
               </div>
 
-              <div>
-                <label style={labelStyle}>URL изображения</label>
-                <input
-                  type="url"
-                  value={formData.image}
-                  onChange={(e) => updateField('image', e.target.value)}
-                  style={inputStyle}
-                  placeholder="https://..."
-                />
-                {formData.image && (
-                  <div style={{ marginTop: '8px', borderRadius: '8px', overflow: 'hidden' }}>
-                    <img
-                      src={formData.image}
-                      alt="Preview"
-                      style={{ width: '100%', height: '120px', objectFit: 'cover' }}
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).style.display = 'none';
-                      }}
-                    />
-                  </div>
-                )}
-              </div>
+              <ImageUpload
+                value={formData.image}
+                onChange={(url) => updateField('image', url)}
+                folder="news"
+              />
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', paddingTop: '8px' }}>
                 <input

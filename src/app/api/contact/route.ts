@@ -34,6 +34,13 @@ export async function POST(request: NextRequest) {
       rating,
     });
 
+    if (!submission) {
+      return NextResponse.json(
+        { error: 'Не удалось создать запись' },
+        { status: 500 }
+      );
+    }
+
     return NextResponse.json({ success: true, id: submission.id });
   } catch (error) {
     console.error('Contact submission error:', error);
