@@ -3,16 +3,14 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { LayoutDashboard, Newspaper, Tag, Star, FlaskConical, MessageSquare, LogOut, Menu, X } from 'lucide-react';
-// Sparkles, LayoutList - временно отключены
+import { LayoutDashboard, Newspaper, Tag, Star, FlaskConical, MessageSquare, LogOut, Menu, X, Folder } from 'lucide-react';
 
 const navItems = [
   { href: '/admin', label: 'Дашборд', icon: LayoutDashboard },
   { href: '/admin/news', label: 'Новости', icon: Newspaper },
   { href: '/admin/promotions', label: 'Акции', icon: Tag },
   { href: '/admin/reviews', label: 'Отзывы', icon: Star },
-  // { href: '/admin/services', label: 'Услуги на главной', icon: Sparkles }, // временно отключено
-  // { href: '/admin/categories', label: 'Категории анализов', icon: LayoutList }, // временно отключено
+  { href: '/admin/analysis-categories', label: 'Категории анализов', icon: Folder },
   { href: '/admin/analyses', label: 'Анализы', icon: FlaskConical },
   { href: '/admin/submissions', label: 'Заявки', icon: MessageSquare },
 ];
