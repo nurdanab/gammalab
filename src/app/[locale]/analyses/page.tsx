@@ -16,9 +16,39 @@ import {
   Printer,
   X
 } from 'lucide-react';
-import { categories, analyses, getAnalysesByCategory, type Category, type Analysis } from '@/data/analyses';
 
 type Locale = 'ru' | 'kz' | 'en';
+
+interface Analysis {
+  id: string;
+  slug: string;
+  name: string;
+  nameKz: string;
+  nameEn: string;
+  description: string;
+  descriptionKz: string;
+  descriptionEn: string;
+  categoryId: string;
+  price: number;
+  collectionPrice: number;
+  deadline: string;
+  deadlineKz: string;
+  deadlineEn: string;
+  biomaterial: string;
+  biomaterialKz: string;
+  biomaterialEn: string;
+  preparation: string;
+  preparationKz: string;
+  preparationEn: string;
+}
+
+interface Category {
+  id: string;
+  name: string;
+  nameKz: string;
+  nameEn: string;
+  slug: string;
+}
 
 function getCategoryName(category: Category, locale: Locale): string {
   switch (locale) {
@@ -93,11 +123,33 @@ function AnalysesPageContent() {
   const searchParams = useSearchParams();
   const initialSearch = searchParams.get('search') || '';
 
+  const [analyses, setAnalyses] = useState<Analysis[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState(initialSearch);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [expandedAnalysis, setExpandedAnalysis] = useState<string | null>(null);
   const [visibleCount, setVisibleCount] = useState(10);
   const printRef = useRef<HTMLDivElement>(null);
+
+  // Fetch data from API
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const res = await fetch('/api/analyses');
+        if (res.ok) {
+          const data = await res.json();
+          setAnalyses(data.analyses || []);
+          setCategories(data.categories || []);
+        }
+      } catch (error) {
+        console.error('Error fetching analyses:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, []);
 
   // Update searchQuery when URL param changes
   useEffect(() => {
@@ -106,6 +158,11 @@ function AnalysesPageContent() {
       setSearchQuery(search);
     }
   }, [searchParams]);
+
+  // Helper function to get analyses by category
+  const getAnalysesByCategory = (categoryId: string) => {
+    return analyses.filter(a => a.categoryId === categoryId);
+  };
 
   const toggleAnalysis = (analysisId: string) => {
     setExpandedAnalysis(prev => prev === analysisId ? null : analysisId);
@@ -130,7 +187,7 @@ function AnalysesPageContent() {
 
   const filteredAnalyses = useMemo(() => {
     let result = selectedCategory
-      ? getAnalysesByCategory(selectedCategory)
+      ? analyses.filter(a => a.categoryId === selectedCategory)
       : analyses;
 
     if (searchQuery.trim()) {
@@ -143,7 +200,7 @@ function AnalysesPageContent() {
     }
 
     return result;
-  }, [selectedCategory, searchQuery, locale]);
+  }, [selectedCategory, searchQuery, locale, analyses]);
 
   const handlePrint = (analysis: Analysis) => {
     const printContent = `
@@ -380,6 +437,10 @@ function AnalysesPageContent() {
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('ru-RU').format(price);
   };
+
+  if (loading) {
+    return <AnalysesPageSkeleton />;
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
