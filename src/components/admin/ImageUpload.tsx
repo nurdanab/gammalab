@@ -25,9 +25,9 @@ export default function ImageUpload({ value, onChange, folder = 'uploads' }: Ima
       return;
     }
 
-    // Validate file size (5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      setError('Максимальный размер файла 5MB');
+    // Validate file size (25MB)
+    if (file.size > 25 * 1024 * 1024) {
+      setError('Максимальный размер файла 25MB');
       return;
     }
 
@@ -192,7 +192,7 @@ export default function ImageUpload({ value, onChange, folder = 'uploads' }: Ima
                   {dragOver ? 'Отпустите файл' : 'Нажмите или перетащите'}
                 </p>
                 <p style={{ fontSize: '12px', color: '#9CA3AF', margin: 0 }}>
-                  JPG, PNG, WebP до 5MB
+                  JPG, PNG, WebP до 25MB
                 </p>
               </div>
             </div>
