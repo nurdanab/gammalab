@@ -1,6 +1,9 @@
 import { Link } from '@/i18n/routing';
 import { getPageById, type Page } from '@/lib/data';
 
+// Disable caching for this page to always show latest data
+export const dynamic = 'force-dynamic';
+
 type Locale = 'ru' | 'kz' | 'en';
 
 interface Props {
