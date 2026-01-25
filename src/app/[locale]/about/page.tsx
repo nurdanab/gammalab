@@ -681,8 +681,8 @@ function LicensesSectionContent({ t, locale }: { t: (key: string) => string; loc
                 {getTitle(doc)}
               </h4>
               {getDescription(doc) && (
-                <p style={{ fontSize: '11px', color: '#6B7280', margin: 0, lineHeight: 1.5 }}>
-                  {getDescription(doc)!.length > 60 ? getDescription(doc)!.slice(0, 60) + '...' : getDescription(doc)}
+                <p style={{ fontSize: '11px', color: '#6B7280', margin: 0, lineHeight: 1.6, whiteSpace: 'pre-line' }}>
+                  {getDescription(doc)}
                 </p>
               )}
             </div>
