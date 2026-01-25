@@ -264,7 +264,7 @@ export default function ContactsPage() {
               >
                 <div style={{ position: 'relative' }}>
                   <iframe
-                    src="https://www.openstreetmap.org/export/embed.html?bbox=76.86%2C43.20%2C76.89%2C43.22&layer=mapnik&marker=43.2077%2C76.8730"
+                    src="https://www.openstreetmap.org/export/embed.html?bbox=76.895%2C43.202%2C76.925%2C43.222&layer=mapnik&marker=43.212436%2C76.909764"
                     width="100%"
                     height="280"
                     style={{ border: 0, pointerEvents: 'none' }}
@@ -412,6 +412,25 @@ export default function ContactsPage() {
                       }}
                     >
                       Telegram
+                    </a>
+                    <a
+                      href="https://www.instagram.com/gammalab_kz?igsh=aTU4dDZmYjF2MXli"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        background: 'linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)',
+                        color: 'white',
+                        padding: '10px 20px',
+                        borderRadius: '8px',
+                        textDecoration: 'none',
+                        fontSize: '14px',
+                        fontWeight: '500',
+                      }}
+                    >
+                      Instagram
                     </a>
                   </div>
                 </div>

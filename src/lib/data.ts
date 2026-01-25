@@ -22,6 +22,12 @@ export type {
   HomepageCategory,
   HomepageCategoryInsert,
   HomepageCategoryUpdate,
+  Page,
+  PageSection,
+  PageUpdate,
+  Document,
+  DocumentCreate,
+  DocumentUpdate,
 } from './supabase/queries'
 
 export {
@@ -80,6 +86,20 @@ export {
   createHomepageCategory,
   updateHomepageCategory,
   deleteHomepageCategory,
+
+  // Pages
+  getPageById,
+  updatePage,
+
+  // Documents
+  getDocuments,
+  getAllDocuments,
+  getDocumentById,
+  createDocument,
+  updateDocument,
+  deleteDocument,
+  uploadDocumentFile,
+  deleteDocumentFile,
 
   // Stats
   getStats,

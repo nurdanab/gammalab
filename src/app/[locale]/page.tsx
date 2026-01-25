@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/routing';
-import { getHomepageServices, getHomepageCategories, getFeaturedHomepageCategory, getHomepageReviews, getFeaturedNewsFromCMS, type HomepageService, type HomepageCategory, type Review, type NewsItem } from '@/lib/data';
+import { getHomepageCategories, getFeaturedHomepageCategory, getHomepageReviews, getFeaturedNewsFromCMS, type HomepageCategory, type Review, type NewsItem } from '@/lib/data';
 import TestimonialsCarousel from '@/components/TestimonialsCarousel';
 import CategoriesSection from '@/components/CategoriesSection';
 
@@ -63,8 +63,7 @@ export default async function HomePage({ params }: Props) {
   const t = await getTranslations('Home');
 
   // Fetch data from CMS
-  const [services, categories, featuredCategory, reviews, news] = await Promise.all([
-    getHomepageServices(),
+  const [categories, featuredCategory, reviews, news] = await Promise.all([
     getHomepageCategories(),
     getFeaturedHomepageCategory(),
     getHomepageReviews(),
@@ -80,7 +79,7 @@ export default async function HomePage({ params }: Props) {
       <StatsSection locale={locale} />
 
       {/* Services Section */}
-      <ServicesSection services={services} locale={locale} />
+      <ServicesSection locale={locale} />
 
       {/* About Section */}
       <AboutSection locale={locale} />
@@ -233,22 +232,44 @@ function StatsSection({ locale }: { locale: string }) {
 }
 
 // Services Section Component
-function ServicesSection({ services, locale }: { services: HomepageService[]; locale: string }) {
-  const getTitle = (service: HomepageService) => {
-    return locale === 'kz' ? service.titleKz : locale === 'en' ? service.titleEn : service.title;
+function ServicesSection({ locale }: { locale: string }) {
+  const content = {
+    ru: {
+      title1: 'Основные услуги',
+      title2: 'Gammalab',
+      description: 'Мы предоставляем широкий спектр лабораторных услуг для точной диагностики вашего здоровья.',
+      services: [
+        { icon: 'flask', title: 'Лабораторные анализы', description: 'Узкий профиль персонифицированной диагностики, внедряя современные молекулярно-генетические и иммуногистохимические методы исследований' },
+        { icon: 'clock', title: 'Быстрые результаты', description: 'Скорость выдачи результатов исследований от 3-14 рабочих дней в зависимости от профиля проводимого исследования' },
+        { icon: 'calendar', title: 'Результаты онлайн', description: 'В соответствии с политикой конфиденциальности результаты исследований поступают на электронную почту, указанную при формировании направления и оплаты услуг' },
+        { icon: 'microscope', title: 'Контроль качества', description: 'Ежегодно и ежеквартально проводится внутренняя и внешняя оценка качества проводимых исследований' },
+      ],
+    },
+    kz: {
+      title1: 'Негізгі қызметтер',
+      title2: 'Gammalab',
+      description: 'Сіздің денсаулығыңызды дәл диагностикалау үшін зертханалық қызметтердің кең спектрін ұсынамыз.',
+      services: [
+        { icon: 'flask', title: 'Зертханалық талдаулар', description: 'Заманауи молекулалық-генетикалық және иммуногистохимиялық зерттеу әдістерін енгізе отырып, дербес диагностиканың тар профилі' },
+        { icon: 'clock', title: 'Жылдам нәтижелер', description: 'Жүргізілетін зерттеу профиліне байланысты зерттеу нәтижелерін беру жылдамдығы 3-14 жұмыс күні' },
+        { icon: 'calendar', title: 'Онлайн нәтижелер', description: 'Құпиялылық саясатына сәйкес зерттеу нәтижелері бағытты қалыптастыру және қызметтерді төлеу кезінде көрсетілген электрондық поштаға жіберіледі' },
+        { icon: 'microscope', title: 'Сапа бақылауы', description: 'Жүргізілетін зерттеулердің сапасын ішкі және сыртқы бағалау жыл сайын және тоқсан сайын жүргізіледі' },
+      ],
+    },
+    en: {
+      title1: 'Main services',
+      title2: 'Gammalab',
+      description: 'We provide a wide range of laboratory services for accurate diagnosis of your health.',
+      services: [
+        { icon: 'flask', title: 'Laboratory Tests', description: 'Narrow profile of personalized diagnostics, implementing modern molecular-genetic and immunohistochemical research methods' },
+        { icon: 'clock', title: 'Fast Results', description: 'Research results delivery speed from 3-14 working days depending on the research profile' },
+        { icon: 'calendar', title: 'Online Results', description: 'In accordance with the privacy policy, research results are sent to the email address specified when creating the referral and paying for services' },
+        { icon: 'microscope', title: 'Quality Control', description: 'Internal and external quality assessment of research is conducted annually and quarterly' },
+      ],
+    },
   };
 
-  const getDescription = (service: HomepageService) => {
-    return locale === 'kz' ? service.descriptionKz : locale === 'en' ? service.descriptionEn : service.description;
-  };
-
-  const sectionTexts = {
-    ru: { title1: 'Основные услуги', title2: 'Gammalab', description: 'Мы предоставляем широкий спектр лабораторных услуг для точной диагностики вашего здоровья.' },
-    kz: { title1: 'Негізгі қызметтер', title2: 'Gammalab', description: 'Сіздің денсаулығыңызды дәл диагностикалау үшін зертханалық қызметтердің кең спектрін ұсынамыз.' },
-    en: { title1: 'Main services', title2: 'Gammalab', description: 'We provide a wide range of laboratory services for accurate diagnosis of your health.' },
-  };
-
-  const t = sectionTexts[locale as keyof typeof sectionTexts] || sectionTexts.ru;
+  const t = content[locale as keyof typeof content] || content.ru;
 
   return (
     <section className="bg-white">
@@ -278,19 +299,19 @@ function ServicesSection({ services, locale }: { services: HomepageService[]; lo
 
         {/* Service Cards */}
         <div className="relative grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-5 -mt-16 sm:-mt-20 lg:-mt-20 z-10 mx-4 sm:mx-8 lg:mx-12">
-          {services.slice(0, 4).map((service) => (
+          {t.services.map((service, index) => (
             <div
-              key={service.id}
+              key={index}
               className="bg-white rounded-xl lg:rounded-2xl text-center shadow-lg p-4 sm:p-5 lg:p-6"
             >
               <div className="flex justify-center mb-4 lg:mb-6 text-[#209DA7]">
                 {serviceIcons[service.icon] || serviceIcons.flask}
               </div>
               <h3 className="text-sm lg:text-base font-semibold mb-2 lg:mb-3 text-[#091D33] line-clamp-2">
-                {getTitle(service)}
+                {service.title}
               </h3>
               <p className="text-[11px] lg:text-xs leading-[1.7] text-gray-500 line-clamp-3">
-                {getDescription(service)}
+                {service.description}
               </p>
             </div>
           ))}

@@ -1309,6 +1309,116 @@ export async function deleteHomepageCategory(id: string): Promise<boolean> {
   return true
 }
 
+// ============ PAGES ============
+
+export interface PageSection {
+  title: string
+  content: string
+}
+
+export interface Page {
+  id: string
+  title: string
+  titleKz: string
+  titleEn: string
+  lastUpdated: string
+  lastUpdatedKz: string
+  lastUpdatedEn: string
+  sections: PageSection[]
+  sectionsKz: PageSection[]
+  sectionsEn: PageSection[]
+  createdAt?: string
+  updatedAt?: string
+}
+
+export interface PageUpdate {
+  title?: string
+  titleKz?: string
+  titleEn?: string
+  lastUpdated?: string
+  lastUpdatedKz?: string
+  lastUpdatedEn?: string
+  sections?: PageSection[]
+  sectionsKz?: PageSection[]
+  sectionsEn?: PageSection[]
+}
+
+interface PageRow {
+  id: string
+  title: string
+  title_kz: string
+  title_en: string
+  last_updated: string
+  last_updated_kz: string
+  last_updated_en: string
+  sections: PageSection[]
+  sections_kz: PageSection[]
+  sections_en: PageSection[]
+  created_at: string
+  updated_at: string
+}
+
+function mapPageRow(row: PageRow): Page {
+  return {
+    id: row.id,
+    title: row.title,
+    titleKz: row.title_kz,
+    titleEn: row.title_en,
+    lastUpdated: row.last_updated,
+    lastUpdatedKz: row.last_updated_kz,
+    lastUpdatedEn: row.last_updated_en,
+    sections: row.sections,
+    sectionsKz: row.sections_kz,
+    sectionsEn: row.sections_en,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  }
+}
+
+export async function getPageById(id: string): Promise<Page | null> {
+  const supabase = createPublicClient()
+  const { data, error } = await supabase
+    .from('pages')
+    .select('*')
+    .eq('id', id)
+    .single()
+
+  if (error) {
+    console.error('Error fetching page by id:', error)
+    return null
+  }
+  return mapPageRow(data as PageRow)
+}
+
+export async function updatePage(id: string, updates: PageUpdate): Promise<Page | null> {
+  const supabase = createAdminClient()
+  const dbUpdates: Record<string, unknown> = {
+    updated_at: new Date().toISOString(),
+  }
+  if (updates.title !== undefined) dbUpdates.title = updates.title
+  if (updates.titleKz !== undefined) dbUpdates.title_kz = updates.titleKz
+  if (updates.titleEn !== undefined) dbUpdates.title_en = updates.titleEn
+  if (updates.lastUpdated !== undefined) dbUpdates.last_updated = updates.lastUpdated
+  if (updates.lastUpdatedKz !== undefined) dbUpdates.last_updated_kz = updates.lastUpdatedKz
+  if (updates.lastUpdatedEn !== undefined) dbUpdates.last_updated_en = updates.lastUpdatedEn
+  if (updates.sections !== undefined) dbUpdates.sections = updates.sections
+  if (updates.sectionsKz !== undefined) dbUpdates.sections_kz = updates.sectionsKz
+  if (updates.sectionsEn !== undefined) dbUpdates.sections_en = updates.sectionsEn
+
+  const { data, error } = await supabase
+    .from('pages')
+    .update(dbUpdates as never)
+    .eq('id', id)
+    .select()
+    .single()
+
+  if (error) {
+    console.error('Error updating page:', error)
+    return null
+  }
+  return mapPageRow(data as PageRow)
+}
+
 // ============ STATS ============
 
 export async function getStats() {
@@ -1335,4 +1445,249 @@ export async function getStats() {
     reviewsCount: reviewsResult.count || 0,
     recentSubmissions: ((submissionsResult.data || []) as SubmissionRow[]).map(mapSubmissionRow),
   }
+}
+
+// ============ DOCUMENTS ============
+
+export interface Document {
+  id: string
+  title: string
+  titleKz: string | null
+  titleEn: string | null
+  description: string | null
+  descriptionKz: string | null
+  descriptionEn: string | null
+  fileUrl: string
+  fileName: string | null
+  fileType: string
+  order: number
+  isActive: boolean
+  createdAt: string
+  updatedAt: string
+}
+
+export interface DocumentCreate {
+  title: string
+  titleKz?: string
+  titleEn?: string
+  description?: string
+  descriptionKz?: string
+  descriptionEn?: string
+  fileUrl: string
+  fileName?: string
+  fileType: string
+  order?: number
+  isActive?: boolean
+}
+
+export interface DocumentUpdate {
+  title?: string
+  titleKz?: string
+  titleEn?: string
+  description?: string
+  descriptionKz?: string
+  descriptionEn?: string
+  fileUrl?: string
+  fileName?: string
+  fileType?: string
+  order?: number
+  isActive?: boolean
+}
+
+interface DocumentRow {
+  id: string
+  title: string
+  title_kz: string | null
+  title_en: string | null
+  description: string | null
+  description_kz: string | null
+  description_en: string | null
+  file_url: string
+  file_name: string | null
+  file_type: string
+  order: number
+  is_active: boolean
+  created_at: string
+  updated_at: string
+}
+
+function mapDocumentRow(row: DocumentRow): Document {
+  return {
+    id: row.id,
+    title: row.title,
+    titleKz: row.title_kz,
+    titleEn: row.title_en,
+    description: row.description,
+    descriptionKz: row.description_kz,
+    descriptionEn: row.description_en,
+    fileUrl: row.file_url,
+    fileName: row.file_name,
+    fileType: row.file_type,
+    order: row.order,
+    isActive: row.is_active,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  }
+}
+
+export async function getDocuments(fileType?: string): Promise<Document[]> {
+  const supabase = createPublicClient()
+  let query = supabase
+    .from('documents')
+    .select('*')
+    .eq('is_active', true)
+    .order('order')
+
+  if (fileType) {
+    query = query.eq('file_type', fileType)
+  }
+
+  const { data, error } = await query
+
+  if (error) {
+    console.error('Error fetching documents:', error)
+    return []
+  }
+  return (data as DocumentRow[]).map(mapDocumentRow)
+}
+
+export async function getAllDocuments(): Promise<Document[]> {
+  const supabase = createAdminClient()
+  const { data, error } = await supabase
+    .from('documents')
+    .select('*')
+    .order('order')
+
+  if (error) {
+    console.error('Error fetching all documents:', error)
+    return []
+  }
+  return (data as DocumentRow[]).map(mapDocumentRow)
+}
+
+export async function getDocumentById(id: string): Promise<Document | null> {
+  const supabase = createPublicClient()
+  const { data, error } = await supabase
+    .from('documents')
+    .select('*')
+    .eq('id', id)
+    .single()
+
+  if (error) {
+    console.error('Error fetching document by id:', error)
+    return null
+  }
+  return mapDocumentRow(data as DocumentRow)
+}
+
+export async function createDocument(doc: DocumentCreate): Promise<Document | null> {
+  const supabase = createAdminClient()
+  const { data, error } = await supabase
+    .from('documents')
+    .insert({
+      title: doc.title,
+      title_kz: doc.titleKz || null,
+      title_en: doc.titleEn || null,
+      description: doc.description || null,
+      description_kz: doc.descriptionKz || null,
+      description_en: doc.descriptionEn || null,
+      file_url: doc.fileUrl,
+      file_name: doc.fileName || null,
+      file_type: doc.fileType,
+      order: doc.order ?? 0,
+      is_active: doc.isActive ?? true,
+    } as never)
+    .select()
+    .single()
+
+  if (error) {
+    console.error('Error creating document:', error)
+    return null
+  }
+  return mapDocumentRow(data as DocumentRow)
+}
+
+export async function updateDocument(id: string, updates: DocumentUpdate): Promise<Document | null> {
+  const supabase = createAdminClient()
+  const dbUpdates: Record<string, unknown> = {
+    updated_at: new Date().toISOString(),
+  }
+
+  if (updates.title !== undefined) dbUpdates.title = updates.title
+  if (updates.titleKz !== undefined) dbUpdates.title_kz = updates.titleKz
+  if (updates.titleEn !== undefined) dbUpdates.title_en = updates.titleEn
+  if (updates.description !== undefined) dbUpdates.description = updates.description
+  if (updates.descriptionKz !== undefined) dbUpdates.description_kz = updates.descriptionKz
+  if (updates.descriptionEn !== undefined) dbUpdates.description_en = updates.descriptionEn
+  if (updates.fileUrl !== undefined) dbUpdates.file_url = updates.fileUrl
+  if (updates.fileName !== undefined) dbUpdates.file_name = updates.fileName
+  if (updates.fileType !== undefined) dbUpdates.file_type = updates.fileType
+  if (updates.order !== undefined) dbUpdates.order = updates.order
+  if (updates.isActive !== undefined) dbUpdates.is_active = updates.isActive
+
+  const { data, error } = await supabase
+    .from('documents')
+    .update(dbUpdates as never)
+    .eq('id', id)
+    .select()
+    .single()
+
+  if (error) {
+    console.error('Error updating document:', error)
+    return null
+  }
+  return mapDocumentRow(data as DocumentRow)
+}
+
+export async function deleteDocument(id: string): Promise<boolean> {
+  const supabase = createAdminClient()
+  const { error } = await supabase
+    .from('documents')
+    .delete()
+    .eq('id', id)
+
+  if (error) {
+    console.error('Error deleting document:', error)
+    return false
+  }
+  return true
+}
+
+export async function uploadDocumentFile(file: File): Promise<string | null> {
+  const supabase = createAdminClient()
+  const fileExt = file.name.split('.').pop()
+  const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`
+
+  const { error } = await supabase.storage
+    .from('documents')
+    .upload(fileName, file)
+
+  if (error) {
+    console.error('Error uploading document file:', error)
+    return null
+  }
+
+  const { data: urlData } = supabase.storage
+    .from('documents')
+    .getPublicUrl(fileName)
+
+  return urlData.publicUrl
+}
+
+export async function deleteDocumentFile(fileUrl: string): Promise<boolean> {
+  const supabase = createAdminClient()
+
+  // Extract file name from URL
+  const urlParts = fileUrl.split('/')
+  const fileName = urlParts[urlParts.length - 1]
+
+  const { error } = await supabase.storage
+    .from('documents')
+    .remove([fileName])
+
+  if (error) {
+    console.error('Error deleting document file:', error)
+    return false
+  }
+  return true
 }

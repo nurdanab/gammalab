@@ -144,7 +144,7 @@ export default function TestLocationsPage() {
             >
               <div style={{ position: 'relative' }}>
                 <iframe
-                  src="https://www.openstreetmap.org/export/embed.html?bbox=76.86%2C43.20%2C76.89%2C43.22&layer=mapnik&marker=43.2077%2C76.8730"
+                  src="https://www.openstreetmap.org/export/embed.html?bbox=76.895%2C43.202%2C76.925%2C43.222&layer=mapnik&marker=43.212436%2C76.909764"
                   width="100%"
                   height="280"
                   style={{ border: 0, pointerEvents: 'none' }}

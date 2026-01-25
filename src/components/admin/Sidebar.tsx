@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { LayoutDashboard, Newspaper, Tag, Star, FlaskConical, MessageSquare, LogOut, Menu, X, Folder } from 'lucide-react';
+import { LayoutDashboard, Newspaper, Tag, Star, FlaskConical, MessageSquare, LogOut, Menu, X, Folder, FileText, Award } from 'lucide-react';
 
 const navItems = [
   { href: '/admin', label: 'Дашборд', icon: LayoutDashboard },
@@ -13,6 +13,8 @@ const navItems = [
   { href: '/admin/analysis-categories', label: 'Категории анализов', icon: Folder },
   { href: '/admin/analyses', label: 'Анализы', icon: FlaskConical },
   { href: '/admin/submissions', label: 'Заявки', icon: MessageSquare },
+  { href: '/admin/documents', label: 'Лицензии и сертиф.', icon: Award },
+  { href: '/admin/privacy', label: 'Политика конфиденц.', icon: FileText },
 ];
 
 export default function AdminSidebar() {
