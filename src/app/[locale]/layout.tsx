@@ -49,9 +49,9 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/images/og-image.jpg',
-        width: 1200,
-        height: 630,
+        url: '/images/main-logo-gammalab.png',
+        width: 800,
+        height: 600,
         alt: 'GammaLab - Диагностическая лаборатория',
       },
     ],
@@ -60,7 +60,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'GammaLab — Диагностическая лаборатория',
     description: 'Современная диагностическая лаборатория в Алматы. T-SPOT, ПЦР, ИГХ и другие анализы.',
-    images: ['/images/og-image.jpg'],
+    images: ['/images/main-logo-gammalab.png'],
   },
   robots: {
     index: true,
@@ -74,9 +74,9 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: '/favicon.ico',
-    shortcut: '/favicon-16x16.png',
-    apple: '/apple-touch-icon.png',
+    icon: '/images/icon.png',
+    shortcut: '/images/icon.png',
+    apple: '/images/icon.png',
   },
 };
 
