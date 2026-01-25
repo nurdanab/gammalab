@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://gammalab.kz'),
+  metadataBase: new URL('https://gamma-lab.netlify.app'),
   alternates: {
     canonical: '/',
     languages: {
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'GammaLab — Диагностическая лаборатория',
     description: 'Современная диагностическая лаборатория в Алматы. T-SPOT, ПЦР, ИГХ и другие анализы.',
-    url: 'https://gammalab.kz',
+    url: 'https://gamma-lab.netlify.app',
     siteName: 'GammaLab',
     locale: 'ru_KZ',
     type: 'website',
