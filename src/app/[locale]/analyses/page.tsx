@@ -130,6 +130,8 @@ function AnalysesPageContent() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [expandedAnalysis, setExpandedAnalysis] = useState<string | null>(null);
   const [visibleCount, setVisibleCount] = useState(10);
+  const [showTuberculosisModal, setShowTuberculosisModal] = useState(false);
+  const [showOncogeneticsModal, setShowOncogeneticsModal] = useState(false);
   const printRef = useRef<HTMLDivElement>(null);
 
   // Fetch data from API
@@ -434,6 +436,149 @@ function AnalysesPageContent() {
 
   const labels = getLabels();
 
+  // Tuberculosis Modal Translations
+  const tbModalTexts = {
+    ru: {
+      title: 'Диагностика туберкулеза',
+      description: 'Тест T-SPOT.TB – это анализ крови, также известный как «тест высвобождения гамма-интерферона» (IGRA), иммунологический тест для диагностики инфицирования микобактериями туберкулеза.',
+      advantagesTitle: 'ПРЕИМУЩЕСТВА ТЕСТА T-SPOT.TB',
+      accuracy: 'Точность:',
+      accuracyText: 'T-SPOT.TB - единственный тест для диагностики туберкулеза, чувствительность и специфичность которого по данным основных клинических исследований превышают 95%.',
+      reliability: 'Достоверность:',
+      reliabilityText: 'T-SPOT.TB позволяет выявить инфицированных микобактериями туберкулеза даже среди «проблемных» популяций пациентов, включая иммигрантов и иммунокомпрометированных больных, не имеет перекрестных реакций с вакциной БЦЖ.',
+      simplicity: 'Простота:',
+      simplicityText: 'Тестирование методом T-SPOT.TB требует всего одного визита к врачу и одной пробирки крови. Все этапы теста контролирует лаборатория.',
+      benefitsTitle: 'Преимущества теста T-SPOT.TB',
+      benefits: [
+        'Обладает чувствительностью даже у пациентов с иммуносупрессией (ВИЧ-инфицированные)',
+        'Для всех групп населения (дети, подростки, взрослые, беременные)',
+        'Определяет инфекцию, вне зависимости от ее локализации (легкие, кости и т. д.)',
+        'Не имеет противопоказаний и ограничений',
+        'На результаты анализа не влияют индивидуальные особенности пациента (наличие аллергий, соматических заболеваний, кожных патологий, прием лекарственных препаратов, вакцинация BCG в прошлом)',
+        'Выявляет любую форму туберкулеза (скрытую или активную)',
+        'Безопасность и отсутствие побочных реакций',
+        'Тест выбора при наличии противопоказаний к проведению кожных проб'
+      ],
+      casesTitle: 'СЛУЧАИ ПРЕДПОЧТИТЕЛЬНОГО ИСПОЛЬЗОВАНИЯ Т-СПОТ:',
+      cases: [
+        'у детей, привитых БЦЖ, у которых выявлена ложноположительная реакция Манту. В этом случае ценно сделать это малоинвазивное исследование до рентгенографии легких;',
+        'у лиц с аллергическими и аутоиммунными заболеваниями;',
+        'у медицинских работников, людей, которые много путешествуют, военных, беременных;',
+        'у заключенных или прибывших из мест заключения; у больных наркоманиями;',
+        'у лиц, контактирующих с туберкулезными больными;',
+        'у пациентов, проходящих терапию подавляющую иммунитет, как например, глюкостероидная или лучевая терапия, лечение с замещением функции почек;',
+        'при наличии хронических заболеваний, сопровождающихся снижением или истощением иммунитета, как например, сахарный диабет, уже упоминавшийся ВИЧ, или пневмокониозы;',
+        'при подозрении на внелегочные формы туберкулеза.'
+      ]
+    },
+    kz: {
+      title: 'Туберкулез диагностикасы',
+      description: 'T-SPOT.TB тесті – бұл қан анализі, «гамма-интерферон шығару тесті» (IGRA) деп те аталады, туберкулез микобактерияларымен инфекцияны диагностикалауға арналған иммунологиялық тест.',
+      advantagesTitle: 'T-SPOT.TB ТЕСТІНІҢ АРТЫҚШЫЛЫҚТАРЫ',
+      accuracy: 'Дәлдік:',
+      accuracyText: 'T-SPOT.TB - негізгі клиникалық зерттеулер деректері бойынша сезімталдығы мен ерекшелігі 95%-дан асатын туберкулезді диагностикалауға арналған жалғыз тест.',
+      reliability: 'Сенімділік:',
+      reliabilityText: 'T-SPOT.TB иммигранттар мен иммунитеті төмендеген науқастарды қоса алғанда, «проблемалы» науқастар популяцияларының арасында да туберкулез микобактерияларымен инфекцияланғандарды анықтауға мүмкіндік береді, БЦЖ вакцинасымен айқас реакциялары жоқ.',
+      simplicity: 'Қарапайымдылық:',
+      simplicityText: 'T-SPOT.TB әдісімен тестілеу дәрігерге бір рет баруды және бір пробирка қанды ғана талап етеді. Тесттің барлық кезеңдерін зертхана бақылайды.',
+      benefitsTitle: 'T-SPOT.TB тестінің артықшылықтары',
+      benefits: [
+        'Иммуносупрессиясы бар науқастарда да (АИТВ-инфекциясы бар) сезімталдыққа ие',
+        'Барлық халық топтары үшін (балалар, жасөспірімдер, ересектер, жүкті әйелдер)',
+        'Инфекцияны оның орналасуына қарамастан анықтайды (өкпе, сүйектер және т.б.)',
+        'Қарсы көрсетілімдері мен шектеулері жоқ',
+        'Талдау нәтижелеріне науқастың жеке ерекшеліктері әсер етпейді (аллергиялардың, соматикалық аурулардың, тері патологияларының болуы, дәрілік препараттарды қабылдау, бұрын BCG вакцинациясы)',
+        'Туберкулездің кез келген түрін анықтайды (жасырын немесе белсенді)',
+        'Қауіпсіздік және жанама реакциялардың болмауы',
+        'Тері сынамаларын жүргізуге қарсы көрсетілімдер болған кезде таңдау тесті'
+      ],
+      casesTitle: 'Т-СПОТ ҚОЛДАНУДЫҢ АРТЫҚШЫЛЫҚТЫ ЖАҒДАЙЛАРЫ:',
+      cases: [
+        'БЦЖ егілген балаларда, жалған оң Манту реакциясы анықталған. Бұл жағдайда өкпенің рентгенографиясына дейін осы аз инвазивті зерттеуді жүргізу құнды;',
+        'аллергиялық және аутоиммунды аурулары бар адамдарда;',
+        'медицина қызметкерлерінде, көп саяхаттайтын адамдарда, әскери қызметкерлерде, жүкті әйелдерде;',
+        'сотталғандарда немесе түрмеден келгендерде; нашақорлармен ауыратындарда;',
+        'туберкулезбен ауыратындармен байланыста болған адамдарда;',
+        'иммунитетті басатын терапиядан өтіп жатқан науқастарда, мысалы, глюкокортикоидты немесе сәулелік терапия, бүйрек функциясын алмастыру емі;',
+        'иммунитеттің төмендеуімен немесе сарқылуымен бірге жүретін созылмалы аурулар болған кезде, мысалы, қант диабеті, жоғарыда айтылған АИТВ немесе пневмокониоздар;',
+        'өкпеден тыс туберкулез түрлеріне күдік болған кезде.'
+      ]
+    },
+    en: {
+      title: 'Tuberculosis Diagnostics',
+      description: 'The T-SPOT.TB test is a blood test, also known as the "interferon-gamma release assay" (IGRA), an immunological test for diagnosing infection with Mycobacterium tuberculosis.',
+      advantagesTitle: 'ADVANTAGES OF T-SPOT.TB TEST',
+      accuracy: 'Accuracy:',
+      accuracyText: 'T-SPOT.TB is the only test for tuberculosis diagnosis with sensitivity and specificity exceeding 95% according to major clinical studies.',
+      reliability: 'Reliability:',
+      reliabilityText: 'T-SPOT.TB can detect those infected with Mycobacterium tuberculosis even among "problem" patient populations, including immigrants and immunocompromised patients, and has no cross-reactions with the BCG vaccine.',
+      simplicity: 'Simplicity:',
+      simplicityText: 'Testing with T-SPOT.TB requires only one visit to the doctor and one tube of blood. All stages of the test are controlled by the laboratory.',
+      benefitsTitle: 'Benefits of T-SPOT.TB test',
+      benefits: [
+        'Sensitive even in patients with immunosuppression (HIV-infected)',
+        'For all population groups (children, adolescents, adults, pregnant women)',
+        'Detects infection regardless of its localization (lungs, bones, etc.)',
+        'Has no contraindications or restrictions',
+        'Test results are not affected by individual patient characteristics (allergies, somatic diseases, skin pathologies, medications, past BCG vaccination)',
+        'Detects any form of tuberculosis (latent or active)',
+        'Safety and absence of side effects',
+        'Test of choice when there are contraindications to skin tests'
+      ],
+      casesTitle: 'PREFERRED USE CASES FOR T-SPOT:',
+      cases: [
+        'in children vaccinated with BCG who have a false-positive Mantoux reaction. In this case, it is valuable to perform this minimally invasive test before chest X-ray;',
+        'in people with allergic and autoimmune diseases;',
+        'in healthcare workers, people who travel frequently, military personnel, pregnant women;',
+        'in prisoners or those released from prison; in drug addicts;',
+        'in people in contact with tuberculosis patients;',
+        'in patients undergoing immunosuppressive therapy, such as glucocorticoid or radiation therapy, renal replacement therapy;',
+        'in the presence of chronic diseases accompanied by decreased or depleted immunity, such as diabetes mellitus, the already mentioned HIV, or pneumoconiosis;',
+        'when extrapulmonary forms of tuberculosis are suspected.'
+      ]
+    }
+  };
+
+  // Oncogenetics Modal Translations
+  const oncoModalTexts = {
+    ru: {
+      title: 'Онкогенетика',
+      p1: 'Диагностическая лаборатория «Gammalab (ГаммаЛаб)» - это современная молекулярно-генетическая лаборатория - это объединение профессионалов, сплочённая команда, решающая ряд перспективных научно-практических задач, связанных с различными направлениями современных технологий в области диагностики заболеваний.',
+      p2: 'Основной целью работы лаборатории является научно-исследовательская деятельность по перспективным направлениям в сфере лабораторной диагностики, а также внедрение новых решений, связанных с молекулярным профилированием опухоли, обеспечивая первую ступень персонифицированной медицины.',
+      p3: 'Лаборатория оснащена самым современным оборудованием, позволяющим проводить исследования на уровне, соответствующим международным стандартам.',
+      lungCancer: 'Рак легкого:',
+      breastCancer: 'Рак молочной железы:',
+      ovarianCancer: 'Рак яичников:',
+      colorectalCancer: 'Колоректальный рак:',
+      melanoma: 'Меланома:'
+    },
+    kz: {
+      title: 'Онкогенетика',
+      p1: '«Gammalab (ГаммаЛаб)» диагностикалық зертханасы – бұл заманауи молекулярлық-генетикалық зертхана – бұл аурулар диагностикасы саласындағы заманауи технологиялардың әртүрлі бағыттарына байланысты бірқатар перспективалық ғылыми-практикалық міндеттерді шешетін кәсіпқойлар бірлестігі, топтасқан команда.',
+      p2: 'Зертхананың негізгі мақсаты – зертханалық диагностика саласындағы перспективалық бағыттар бойынша ғылыми-зерттеу қызметі, сондай-ақ дербес медицинаның бірінші сатысын қамтамасыз ете отырып, ісіктің молекулярлық профильдеуімен байланысты жаңа шешімдерді енгізу.',
+      p3: 'Зертхана халықаралық стандарттарға сәйкес деңгейде зерттеулер жүргізуге мүмкіндік беретін ең заманауи жабдықтармен жабдықталған.',
+      lungCancer: 'Өкпе обыры:',
+      breastCancer: 'Сүт безі обыры:',
+      ovarianCancer: 'Аналық без обыры:',
+      colorectalCancer: 'Колоректальды обыр:',
+      melanoma: 'Меланома:'
+    },
+    en: {
+      title: 'Oncogenetics',
+      p1: 'Diagnostic Laboratory "Gammalab" is a modern molecular genetic laboratory - a union of professionals, a cohesive team solving a number of promising scientific and practical tasks related to various areas of modern technologies in the field of disease diagnostics.',
+      p2: 'The main goal of the laboratory is research activities in promising areas of laboratory diagnostics, as well as the implementation of new solutions related to molecular tumor profiling, providing the first step of personalized medicine.',
+      p3: 'The laboratory is equipped with the most modern equipment, allowing research at a level that meets international standards.',
+      lungCancer: 'Lung cancer:',
+      breastCancer: 'Breast cancer:',
+      ovarianCancer: 'Ovarian cancer:',
+      colorectalCancer: 'Colorectal cancer:',
+      melanoma: 'Melanoma:'
+    }
+  };
+
+  const tbTexts = tbModalTexts[locale] || tbModalTexts.ru;
+  const oncoTexts = oncoModalTexts[locale] || oncoModalTexts.ru;
+
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('ru-RU').format(price);
   };
@@ -459,35 +604,459 @@ function AnalysesPageContent() {
           {getPageTitle()}
         </h1>
 
-        {/* Search */}
-        <div
-          className="flex items-center bg-white w-full max-w-[600px]"
-          style={{
-            borderRadius: '50px',
-            padding: '6px 6px 6px 20px',
-          }}
-        >
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder={getSearchPlaceholder()}
-            className="flex-1 outline-none text-[14px]"
-            style={{ color: '#091D33' }}
-          />
-          <button
-            className="flex items-center justify-center"
+        {/* Search and Quick Access Buttons */}
+        <div className="flex flex-col lg:flex-row items-start lg:items-center gap-4 lg:gap-6">
+          {/* Search */}
+          <div
+            className="flex items-center bg-white w-full max-w-[600px]"
             style={{
-              backgroundColor: '#209DA7',
-              width: '44px',
-              height: '44px',
-              borderRadius: '50%'
+              borderRadius: '50px',
+              padding: '6px 6px 6px 20px',
             }}
           >
-            <Search className="w-5 h-5 text-white" />
-          </button>
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder={getSearchPlaceholder()}
+              className="flex-1 outline-none text-[14px]"
+              style={{ color: '#091D33' }}
+            />
+            <button
+              className="flex items-center justify-center"
+              style={{
+                backgroundColor: '#209DA7',
+                width: '44px',
+                height: '44px',
+                borderRadius: '50%'
+              }}
+            >
+              <Search className="w-5 h-5 text-white" />
+            </button>
+          </div>
+
+          {/* Quick Access Buttons */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setShowTuberculosisModal(true)}
+              className="transition-opacity hover:opacity-90"
+              style={{
+                backgroundColor: '#EC910C',
+                color: 'white',
+                fontSize: '13px',
+                fontWeight: '500',
+                padding: '10px 18px',
+                borderRadius: '25px',
+                whiteSpace: 'nowrap'
+              }}
+            >
+              {locale === 'kz' ? 'Туберкулез диагностикасы' : locale === 'en' ? 'Tuberculosis Diagnostics' : 'Диагностика туберкулеза'}
+            </button>
+            <button
+              onClick={() => setShowOncogeneticsModal(true)}
+              className="transition-opacity hover:opacity-90"
+              style={{
+                backgroundColor: '#EC910C',
+                color: 'white',
+                fontSize: '13px',
+                fontWeight: '500',
+                padding: '10px 18px',
+                borderRadius: '25px',
+                whiteSpace: 'nowrap'
+              }}
+            >
+              {locale === 'kz' ? 'Онкогенетика' : locale === 'en' ? 'Oncogenetics' : 'Онкогенетика'}
+            </button>
+          </div>
         </div>
       </div>
+
+      {/* Tuberculosis Modal */}
+      {showTuberculosisModal && (
+        <div
+          onClick={() => setShowTuberculosisModal(false)}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 9999,
+            padding: '20px',
+            overflowY: 'auto'
+          }}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              backgroundColor: 'white',
+              borderRadius: '20px',
+              maxWidth: '900px',
+              width: '100%',
+              maxHeight: '90vh',
+              overflowY: 'auto',
+              position: 'relative'
+            }}
+          >
+            {/* Close Button */}
+            <button
+              onClick={() => setShowTuberculosisModal(false)}
+              style={{
+                position: 'absolute',
+                top: '16px',
+                right: '16px',
+                width: '36px',
+                height: '36px',
+                borderRadius: '50%',
+                backgroundColor: '#f3f4f6',
+                border: 'none',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                zIndex: 10
+              }}
+            >
+              <X className="w-5 h-5 text-gray-600" />
+            </button>
+
+            {/* Modal Content */}
+            <div style={{ padding: '40px' }}>
+              {/* Header */}
+              <div style={{ textAlign: 'center', marginBottom: '30px' }}>
+                <h2 style={{ fontSize: '24px', fontWeight: '700', color: '#091D33', marginBottom: '16px' }}>
+                  {tbTexts.title}
+                </h2>
+                <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#6B7280', maxWidth: '700px', margin: '0 auto' }}>
+                  {tbTexts.description}
+                </p>
+              </div>
+
+              {/* Advantages Section */}
+              <div style={{ marginBottom: '30px' }}>
+                <h3 style={{
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  color: '#209DA7',
+                  textTransform: 'uppercase',
+                  letterSpacing: '1px',
+                  marginBottom: '20px',
+                  textAlign: 'center'
+                }}>
+                  {tbTexts.advantagesTitle}
+                </h3>
+
+                {/* Three Columns */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', marginBottom: '24px' }}>
+                  <div style={{ backgroundColor: '#E0F2F4', borderRadius: '12px', padding: '20px' }}>
+                    <h4 style={{ fontSize: '18px', fontWeight: '600', color: '#209DA7', marginBottom: '12px' }}>{tbTexts.accuracy}</h4>
+                    <p style={{ fontSize: '13px', lineHeight: '1.6', color: '#4B5563' }}>
+                      {tbTexts.accuracyText}
+                    </p>
+                  </div>
+                  <div style={{ backgroundColor: '#E0F2F4', borderRadius: '12px', padding: '20px' }}>
+                    <h4 style={{ fontSize: '18px', fontWeight: '600', color: '#209DA7', marginBottom: '12px' }}>{tbTexts.reliability}</h4>
+                    <p style={{ fontSize: '13px', lineHeight: '1.6', color: '#4B5563' }}>
+                      {tbTexts.reliabilityText}
+                    </p>
+                  </div>
+                  <div style={{ backgroundColor: '#E0F2F4', borderRadius: '12px', padding: '20px' }}>
+                    <h4 style={{ fontSize: '18px', fontWeight: '600', color: '#209DA7', marginBottom: '12px' }}>{tbTexts.simplicity}</h4>
+                    <p style={{ fontSize: '13px', lineHeight: '1.6', color: '#4B5563' }}>
+                      {tbTexts.simplicityText}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Divider */}
+                <div style={{
+                  borderTop: '2px solid #EC910C',
+                  margin: '30px 0',
+                  position: 'relative'
+                }}>
+                  <span style={{
+                    position: 'absolute',
+                    top: '-12px',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    backgroundColor: 'white',
+                    padding: '0 16px',
+                    fontSize: '12px',
+                    fontWeight: '600',
+                    color: '#EC910C',
+                    textTransform: 'uppercase',
+                    letterSpacing: '1px',
+                    whiteSpace: 'nowrap'
+                  }}>
+                    {tbTexts.benefitsTitle}
+                  </span>
+                </div>
+
+                {/* Benefits Grid */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', marginBottom: '24px' }}>
+                  {tbTexts.benefits.map((item, idx) => (
+                    <div key={idx} style={{ backgroundColor: '#E0F2F4', borderRadius: '10px', padding: '14px', fontSize: '12px', lineHeight: '1.5', color: '#4B5563' }}>
+                      {item}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Cases Section */}
+              <div style={{ backgroundColor: '#FEF3C7', borderRadius: '12px', padding: '20px' }}>
+                <h3 style={{ fontSize: '14px', fontWeight: '600', color: '#D97706', marginBottom: '14px' }}>
+                  {tbTexts.casesTitle}
+                </h3>
+                <ul style={{ margin: 0, paddingLeft: '18px', fontSize: '13px', lineHeight: '1.8', color: '#4B5563' }}>
+                  {tbTexts.cases.map((item, idx) => (
+                    <li key={idx}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Oncogenetics Modal */}
+      {showOncogeneticsModal && (
+        <div
+          onClick={() => setShowOncogeneticsModal(false)}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 9999,
+            padding: '20px',
+            overflowY: 'auto'
+          }}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              backgroundColor: 'white',
+              borderRadius: '20px',
+              maxWidth: '900px',
+              width: '100%',
+              maxHeight: '90vh',
+              overflowY: 'auto',
+              position: 'relative'
+            }}
+          >
+            {/* Close Button */}
+            <button
+              onClick={() => setShowOncogeneticsModal(false)}
+              style={{
+                position: 'absolute',
+                top: '16px',
+                right: '16px',
+                width: '36px',
+                height: '36px',
+                borderRadius: '50%',
+                backgroundColor: '#f3f4f6',
+                border: 'none',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                zIndex: 10
+              }}
+            >
+              <X className="w-5 h-5 text-gray-600" />
+            </button>
+
+            {/* Modal Content */}
+            <div style={{ padding: '40px' }}>
+              {/* Header */}
+              <div style={{ textAlign: 'center', marginBottom: '30px' }}>
+                <h2 style={{ fontSize: '24px', fontWeight: '700', color: '#091D33', marginBottom: '20px' }}>
+                  {oncoTexts.title}
+                </h2>
+                <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#6B7280', marginBottom: '12px' }}>
+                  {oncoTexts.p1}
+                </p>
+                <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#6B7280', marginBottom: '12px' }}>
+                  {oncoTexts.p2}
+                </p>
+                <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#6B7280' }}>
+                  {oncoTexts.p3}
+                </p>
+              </div>
+
+              {/* Cancer Types Table */}
+              <div style={{ overflowX: 'auto' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
+                  <tbody>
+                    {/* Рак легкого */}
+                    <tr>
+                      <td style={{
+                        padding: '12px 16px',
+                        backgroundColor: '#209DA7',
+                        color: 'white',
+                        fontWeight: '500',
+                        borderRadius: '8px 0 0 8px',
+                        width: '160px'
+                      }}>
+                        {oncoTexts.lungCancer}
+                      </td>
+                      <td style={{ padding: '8px', backgroundColor: '#f8f9fa' }}>
+                        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                          {['EGFR (T790M)', 'KRAS NRAS', 'ALK', 'ROS1', 'PD-L1', 'BRAF'].map((marker, idx) => (
+                            <span key={idx} style={{
+                              backgroundColor: '#E0F2F4',
+                              color: '#209DA7',
+                              padding: '6px 12px',
+                              borderRadius: '20px',
+                              fontSize: '12px',
+                              fontWeight: '500'
+                            }}>
+                              {marker}
+                            </span>
+                          ))}
+                        </div>
+                      </td>
+                    </tr>
+                    {/* Spacer */}
+                    <tr><td colSpan={2} style={{ height: '8px' }}></td></tr>
+                    {/* Рак молочной железы */}
+                    <tr>
+                      <td style={{
+                        padding: '12px 16px',
+                        backgroundColor: '#209DA7',
+                        color: 'white',
+                        fontWeight: '500',
+                        borderRadius: '8px 0 0 8px',
+                        width: '160px'
+                      }}>
+                        {oncoTexts.breastCancer}
+                      </td>
+                      <td style={{ padding: '8px', backgroundColor: '#f8f9fa' }}>
+                        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                          {['BRCA1/2', 'PD-L1', 'HER2/neu', 'PIK3CA'].map((marker, idx) => (
+                            <span key={idx} style={{
+                              backgroundColor: '#E0F2F4',
+                              color: '#209DA7',
+                              padding: '6px 12px',
+                              borderRadius: '20px',
+                              fontSize: '12px',
+                              fontWeight: '500'
+                            }}>
+                              {marker}
+                            </span>
+                          ))}
+                        </div>
+                      </td>
+                    </tr>
+                    {/* Spacer */}
+                    <tr><td colSpan={2} style={{ height: '8px' }}></td></tr>
+                    {/* Рак яичников */}
+                    <tr>
+                      <td style={{
+                        padding: '12px 16px',
+                        backgroundColor: '#209DA7',
+                        color: 'white',
+                        fontWeight: '500',
+                        borderRadius: '8px 0 0 8px',
+                        width: '160px'
+                      }}>
+                        {oncoTexts.ovarianCancer}
+                      </td>
+                      <td style={{ padding: '8px', backgroundColor: '#f8f9fa' }}>
+                        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                          {['BRCA1/2'].map((marker, idx) => (
+                            <span key={idx} style={{
+                              backgroundColor: '#E0F2F4',
+                              color: '#209DA7',
+                              padding: '6px 12px',
+                              borderRadius: '20px',
+                              fontSize: '12px',
+                              fontWeight: '500'
+                            }}>
+                              {marker}
+                            </span>
+                          ))}
+                        </div>
+                      </td>
+                    </tr>
+                    {/* Spacer */}
+                    <tr><td colSpan={2} style={{ height: '8px' }}></td></tr>
+                    {/* Колоректальный рак */}
+                    <tr>
+                      <td style={{
+                        padding: '12px 16px',
+                        backgroundColor: '#209DA7',
+                        color: 'white',
+                        fontWeight: '500',
+                        borderRadius: '8px 0 0 8px',
+                        width: '160px'
+                      }}>
+                        {oncoTexts.colorectalCancer}
+                      </td>
+                      <td style={{ padding: '8px', backgroundColor: '#f8f9fa' }}>
+                        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                          {['KRAS, NRAS', 'BRAF'].map((marker, idx) => (
+                            <span key={idx} style={{
+                              backgroundColor: '#E0F2F4',
+                              color: '#209DA7',
+                              padding: '6px 12px',
+                              borderRadius: '20px',
+                              fontSize: '12px',
+                              fontWeight: '500'
+                            }}>
+                              {marker}
+                            </span>
+                          ))}
+                        </div>
+                      </td>
+                    </tr>
+                    {/* Spacer */}
+                    <tr><td colSpan={2} style={{ height: '8px' }}></td></tr>
+                    {/* Меланома */}
+                    <tr>
+                      <td style={{
+                        padding: '12px 16px',
+                        backgroundColor: '#209DA7',
+                        color: 'white',
+                        fontWeight: '500',
+                        borderRadius: '8px 0 0 8px',
+                        width: '160px'
+                      }}>
+                        {oncoTexts.melanoma}
+                      </td>
+                      <td style={{ padding: '8px', backgroundColor: '#f8f9fa' }}>
+                        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                          {['BRAF', 'KRAS, NRAS'].map((marker, idx) => (
+                            <span key={idx} style={{
+                              backgroundColor: '#E0F2F4',
+                              color: '#209DA7',
+                              padding: '6px 12px',
+                              borderRadius: '20px',
+                              fontSize: '12px',
+                              fontWeight: '500'
+                            }}>
+                              {marker}
+                            </span>
+                          ))}
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Main Content */}
       <div className="flex flex-col lg:flex-row px-5 sm:px-8 md:px-12 lg:px-20 py-10 lg:py-16 gap-8 lg:gap-12">
