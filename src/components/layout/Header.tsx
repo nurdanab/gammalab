@@ -193,13 +193,22 @@ export default function Header() {
 
             {/* Desktop: Contacts + Language */}
             <div className="hidden lg:flex items-center gap-6 xl:gap-8">
-              <a
-                href="mailto:Salem@Gammalab.kz"
-                className="flex items-center gap-2 text-gray-500 hover:text-primary transition-colors text-[13px]"
-              >
+              <div className="flex items-center gap-2 text-[13px]">
                 <Mail className="h-4 w-4 text-primary flex-shrink-0" />
-                <span>Salem@Gammalab.kz</span>
-              </a>
+                <a
+                  href="mailto:info@gammalab.kz"
+                  className="text-gray-500 hover:text-primary transition-colors"
+                >
+                  info@gammalab.kz
+                </a>
+                <span className="text-gray-300">|</span>
+                <a
+                  href="mailto:Salem@Gammalab.kz"
+                  className="text-gray-500 hover:text-primary transition-colors"
+                >
+                  Salem@Gammalab.kz
+                </a>
+              </div>
               <span className="flex items-center gap-2 text-gray-500 text-[13px]">
                 <MapPin className="h-4 w-4 text-primary flex-shrink-0" />
                 <span>{t.address}</span>
@@ -462,6 +471,13 @@ export default function Header() {
                 >
                   <Phone className="h-4 w-4 text-primary" />
                   <span>{t.phone}</span>
+                </a>
+                <a
+                  href="mailto:info@gammalab.kz"
+                  className="flex items-center gap-3 text-gray-600 text-sm"
+                >
+                  <Mail className="h-4 w-4 text-primary" />
+                  <span>info@gammalab.kz</span>
                 </a>
                 <a
                   href="mailto:Salem@Gammalab.kz"

@@ -31,7 +31,7 @@
     "hero": {
       "title": "GammaLab Diagnostic Laboratory",
       "subtitle": "Accurate Diagnosis — The Foundation of Health",
-      "description": "A modern laboratory with high-precision equipment for conducting a wide range of laboratory tests"
+      "description": "A modern laboratory with high-precision equipment for conducting a narrow range of laboratory tests"
     },
     "advantages": {
       "title": "GammaLab Advantages",
@@ -74,7 +74,8 @@
       "logistics": "Logistics and Transportation",
       "quality": "Quality Management System",
       "licenses": "Licenses and Permits",
-      "experience": "Experience and Cooperation"
+      "experience": "Experience and Cooperation",
+      "conferences": "Conference Participation"
     },
     "aboutSection": {
       "title": "ABOUT US",

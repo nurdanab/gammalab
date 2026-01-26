@@ -78,6 +78,9 @@ export default async function HomePage({ params }: Props) {
       {/* Stats Section */}
       <StatsSection locale={locale} />
 
+      {/* Mission Section */}
+      <MissionSection locale={locale} />
+
       {/* Services Section */}
       <ServicesSection locale={locale} />
 
@@ -116,21 +119,21 @@ function HeroSection({ locale }: { locale: string }) {
       badge: 'Медицинская лаборатория',
       title1: 'Мы заботимся',
       title2: 'о вашем здоровье',
-      description: 'Современная диагностическая лаборатория с высокоточным оборудованием. Мы предоставляем широкий спектр лабораторных исследований для точной диагностики.',
+      description: 'Современная диагностическая лаборатория с высокоточным оборудованием. Мы предоставляем узкий спектр лабораторных исследований для точной диагностики.',
       cta: 'Связаться с нами',
     },
     kz: {
       badge: 'Медициналық зертхана',
       title1: 'Біз сіздің',
       title2: 'денсаулығыңызға қамқорлық жасаймыз',
-      description: 'Жоғары дәлдіктегі жабдықтармен жабдықталған заманауи диагностикалық зертхана. Дәл диагностика үшін зертханалық зерттеулердің кең спектрін ұсынамыз.',
+      description: 'Жоғары дәлдіктегі жабдықтармен жабдықталған заманауи диагностикалық зертхана. Дәл диагностика үшін зертханалық зерттеулердің тар спектрін ұсынамыз.',
       cta: 'Бізбен байланысыңыз',
     },
     en: {
       badge: 'Medical Laboratory',
       title1: 'We care',
       title2: 'about your health',
-      description: 'Modern diagnostic laboratory with high-precision equipment. We provide a wide range of laboratory tests for accurate diagnostics.',
+      description: 'Modern diagnostic laboratory with high-precision equipment. We provide a narrow range of laboratory tests for accurate diagnostics.',
       cta: 'Contact us',
     },
   };
@@ -192,17 +195,17 @@ function StatsSection({ locale }: { locale: string }) {
     ru: [
       { value: '+15 000', label: 'Довольных пациентов' },
       { value: '+30 000', label: 'Проведенных исследований' },
-      { value: '+10', label: 'Лет опыта' },
+      { value: '+5', label: 'Лет опыта' },
     ],
     kz: [
       { value: '+15 000', label: 'Қанағаттанған пациенттер' },
       { value: '+30 000', label: 'Жүргізілген зерттеулер' },
-      { value: '+10', label: 'Жыл тәжірибе' },
+      { value: '+5', label: 'Жыл тәжірибе' },
     ],
     en: [
       { value: '+15,000', label: 'Satisfied patients' },
       { value: '+30,000', label: 'Tests conducted' },
-      { value: '+10', label: 'Years of experience' },
+      { value: '+5', label: 'Years of experience' },
     ],
   };
 
@@ -231,14 +234,116 @@ function StatsSection({ locale }: { locale: string }) {
   );
 }
 
+// Mission Section Component
+function MissionSection({ locale }: { locale: string }) {
+  const content = {
+    ru: {
+      goal: {
+        title: 'Цель',
+        text: 'Внедрять инновации, развивать медицинскую науку и способствовать общественному здоровью в Казахстане, а также сделать доступными для населения редкие виды анализов.',
+      },
+      vision: {
+        title: 'Видение',
+        text: '"GammaLab" видит будущее здравоохранения в Казахстане как сферу, где каждый человек может получить доступ к высокоточной медицинской диагностике. Мы стремимся стать ведущим отечественным инновационным центром, предоставляя современные методы исследований, которые играют ключевую роль в раннем выявлении заболеваний и управлении здоровьем.',
+      },
+      mission: {
+        title: 'Миссия',
+        text: '"GammaLab" — предоставить современные, высокотехнологичные методы молекулярно-генетической диагностики. Мы стремимся активно участвовать в прогрессе здравоохранения в Казахстане, внедряя инновационные подходы и технологии, способствуя росту уровня общественного здоровья и благополучия граждан Казахстана.',
+      },
+    },
+    kz: {
+      goal: {
+        title: 'Мақсат',
+        text: 'Инновацияларды енгізу, медициналық ғылымды дамыту және Қазақстандағы қоғамдық денсаулықты нығайту, сондай-ақ сирек кездесетін талдау түрлерін халыққа қолжетімді ету.',
+      },
+      vision: {
+        title: 'Көзқарас',
+        text: '"GammaLab" Қазақстандағы денсаулық сақтаудың болашағын әр адам жоғары дәлдіктегі медициналық диагностикаға қол жеткізе алатын сала ретінде көреді. Біз аурулардың ерте анықтауда және денсаулықты басқаруда шешуші рөл атқаратын заманауи зерттеу әдістерін ұсына отырып, жетекші отандық инновациялық орталыққа айналуға ұмтыламыз.',
+      },
+      mission: {
+        title: 'Миссия',
+        text: '"GammaLab" — заманауи, жоғары технологиялық молекулярлық-генетикалық диагностика әдістерін ұсыну. Біз инновациялық тәсілдер мен технологияларды енгізе отырып, Қазақстан азаматтарының қоғамдық денсаулығы мен әл-ауқатының өсуіне ықпал ете отырып, Қазақстандағы денсаулық сақтау прогресіне белсенді қатысуға ұмтыламыз.',
+      },
+    },
+    en: {
+      goal: {
+        title: 'Goal',
+        text: 'To implement innovations, develop medical science and promote public health in Kazakhstan, as well as make rare types of tests accessible to the population.',
+      },
+      vision: {
+        title: 'Vision',
+        text: '"GammaLab" sees the future of healthcare in Kazakhstan as a sphere where every person can access high-precision medical diagnostics. We strive to become a leading domestic innovation center, providing modern research methods that play a key role in early disease detection and health management.',
+      },
+      mission: {
+        title: 'Mission',
+        text: '"GammaLab" — to provide modern, high-tech methods of molecular genetic diagnostics. We strive to actively participate in the progress of healthcare in Kazakhstan, implementing innovative approaches and technologies, contributing to the growth of public health and well-being of Kazakhstan citizens.',
+      },
+    },
+  };
+
+  const t = content[locale as keyof typeof content] || content.ru;
+
+  const items = [
+    { icon: 'goal', ...t.goal },
+    { icon: 'vision', ...t.vision },
+    { icon: 'mission', ...t.mission },
+  ];
+
+  const icons: Record<string, React.ReactNode> = {
+    goal: (
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <circle cx="12" cy="12" r="6"/>
+        <circle cx="12" cy="12" r="2"/>
+      </svg>
+    ),
+    vision: (
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+        <circle cx="12" cy="12" r="3"/>
+      </svg>
+    ),
+    mission: (
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+        <polyline points="22 4 12 14.01 9 11.01"/>
+      </svg>
+    ),
+  };
+
+  return (
+    <section className="bg-white">
+      <div className="container-main py-12 lg:py-20">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+          {items.map((item, index) => (
+            <div
+              key={index}
+              className="bg-white rounded-2xl p-6 lg:p-8 shadow-sm hover:shadow-md transition-shadow"
+            >
+              <div className="flex items-center justify-center w-14 h-14 lg:w-16 lg:h-16 rounded-xl bg-[#EC910C]/10 text-[#EC910C] mb-5 lg:mb-6">
+                {icons[item.icon]}
+              </div>
+              <h3 className="text-lg lg:text-xl font-semibold text-[#091D33] mb-3 lg:mb-4">
+                {item.title}
+              </h3>
+              <p className="text-sm leading-[1.8] text-gray-500">
+                {item.text}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 // Services Section Component
 function ServicesSection({ locale }: { locale: string }) {
   const content = {
     ru: {
       title1: 'Основные услуги',
       title2: 'Gammalab',
-      description: 'Мы предоставляем широкий спектр лабораторных услуг для точной диагностики вашего здоровья.',
-      services: [
+            services: [
         { icon: 'flask', title: 'Лабораторные анализы', description: 'Узкий профиль персонифицированной диагностики, внедряя современные молекулярно-генетические и иммуногистохимические методы исследований' },
         { icon: 'clock', title: 'Быстрые результаты', description: 'Скорость выдачи результатов исследований от 3-14 рабочих дней в зависимости от профиля проводимого исследования' },
         { icon: 'calendar', title: 'Результаты онлайн', description: 'В соответствии с политикой конфиденциальности результаты исследований поступают на электронную почту, указанную при формировании направления и оплаты услуг' },
@@ -248,8 +353,7 @@ function ServicesSection({ locale }: { locale: string }) {
     kz: {
       title1: 'Негізгі қызметтер',
       title2: 'Gammalab',
-      description: 'Сіздің денсаулығыңызды дәл диагностикалау үшін зертханалық қызметтердің кең спектрін ұсынамыз.',
-      services: [
+            services: [
         { icon: 'flask', title: 'Зертханалық талдаулар', description: 'Заманауи молекулалық-генетикалық және иммуногистохимиялық зерттеу әдістерін енгізе отырып, дербес диагностиканың тар профилі' },
         { icon: 'clock', title: 'Жылдам нәтижелер', description: 'Жүргізілетін зерттеу профиліне байланысты зерттеу нәтижелерін беру жылдамдығы 3-14 жұмыс күні' },
         { icon: 'calendar', title: 'Онлайн нәтижелер', description: 'Құпиялылық саясатына сәйкес зерттеу нәтижелері бағытты қалыптастыру және қызметтерді төлеу кезінде көрсетілген электрондық поштаға жіберіледі' },
@@ -259,8 +363,7 @@ function ServicesSection({ locale }: { locale: string }) {
     en: {
       title1: 'Main services',
       title2: 'Gammalab',
-      description: 'We provide a wide range of laboratory services for accurate diagnosis of your health.',
-      services: [
+            services: [
         { icon: 'flask', title: 'Laboratory Tests', description: 'Narrow profile of personalized diagnostics, implementing modern molecular-genetic and immunohistochemical research methods' },
         { icon: 'clock', title: 'Fast Results', description: 'Research results delivery speed from 3-14 working days depending on the research profile' },
         { icon: 'calendar', title: 'Online Results', description: 'In accordance with the privacy policy, research results are sent to the email address specified when creating the referral and paying for services' },
@@ -291,10 +394,7 @@ function ServicesSection({ locale }: { locale: string }) {
             <br />
             {t.title2}
           </h2>
-          <p className="text-white text-sm leading-[1.8] lg:max-w-[400px] opacity-90">
-            {t.description}
-          </p>
-        </div>
+                  </div>
       </div>
 
         {/* Service Cards */}

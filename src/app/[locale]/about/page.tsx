@@ -3,6 +3,7 @@
 import { useState, useEffect, Fragment } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { Users, Award, FileCheck, CheckCircle } from 'lucide-react';
+import Image from 'next/image';
 
 // Подтемы бокового меню (id для связи с переводами)
 const sidebarItemsConfig = [
@@ -16,6 +17,7 @@ const sidebarItemsConfig = [
   { id: 'quality', icon: Award },
   { id: 'licenses', icon: FileCheck },
   { id: 'experience', icon: Users },
+  { id: 'conferences', icon: Award },
 ];
 
 // Компонент круговой диаграммы для ONCO-профиля
@@ -116,9 +118,6 @@ function AboutSectionContent({ t }: { t: (key: string) => string }) {
       <p style={{ marginBottom: '16px' }}>{t('aboutSection.p3')}</p>
       <p style={{ marginBottom: '16px' }}>{t('aboutSection.p4')}</p>
       <p style={{ marginBottom: '16px' }}>{t('aboutSection.p5')}</p>
-      <p style={{ marginBottom: '16px' }}>
-        <strong>{t('aboutSection.p6label')}</strong> {t('aboutSection.p6')}
-      </p>
       <p>{t('aboutSection.p7')}</p>
     </>
   );
@@ -246,19 +245,7 @@ function ReagentsSectionContent({ t }: { t: (key: string) => string }) {
 
 // Компонент контента секции "Перечень исследований" с переводами
 function LabTestsSectionContent({ t }: { t: (key: string) => string }) {
-  // Данные для таблицы 1: ГОБМП
-  const table1Data = [
-    { num: 1, name: 'Определение мутаций гена KRAS из биоптата опухолевой ткани методом ПЦР', code: 'B09.861.020', deadline: '10' },
-    { num: 2, name: 'Определение мутаций гена EGFR из биоптата опухолевой ткани методом ПЦР', code: 'B09.862.020', deadline: '10' },
-    { num: 3, name: 'Определение мутаций гена BRAF из биоптата опухолевой ткани методом ПЦР', code: 'B09.860.020', deadline: '10' },
-    { num: 4, name: 'Определение мутации гена ALK из биоптата опухолевой ткани иммуногистохимическим (ИГХ) методом', code: 'B06.676.011', deadline: '14' },
-    { num: 5, name: 'Определение рецептора PD-L1 из биоптата опухолевой ткани иммуногистохимическим (ИГХ) методом', code: 'B06.675.011', deadline: '14' },
-    { num: 6, name: 'Молекулярно-цитогенетическое исследование с использованием ДНК-зондов (ФИШ-метод) биологического материала (1-зонд)', code: 'В09.765.016', deadline: '14' },
-    { num: 7, name: 'Молекулярно-цитогенетическое исследование с использованием ДНК-зондов (ФИШ-метод) цитологических препаратов, гистологических срезов (1-зонд)', code: 'В09.769.016', deadline: '14' },
-    { num: 8, name: 'Молекулярно-цитогенетическое исследование с использованием ДНК-зондов (ФИШ-метод) для определения ALK-положительных генов', code: 'В09.776.016', deadline: '14' },
-  ];
-
-  // Данные для таблицы 2: Коммерческие исследования
+  // Данные для таблицы: Коммерческие исследования
   const table2Data = [
     { category: 1, tests: [
       { num: 1, name: 'Определение мутации гена KRAS методом ПЦР', material: 'Фиксированная формалином и залитая парафином ткань опухоли', method: 'ПЦР', term: '5-7 р/д' },
@@ -297,37 +284,6 @@ function LabTestsSectionContent({ t }: { t: (key: string) => string }) {
 
   return (
     <>
-      {/* Таблица 1: ГОБМП */}
-      <h3 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '16px', color: '#091D33' }}>
-        {t('labTestsSection.table1Title')}
-      </h3>
-      <div style={{ overflowX: 'auto', marginBottom: '40px' }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
-          <thead>
-            <tr style={{ backgroundColor: '#209DA7', color: 'white' }}>
-              <th style={{ padding: '12px 8px', textAlign: 'center', border: '1px solid #ddd' }}>{t('labTestsSection.colNumber')}</th>
-              <th style={{ padding: '12px 8px', textAlign: 'left', border: '1px solid #ddd' }}>{t('labTestsSection.colTestName')}</th>
-              <th style={{ padding: '12px 8px', textAlign: 'center', border: '1px solid #ddd' }}>{t('labTestsSection.colServiceCode')}</th>
-              <th style={{ padding: '12px 8px', textAlign: 'center', border: '1px solid #ddd' }}>{t('labTestsSection.colDeadline')}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {table1Data.map((row, idx) => (
-              <tr key={row.num} style={{ backgroundColor: idx % 2 === 0 ? '#fff' : '#f9f9f9' }}>
-                <td style={centerCell}>{row.num}</td>
-                <td style={cellStyle}>{row.name}</td>
-                <td style={centerCell}>{row.code}</td>
-                <td style={centerCell}>{t('labTestsSection.upTo')} {row.deadline} {t('labTestsSection.workingDays')}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Таблица 2: Коммерческие исследования */}
-      <h3 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '16px', color: '#091D33' }}>
-        {t('labTestsSection.table2Title')}
-      </h3>
       <div style={{ overflowX: 'auto' }}>
         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
           <thead>
@@ -502,6 +458,112 @@ function LogisticsSectionContent({ t }: { t: (key: string) => string }) {
           Результаты по ГОБМП автоматически направляются в КМИС.
         </p>
       </div>
+
+      {/* Требования к отправляемому материалу */}
+      <div style={{ marginTop: '32px' }}>
+        <h3 style={{ fontSize: '15px', fontWeight: '600', color: '#091D33', marginBottom: '16px', textAlign: 'center' }}>
+          Требования к отправляемому материалу
+        </h3>
+
+        {/* Общие требования */}
+        <div style={{ marginBottom: '16px' }}>
+          <div style={{
+            backgroundColor: '#EC910C',
+            color: 'white',
+            padding: '10px 14px',
+            borderRadius: '8px 8px 0 0',
+            fontSize: '13px',
+            fontWeight: '600'
+          }}>
+            ОБЩИЕ ТРЕБОВАНИЯ
+          </div>
+          <div style={{
+            backgroundColor: 'white',
+            border: '1px solid #e5e7eb',
+            borderTop: 'none',
+            borderRadius: '0 0 8px 8px',
+            padding: '12px 14px',
+            fontSize: '12px',
+            lineHeight: '1.7',
+            color: '#4b5563'
+          }}>
+            <ul style={{ margin: 0, paddingLeft: '18px' }}>
+              <li style={{ marginBottom: '6px' }}>Образцы биологического материала должны быть промаркированы врачом.</li>
+              <li style={{ marginBottom: '6px' }}>Маркировка должна быть водостойкой и стойкой к истиранию.</li>
+              <li>Чтобы соблюсти условия транспортировки, необходимые для получения достоверного результата исследования, важно при заказе курьера верно указывать тип отправляемого материала.</li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Гистологический материал */}
+        <div style={{ marginBottom: '16px' }}>
+          <div style={{
+            backgroundColor: '#EC910C',
+            color: 'white',
+            padding: '10px 14px',
+            borderRadius: '8px 8px 0 0',
+            fontSize: '13px',
+            fontWeight: '600'
+          }}>
+            ГИСТОЛОГИЧЕСКИЙ МАТЕРИАЛ
+          </div>
+          <div style={{
+            backgroundColor: 'white',
+            border: '1px solid #e5e7eb',
+            borderTop: 'none',
+            borderRadius: '0 0 8px 8px',
+            padding: '12px 14px',
+            fontSize: '12px',
+            lineHeight: '1.7',
+            color: '#4b5563'
+          }}>
+            <ul style={{ margin: 0, paddingLeft: '18px', marginBottom: '12px' }}>
+              <li style={{ marginBottom: '6px' }}>Материал должен представлять собой парафиновый гистологический блок (фиксированный в формалине и залитый парафином фрагмент ткани).</li>
+              <li style={{ marginBottom: '6px' }}>Пригодны как парафиновые блоки старого образца (размером 2×2 см, иногда закрепленные на дощечке), так и блоки нового образца (3×4 см, залитые в пластиковой кассете).</li>
+              <li style={{ marginBottom: '6px' }}>Содержание опухолевых клеток в препарате должно быть не менее 25%.</li>
+              <li style={{ marginBottom: '6px' }}>К парафиновому блоку необходимо прикладывать окрашенный гистологический препарат, полученный непосредственно из этого блока («стекло-отпечаток»).</li>
+              <li style={{ marginBottom: '6px' }}>Номер блока и номер на «стекле-отпечатке» должны совпадать.</li>
+              <li>Для исследования желательно направлять не менее 2-3 блоков с опухолевым материалом.</li>
+            </ul>
+            <p style={{ fontWeight: '600', color: '#091D33', marginBottom: '6px' }}>Транспортировка и хранение биопсийного материала:</p>
+            <ul style={{ margin: 0, paddingLeft: '18px' }}>
+              <li style={{ marginBottom: '6px' }}>Главное требование — отсутствие прямых солнечных лучей, хранение при температуре от 10 до 25 градусов и упаковка, предотвращающая механическое повреждение.</li>
+              <li style={{ marginBottom: '6px' }}>Предпочтительна упаковка из плотного материала (картона) с наполнителем, предотвращающим свободное перемещение препаратов в упаковке.</li>
+              <li>«Стекло-отпечаток» рекомендуется завернуть в плотную бумагу, чтобы избежать боя при транспортировке.</li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Цельная кровь */}
+        <div>
+          <div style={{
+            backgroundColor: '#EC910C',
+            color: 'white',
+            padding: '10px 14px',
+            borderRadius: '8px 8px 0 0',
+            fontSize: '13px',
+            fontWeight: '600'
+          }}>
+            ЦЕЛЬНАЯ КРОВЬ
+          </div>
+          <div style={{
+            backgroundColor: 'white',
+            border: '1px solid #e5e7eb',
+            borderTop: 'none',
+            borderRadius: '0 0 8px 8px',
+            padding: '12px 14px',
+            fontSize: '12px',
+            lineHeight: '1.7',
+            color: '#4b5563'
+          }}>
+            <ul style={{ margin: 0, paddingLeft: '18px' }}>
+              <li style={{ marginBottom: '6px' }}>Кровь необходимо собрать в пробирки с консервантом ЭДТА (с фиолетовой крышкой).</li>
+              <li style={{ marginBottom: '6px' }}>До прибытия курьера кровь может храниться в холодильнике (при 2-8°C) пару часов или в морозильнике (при ≤-18°C) — длительно.</li>
+              <li>Кровь можно транспортировать в лабораторию при 2-8°С в течение 24 часов.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
@@ -509,15 +571,162 @@ function LogisticsSectionContent({ t }: { t: (key: string) => string }) {
 // Компонент контента секции "Система качества" с переводами
 function QualitySectionContent({ t }: { t: (key: string) => string }) {
   return (
-    <>
-      <p style={{ marginBottom: '20px' }}>{t('qualitySection.p1')}</p>
-      <p style={{ fontWeight: '500', marginBottom: '12px' }}>{t('qualitySection.hasTitle')}</p>
-      <ul style={{ paddingLeft: '20px', margin: 0 }}>
-        <li style={{ marginBottom: '10px' }}>{t('qualitySection.item1')}</li>
-        <li style={{ marginBottom: '10px' }}>{t('qualitySection.item2')}</li>
-        <li>{t('qualitySection.item3')}</li>
-      </ul>
-    </>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      {/* Верхняя часть */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          {/* Лабораторный Внутренний Контроль */}
+          <div style={{
+            backgroundColor: 'white',
+            border: '1px solid #e5e7eb',
+            borderRadius: '8px',
+            padding: '12px 16px'
+          }}>
+            <h4 style={{ fontSize: '13px', fontWeight: '600', color: '#EC910C', marginBottom: '8px' }}>
+              Лабораторный Внутренний Контроль:
+            </h4>
+            <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: '#4b5563', lineHeight: '1.6' }}>
+              <li style={{ marginBottom: '4px' }}>Использование стандартизированных контрольных образцов наборов от производителей при каждой постановке.</li>
+              <li>Систематический мониторинг качества результатов внутри лаборатории.</li>
+            </ul>
+          </div>
+
+          {/* Внешний Контроль Качества */}
+          <div style={{
+            backgroundColor: 'white',
+            border: '1px solid #e5e7eb',
+            borderRadius: '8px',
+            padding: '12px 16px'
+          }}>
+            <h4 style={{ fontSize: '13px', fontWeight: '600', color: '#EC910C', marginBottom: '8px' }}>
+              Внешний Контроль Качества:
+            </h4>
+            <p style={{ margin: 0, fontSize: '12px', color: '#4b5563', lineHeight: '1.6' }}>
+              Специалисты проходят ежегодный внешний контроль качества, имеют сертификаты успешного прохождения международного контроля качества.
+            </p>
+          </div>
+
+          {/* Экспертная Поддержка */}
+          <div style={{
+            backgroundColor: 'white',
+            border: '1px solid #e5e7eb',
+            borderRadius: '8px',
+            padding: '12px 16px'
+          }}>
+            <h4 style={{ fontSize: '13px', fontWeight: '600', color: '#EC910C', marginBottom: '8px' }}>
+              Экспертная Поддержка:
+            </h4>
+            <p style={{ margin: 0, fontSize: '12px', color: '#4b5563', lineHeight: '1.6' }}>
+              Консультации по иммуногистохимическим анализам проводятся под руководством профессора Енин Е.А.
+            </p>
+          </div>
+
+          {/* Система Менеджмента Качества */}
+          <div style={{
+            backgroundColor: 'white',
+            border: '1px solid #e5e7eb',
+            borderRadius: '8px',
+            padding: '12px 16px'
+          }}>
+            <h4 style={{ fontSize: '13px', fontWeight: '600', color: '#EC910C', marginBottom: '8px' }}>
+              Система Менеджмента Качества:
+            </h4>
+            <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: '#4b5563', lineHeight: '1.6' }}>
+              <li style={{ marginBottom: '4px' }}>Внедрена система менеджмента качества с момента поступления биоматериала в лабораторию.</li>
+              <li style={{ marginBottom: '4px' }}>Организован реестр принимаемого материала с назначенными ответственными менеджерами.</li>
+              <li>Постоянный мониторинг и обеспечение высокого стандарта качества на всех этапах анализа.</li>
+            </ul>
+          </div>
+        </div>
+
+      {/* Нижняя часть - Контроль качества (схема) */}
+      <div style={{
+        backgroundColor: '#f8f9fa',
+        borderRadius: '12px',
+        padding: '24px',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '20px'
+      }}>
+        {/* Круг слева */}
+        <div style={{
+          minWidth: '120px',
+          width: '120px',
+          height: '120px',
+          borderRadius: '50%',
+          backgroundColor: '#EC910C',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: 'white',
+          fontSize: '14px',
+          fontWeight: '600',
+          textAlign: 'center',
+          lineHeight: '1.3',
+          boxShadow: '0 4px 16px rgba(236, 145, 12, 0.35)',
+          flexShrink: 0
+        }}>
+          Контроль<br />качества
+        </div>
+
+        {/* SVG линии */}
+        <div style={{ position: 'relative', width: '60px', height: '160px', flexShrink: 0 }}>
+          <svg width="60" height="160" viewBox="0 0 60 160" fill="none">
+            <path d="M0 80 Q30 80 60 20" stroke="#EC910C" strokeWidth="2" fill="none" />
+            <path d="M0 80 Q30 80 60 55" stroke="#EC910C" strokeWidth="2" fill="none" />
+            <path d="M0 80 Q30 80 60 105" stroke="#EC910C" strokeWidth="2" fill="none" />
+            <path d="M0 80 Q30 80 60 140" stroke="#EC910C" strokeWidth="2" fill="none" />
+          </svg>
+        </div>
+
+        {/* Пункты справа */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', flex: 1 }}>
+          <div style={{
+            backgroundColor: 'white',
+            padding: '10px 14px',
+            borderRadius: '8px',
+            fontSize: '12px',
+            color: '#4b5563',
+            lineHeight: '1.5',
+            borderLeft: '3px solid #EC910C'
+          }}>
+            В нашей лаборатории внимательно следят за качеством проводимых исследований.
+          </div>
+          <div style={{
+            backgroundColor: 'white',
+            padding: '10px 14px',
+            borderRadius: '8px',
+            fontSize: '12px',
+            color: '#4b5563',
+            lineHeight: '1.5',
+            borderLeft: '3px solid #EC910C'
+          }}>
+            Ведется строгий контроль начиная с преаналитического этапа.
+          </div>
+          <div style={{
+            backgroundColor: 'white',
+            padding: '10px 14px',
+            borderRadius: '8px',
+            fontSize: '12px',
+            color: '#4b5563',
+            lineHeight: '1.5',
+            borderLeft: '3px solid #EC910C'
+          }}>
+            Наша лаборатория успешно участвует в программах Внешней Оценки Качества.
+          </div>
+          <div style={{
+            backgroundColor: 'white',
+            padding: '10px 14px',
+            borderRadius: '8px',
+            fontSize: '12px',
+            color: '#4b5563',
+            lineHeight: '1.5',
+            borderLeft: '3px solid #EC910C'
+          }}>
+            Ежедневно проводится внутренний контроль качества для всех тестов с использованием аттестованных контрольных материалов европейских производителей.
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -693,39 +902,156 @@ function LicensesSectionContent({ t, locale }: { t: (key: string) => string; loc
   );
 }
 
-// Компонент контента секции "Опыт работы" с переводами
-function ExperienceSectionContent({ t }: { t: (key: string) => string }) {
-  const statItems = [
-    { value: '49,5%', label: t('experienceSection.colorectal') },
-    { value: '21%', label: t('experienceSection.lung') },
-    { value: '47%', label: t('experienceSection.melanoma') },
-    { value: '15%', label: t('experienceSection.bladder') },
-    { value: '30%', label: t('experienceSection.breast') },
+// Компонент контента секции "Участие в конференциях"
+function ConferencesSectionContent() {
+  const [selectedImage, setSelectedImage] = useState<{ image: string; city: string; date: string } | null>(null);
+
+  const conferences = [
+    {
+      image: '/images/1about.png',
+      city: 'Бильбао, Испания',
+      date: '8-12 сентября 2018',
+    },
+    {
+      image: '/images/2about.png',
+      city: 'Базель, Швейцария',
+      date: '3-7 сентября 2022',
+    },
+    {
+      image: '/images/3about.png',
+      city: 'Монпелье, Франция',
+      date: '1-4 июля 2023',
+    },
   ];
 
   return (
     <>
-      <p style={{ marginBottom: '14px' }}>{t('experienceSection.p1')}</p>
-      <p style={{ marginBottom: '14px' }}>{t('experienceSection.p2')}</p>
-      <p style={{ marginBottom: '14px' }}>{t('experienceSection.p3')}</p>
-      <p style={{ marginBottom: '14px' }}>{t('experienceSection.p4')}</p>
-      <p style={{ marginBottom: '24px' }}>{t('experienceSection.p5')}</p>
+      <p style={{ marginBottom: '24px', fontSize: '14px', lineHeight: '1.8', color: '#4b5563' }}>
+        Наши специалисты активно участвуют в мировых медицинских конференциях, представляя передовые исследования и технологии, а также являются авторами статей в ведущих мировых медицинских журналах, представляя результаты наших исследований.
+      </p>
 
-      {/* Статистика */}
-      <p style={{ fontWeight: '500', marginBottom: '12px' }}>{t('experienceSection.statsTitle')}</p>
-      <div style={{ marginBottom: '20px', fontSize: '13px', color: '#4b5563' }}>
-        {statItems.map((item, idx) => (
-          <span key={idx}>
-            <strong style={{ color: '#091D33' }}>{item.value}</strong> — {item.label}
-            {idx < statItems.length - 1 && ' • '}
-          </span>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>
+        {conferences.map((conf, index) => (
+          <div
+            key={index}
+            onClick={() => setSelectedImage(conf)}
+            style={{
+              backgroundColor: 'white',
+              borderRadius: '12px',
+              overflow: 'hidden',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+              cursor: 'pointer',
+              transition: 'transform 0.2s, box-shadow 0.2s',
+            }}
+            className="hover:shadow-lg hover:-translate-y-1"
+          >
+            <div style={{ position: 'relative', height: '180px' }}>
+              <Image
+                src={conf.image}
+                alt={conf.city}
+                fill
+                style={{ objectFit: 'cover' }}
+              />
+            </div>
+            <div style={{ padding: '14px', textAlign: 'center' }}>
+              <p style={{ fontSize: '13px', fontWeight: '600', color: '#091D33', marginBottom: '4px' }}>
+                {conf.city}
+              </p>
+              <p style={{ fontSize: '12px', color: '#6b7280', margin: 0 }}>
+                {conf.date}
+              </p>
+            </div>
+          </div>
         ))}
       </div>
 
-      <p style={{ fontWeight: '500', marginBottom: '8px' }}>{t('experienceSection.ihcTitle')}</p>
-      <p style={{ fontSize: '13px', color: '#4b5563', marginBottom: '24px' }}>
-        <strong style={{ color: '#091D33' }}>PD-L1:</strong> 53% • <strong style={{ color: '#091D33' }}>ALK:</strong> 6%
-      </p>
+      {/* Модальное окно */}
+      {selectedImage && (
+        <div
+          onClick={() => setSelectedImage(null)}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.85)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 9999,
+            padding: '20px',
+          }}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              position: 'relative',
+              maxWidth: '90vw',
+              maxHeight: '90vh',
+              backgroundColor: 'white',
+              borderRadius: '16px',
+              overflow: 'hidden',
+              boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
+            }}
+          >
+            {/* Кнопка закрытия */}
+            <button
+              onClick={() => setSelectedImage(null)}
+              style={{
+                position: 'absolute',
+                top: '12px',
+                right: '12px',
+                width: '36px',
+                height: '36px',
+                borderRadius: '50%',
+                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                border: 'none',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                zIndex: 10,
+                color: 'white',
+                fontSize: '20px',
+                fontWeight: 'bold',
+              }}
+            >
+              ×
+            </button>
+
+            {/* Изображение */}
+            <div style={{ position: 'relative', width: '80vw', maxWidth: '900px', height: '60vh' }}>
+              <Image
+                src={selectedImage.image}
+                alt={selectedImage.city}
+                fill
+                style={{ objectFit: 'contain' }}
+              />
+            </div>
+
+            {/* Подпись */}
+            <div style={{ padding: '16px 24px', textAlign: 'center', backgroundColor: 'white' }}>
+              <p style={{ fontSize: '16px', fontWeight: '600', color: '#091D33', marginBottom: '4px' }}>
+                {selectedImage.city}
+              </p>
+              <p style={{ fontSize: '14px', color: '#6b7280', margin: 0 }}>
+                {selectedImage.date}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
+// Компонент контента секции "Опыт работы" с переводами
+function ExperienceSectionContent({ t }: { t: (key: string) => string }) {
+  return (
+    <>
+      <p style={{ marginBottom: '14px' }}>{t('experienceSection.p4')}</p>
+      <p style={{ marginBottom: '24px' }}>{t('experienceSection.p5')}</p>
 
       {/* Контакты */}
       <p style={{ fontWeight: '500', marginBottom: '8px' }}>{t('experienceSection.contactTitle')}</p>
@@ -841,6 +1167,12 @@ export default function AboutPage() {
         content: <ExperienceSectionContent t={t} />
       };
     }
+    if (activeSection === 'conferences') {
+      return {
+        title: 'УЧАСТИЕ В КОНФЕРЕНЦИЯХ И АВТОРСКИЕ СТАТЬИ',
+        content: <ConferencesSectionContent />
+      };
+    }
     return { title: '', content: null };
   };
 
@@ -850,10 +1182,22 @@ export default function AboutPage() {
     <div className="flex flex-col min-h-screen bg-gray-50">
       {/* Hero Section */}
       <section
-        className="relative pt-[140px] sm:pt-[160px] lg:pt-[180px] pb-8 lg:pb-12"
+        className="relative pt-[100px] sm:pt-[110px] lg:pt-[120px] pb-8 lg:pb-12"
         style={{ backgroundColor: '#EEF6F6' }}
       >
         <div className="px-5 sm:px-8 md:px-12 lg:px-20 text-center">
+          {/* Hero Image */}
+          <div className="relative w-full max-w-[500px] mx-auto mb-6 rounded-xl overflow-hidden">
+            <Image
+              src="/images/about.png"
+              alt="GammaLab Laboratory"
+              width={500}
+              height={300}
+              className="w-full h-auto object-cover"
+              priority
+            />
+          </div>
+
           <h1
             className="text-[28px] sm:text-[36px] lg:text-[42px] font-semibold mb-4"
             style={{ color: '#091D33' }}
