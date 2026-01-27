@@ -135,6 +135,65 @@ const contentTranslations = {
     urothelialCancer: 'Уротелиальный рак:',
     melanoma: 'Меланома:',
     glioblastoma: 'Глиобластома:',
+    // Detailed analysis list
+    analysisTitle: 'Наименование анализов GL | ONCO',
+    catPredisposition: 'Генетические маркеры предрасположенности к развитию рака молочной железы и рака яичников',
+    predItems: [
+      'Комплекс: определение 5 мутаций в гене BRCA1 (4153delA, 185delAG, Cys61Gly, 5382insC, BRCA2 (6174delT)) методом ПЦР',
+    ],
+    catSensitivity: 'Генетические маркеры чувствительности/устойчивости к таргетным и противоопухолевым препаратам',
+    sensItems: [
+      'Определение мутации гена KRAS (7) G12A, G12C, G12D, G12R, G12S, G12V, G13D',
+      'Определение мутаций гена NRAS методом ПЦР',
+      'Определение комплекса исследуемых мутаций гена KRAS (7) гена NRAS методом ПЦР',
+      'Определение множественных мутаций в гене EGFR (78 мутаций) методом ПЦР',
+      'Определение мутации V600E в гене BRAF методом ПЦР',
+      'Определение делеции гена HER2/neu в тканях (ДНК) с использованием ПЦР в режиме реального времени',
+      'Анализ из 4 мутаций при опухоли мочевого пузыря (FGFR2 и FGFR3) методом ОТ-ПЦР в режиме реального времени',
+      'Определение мутаций PIK3CA методом полимеразной цепной реакции (ПЦР)',
+      'Определение мутаций генов IDH1, IDH2 методом полимеразной цепной реакции (ПЦР)',
+    ],
+    catLiquidBiopsy: 'Жидкостная биопсия',
+    liquidItems: [
+      'Комплексное исследование определение содержания циркулирующих опухолевых клеток (ЦОК) в периферической крови',
+    ],
+    catIHC: 'Иммуногистохимическое исследование (ИГХ)',
+    ihcItems: [
+      'Определение мутации гена ALK в биоптате опухолевой ткани ИГХ методом',
+      'Определение PD-L1 в биоптате опухолевой ткани ИГХ методом',
+      'Определение ИГХ определения статуса рецепторов стероидных гормонов при раке молочной железы (PR, ER, Ki67, C-erbB-2 (HER2/neu))',
+      'Определение гена Her2/neu в биоптате опухолевой ткани ИГХ методом',
+      'Определение гена ROS1 в биоптате опухолевой ткани ИГХ методом',
+      'Определение рецепторов Ki-67 из биоптата опухолевой ткани ИГХ методом',
+      'Болезнь 5100 из биоптата опухолевой ткани ИГХ методом',
+      'Определение ИГХ для дифференциальной диагностики мезотелиомы (AE1/AE3, Vimentin, цитокератин 20, цитокератин 7)',
+      'Определение антигена ассоциированного с меланомой (ECA) CD45 ИГХ методом',
+    ],
+    catCytogenetic: 'Цитогенетическое исследование',
+    cytoItems: [
+      'Цитогенетический анализ клеток костного мозга (кариотип)',
+    ],
+    catPathohistological: 'Патогистологическое исследование',
+    pathoItems: [
+      'Гистохимическое исследование операционно-биопсийного материала',
+      '1-2-3-4 категории сложности (1 блок-препарат)',
+      'Перезаливка блоков с изготовлением 1-го гистологического препарата',
+      'Пересмотр готовых гистологических стёклопрепаратов',
+    ],
+    // T-SPOT
+    tspotTitle: 'GL | T-SPOT.TB',
+    tspotSubtitle: 'В диагностической лаборатории «GammaLab» можно пройти тест T-SPOT.TB',
+    tspotDesc: 'T-SPOT.TB — метод диагностики скрытого (латентного) или активного туберкулеза у детей и взрослых. Тест определяет наличие микобактерий туберкулеза по реакции на них иммунной системы организма. Исследование позволяет диагностировать с вероятностью 99,9% особенно внелегочные формы туберкулёза (мочеполовых органов, костей, суставов, глаз, мозговых оболочек, кожи и др.) в короткие сроки.',
+    tspotCard1: 'Мы сотрудничаем непосредственно с производителем реактивов.',
+    tspotCard2: 'В нашей лаборатории работает большая команда специалистов высокого уровня.',
+    tspotCard3: 'За годы работы ГаммаЛаб зарекомендовала себя, как уникальных и высококачественных исследований, соответствующий высоким международным стандартам.',
+    tspotCard4: 'Нам доверяет более 30 партнеров по всей РК.',
+    tspotNote: 'T-SPOT.TB давно и успешно применяется в Европейских странах и одобрен многими контролирующими организациями (FDA с 2008 г.).',
+    // Nutrigenetics
+    nutriTitle: 'GL | НУТРИГЕНЕТИКА',
+    nutriSubtitle: 'В диагностической лаборатории «GammaLab» можно пройти тест Нутригенетика',
+    nutriDesc: 'Нутригенетика — тест для определения пяти однонуклеотидных замен (SNP) в четырех полиморфных генах, продукты которых влияют на эффективность уменьшения избыточного веса.',
+    nutriMethod: 'Анализ выполняется методом аллель - специфической полимеразной цепной реакции в режиме реального времени. Метод обладает очень высокой чувствительностью, позволяет анализировать однонуклеотидные полиморфизмы в нескольких нанограммах геномной ДНК.',
   },
   kz: {
     feat1: 'Заманауи жабдық',
@@ -180,6 +239,62 @@ const contentTranslations = {
     urothelialCancer: 'Уротелиальды рак:',
     melanoma: 'Меланома:',
     glioblastoma: 'Глиобластома:',
+    analysisTitle: 'Талдаулар тізімі GL | ONCO',
+    catPredisposition: 'Сүт безі рагі мен аналық без рагына бейімділіктің генетикалық маркерлері',
+    predItems: [
+      'Кешен: BRCA1 генінде 5 мутацияны анықтау (4153delA, 185delAG, Cys61Gly, 5382insC, BRCA2 (6174delT)) ПТР әдісімен',
+    ],
+    catSensitivity: 'Таргеттік және ісікке қарсы препараттарға сезімталдық/төзімділіктің генетикалық маркерлері',
+    sensItems: [
+      'KRAS генінің мутациясын анықтау (7) G12A, G12C, G12D, G12R, G12S, G12V, G13D',
+      'NRAS генінің мутацияларын ПТР әдісімен анықтау',
+      'KRAS (7) генінің NRAS генінің зерттелетін мутациялар кешенін анықтау',
+      'EGFR геніндегі көптеген мутацияларды анықтау (78 мутация) ПТР әдісімен',
+      'BRAF генінде V600E мутациясын анықтау ПТР әдісімен',
+      'Тіндердегі HER2/neu генінің делециясын анықтау',
+      'Қуық ісігіне 4 мутацияны талдау (FGFR2 және FGFR3)',
+      'PIK3CA мутацияларын ПТР әдісімен анықтау',
+      'IDH1, IDH2 гендерінің мутацияларын ПТР әдісімен анықтау',
+    ],
+    catLiquidBiopsy: 'Сұйық биопсия',
+    liquidItems: [
+      'Перифериялық қандағы циркуляциялық ісік жасушаларын (ЦІЖ) кешенді зерттеу',
+    ],
+    catIHC: 'Иммуногистохимиялық зерттеу (ИГХ)',
+    ihcItems: [
+      'ALK генінің мутациясын ісік тінінің биоптатында ИГХ әдісімен анықтау',
+      'PD-L1-ді ісік тінінің биоптатында ИГХ әдісімен анықтау',
+      'Сүт безі рагі кезінде стероидті гормондар рецепторлары статусын ИГХ анықтау',
+      'Her2/neu генін ісік тінінің биоптатында ИГХ әдісімен анықтау',
+      'ROS1 генін ісік тінінің биоптатында ИГХ әдісімен анықтау',
+      'Ki-67 рецепторларын ісік тінінің биоптатынан ИГХ әдісімен анықтау',
+      '5100 ауруын ісік тінінің биоптатынан ИГХ әдісімен анықтау',
+      'Мезотелиоманы дифференциалды диагностикалау үшін ИГХ',
+      'Меланомамен байланысты антигенді (ECA) CD45 ИГХ әдісімен анықтау',
+    ],
+    catCytogenetic: 'Цитогенетикалық зерттеу',
+    cytoItems: [
+      'Сүйек кемігі жасушаларының цитогенетикалық талдауы (кариотип)',
+    ],
+    catPathohistological: 'Патогистологиялық зерттеу',
+    pathoItems: [
+      'Операциялық-биопсиялық материалды гистохимиялық зерттеу',
+      '1-2-3-4 күрделілік санаты (1 блок-препарат)',
+      '1 гистологиялық препаратты дайындау',
+      'Дайын гистологиялық шыны препараттарды қайта қарау',
+    ],
+    tspotTitle: 'GL | T-SPOT.TB',
+    tspotSubtitle: '«GammaLab» диагностикалық зертханасында T-SPOT.TB тестін тапсыруға болады',
+    tspotDesc: 'T-SPOT.TB — балалар мен ересектерде жасырын (латентті) немесе белсенді туберкулезді диагностикалау әдісі. Тест ағзаның иммундық жүйесінің реакциясы бойынша туберкулез микобактерияларының болуын анықтайды. Зерттеу 99,9% ықтималдықпен, әсіресе өкпеден тыс туберкулез нысандарын қысқа мерзімде диагностикалауға мүмкіндік береді.',
+    tspotCard1: 'Біз реагенттер өндірушісімен тікелей ынтымақтасамыз.',
+    tspotCard2: 'Біздің зертханада жоғары деңгейлі мамандардың үлкен командасы жұмыс істейді.',
+    tspotCard3: 'ГаммаЛаб жылдар бойы жоғары халықаралық стандарттарға сай бірегей және жоғары сапалы зерттеулерімен танылды.',
+    tspotCard4: 'Бізге бүкіл ҚР бойынша 30-дан астам серіктес сенеді.',
+    tspotNote: 'T-SPOT.TB Еуропа елдерінде сәтті қолданылады және көптеген бақылау ұйымдарымен мақұлданған (FDA 2008 ж. бастап).',
+    nutriTitle: 'GL | НУТРИГЕНЕТИКА',
+    nutriSubtitle: '«GammaLab» диагностикалық зертханасында Нутригенетика тестін тапсыруға болады',
+    nutriDesc: 'Нутригенетика — артық салмақты азайту тиімділігіне әсер ететін төрт полиморфты гендегі бес бір нуклеотидті алмасуды (SNP) анықтауға арналған тест.',
+    nutriMethod: 'Талдау нақты уақыт режіміндегі аллель-спецификалық полимеразды тізбекті реакция әдісімен орындалады. Әдіс өте жоғары сезімталдыққа ие, геномдық ДНҚ-ның бірнеше нанограммдарындағы бір нуклеотидті полиморфизмдерді талдауға мүмкіндік береді.',
   },
   en: {
     feat1: 'Modern equipment',
@@ -225,6 +340,62 @@ const contentTranslations = {
     urothelialCancer: 'Urothelial cancer:',
     melanoma: 'Melanoma:',
     glioblastoma: 'Glioblastoma:',
+    analysisTitle: 'Analysis List GL | ONCO',
+    catPredisposition: 'Genetic markers of predisposition to breast and ovarian cancer',
+    predItems: [
+      'Complex: detection of 5 mutations in BRCA1 gene (4153delA, 185delAG, Cys61Gly, 5382insC, BRCA2 (6174delT)) by PCR',
+    ],
+    catSensitivity: 'Genetic markers of sensitivity/resistance to targeted and antitumor drugs',
+    sensItems: [
+      'Detection of KRAS gene mutation (7) G12A, G12C, G12D, G12R, G12S, G12V, G13D',
+      'Detection of NRAS gene mutations by PCR',
+      'Complex of KRAS (7) and NRAS gene mutations detection by PCR',
+      'Detection of multiple EGFR gene mutations (78 mutations) by PCR',
+      'Detection of V600E mutation in BRAF gene by PCR',
+      'Detection of HER2/neu gene deletion in tissue using real-time PCR',
+      'Analysis of 4 mutations in bladder tumors (FGFR2 and FGFR3) by RT-PCR',
+      'Detection of PIK3CA mutations by PCR',
+      'Detection of IDH1, IDH2 gene mutations by PCR',
+    ],
+    catLiquidBiopsy: 'Liquid biopsy',
+    liquidItems: [
+      'Comprehensive study of circulating tumor cells (CTCs) in peripheral blood',
+    ],
+    catIHC: 'Immunohistochemical study (IHC)',
+    ihcItems: [
+      'Detection of ALK gene mutation in tumor tissue biopsy by IHC',
+      'Detection of PD-L1 in tumor tissue biopsy by IHC',
+      'IHC determination of steroid hormone receptor status in breast cancer (PR, ER, Ki67, C-erbB-2 (HER2/neu))',
+      'Detection of Her2/neu gene in tumor tissue biopsy by IHC',
+      'Detection of ROS1 gene in tumor tissue biopsy by IHC',
+      'Detection of Ki-67 receptors from tumor tissue biopsy by IHC',
+      'Disease 5100 from tumor tissue biopsy by IHC',
+      'IHC for differential diagnosis of mesothelioma',
+      'Detection of melanoma-associated antigen (ECA) CD45 by IHC',
+    ],
+    catCytogenetic: 'Cytogenetic study',
+    cytoItems: [
+      'Cytogenetic analysis of bone marrow cells (karyotype)',
+    ],
+    catPathohistological: 'Pathohistological study',
+    pathoItems: [
+      'Histochemical study of surgical-biopsy material',
+      '1-2-3-4 complexity categories (1 block preparation)',
+      'Re-embedding blocks with preparation of 1 histological specimen',
+      'Review of prepared histological glass preparations',
+    ],
+    tspotTitle: 'GL | T-SPOT.TB',
+    tspotSubtitle: 'At the diagnostic laboratory "GammaLab" you can take the T-SPOT.TB test',
+    tspotDesc: 'T-SPOT.TB is a method for diagnosing latent or active tuberculosis in children and adults. The test detects the presence of mycobacterium tuberculosis by the immune system response. The study allows diagnosis with 99.9% probability, especially extrapulmonary forms of tuberculosis (urogenital organs, bones, joints, eyes, meninges, skin, etc.) in a short time.',
+    tspotCard1: 'We cooperate directly with reagent manufacturers.',
+    tspotCard2: 'Our laboratory employs a large team of high-level specialists.',
+    tspotCard3: 'Over the years, GammaLab has established itself as a provider of unique and high-quality research meeting high international standards.',
+    tspotCard4: 'More than 30 partners across Kazakhstan trust us.',
+    tspotNote: 'T-SPOT.TB has been successfully used in European countries and approved by many regulatory organizations (FDA since 2008).',
+    nutriTitle: 'GL | NUTRIGENETICS',
+    nutriSubtitle: 'At the diagnostic laboratory "GammaLab" you can take the Nutrigenetics test',
+    nutriDesc: 'Nutrigenetics is a test for determining five single nucleotide polymorphisms (SNP) in four polymorphic genes whose products affect the effectiveness of weight reduction.',
+    nutriMethod: 'The analysis is performed by allele-specific polymerase chain reaction in real-time mode. The method has very high sensitivity, allowing analysis of single nucleotide polymorphisms in several nanograms of genomic DNA.',
   },
 };
 
@@ -953,6 +1124,258 @@ function DoctorsContent({ locale }: { locale: Locale }) {
           </div>
         </div>
       </section>
+
+      {/* ============================================= */}
+      {/* SECTION 6: DETAILED ANALYSIS LIST */}
+      {/* ============================================= */}
+      <section
+        className="doc-section"
+        style={{
+          padding: 'clamp(60px, 8vw, 120px) 0',
+          backgroundColor: '#FFFFFF',
+        }}
+      >
+        <div className="container-main">
+          <h2
+            style={{
+              fontSize: 'clamp(28px, 4vw, 42px)',
+              fontWeight: '800',
+              color: '#091D33',
+              marginBottom: '48px',
+              textAlign: 'center',
+            }}
+          >
+            <span style={{ color: '#EC910C' }}>
+              {t.analysisTitle.split(' ')[0]}
+            </span>{' '}
+            {t.analysisTitle.split(' ').slice(1).join(' ')}
+          </h2>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Left column */}
+            <div className="flex flex-col gap-6">
+              <AnalysisCategory title={t.catPredisposition} items={t.predItems} color="#EC910C" />
+              <AnalysisCategory title={t.catSensitivity} items={t.sensItems} color="#209DA7" />
+              <AnalysisCategory title={t.catLiquidBiopsy} items={t.liquidItems} color="#EC910C" />
+            </div>
+            {/* Right column */}
+            <div className="flex flex-col gap-6">
+              <AnalysisCategory title={t.catIHC} items={t.ihcItems} color="#209DA7" />
+              <AnalysisCategory title={t.catCytogenetic} items={t.cytoItems} color="#EC910C" />
+              <AnalysisCategory title={t.catPathohistological} items={t.pathoItems} color="#209DA7" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================= */}
+      {/* SECTION 7: T-SPOT.TB */}
+      {/* ============================================= */}
+      <section
+        className="doc-section"
+        style={{
+          padding: 'clamp(60px, 8vw, 120px) 0',
+          background: 'linear-gradient(180deg, #F8FDFD 0%, #F0F9FA 100%)',
+        }}
+      >
+        <div className="container-main">
+          <h2
+            style={{
+              fontSize: 'clamp(28px, 4vw, 42px)',
+              fontWeight: '800',
+              color: '#091D33',
+              marginBottom: '16px',
+              textAlign: 'center',
+            }}
+          >
+            <span style={{ color: '#EC910C' }}>GL</span> | T-SPOT.TB
+          </h2>
+          <p
+            style={{
+              fontSize: '18px',
+              fontWeight: '600',
+              color: '#091D33',
+              textAlign: 'center',
+              marginBottom: '24px',
+            }}
+          >
+            {t.tspotSubtitle}
+          </p>
+          <p
+            style={{
+              fontSize: '15px',
+              lineHeight: '1.8',
+              color: '#3D3D3D',
+              textAlign: 'center',
+              maxWidth: '900px',
+              margin: '0 auto 48px',
+            }}
+          >
+            {t.tspotDesc}
+          </p>
+
+          {/* 4 Feature cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-12">
+            {[t.tspotCard1, t.tspotCard2, t.tspotCard3, t.tspotCard4].map((card, i) => (
+              <div
+                key={i}
+                className="doc-step-card"
+                style={{
+                  padding: '24px 20px',
+                  borderRadius: '16px',
+                  backgroundColor: 'white',
+                  border: '2px solid #EC910C',
+                  textAlign: 'center',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  minHeight: '140px',
+                }}
+              >
+                <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#3D3D3D', fontWeight: '500' }}>
+                  {card}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {/* Note */}
+          <div
+            style={{
+              padding: '24px 32px',
+              borderRadius: '14px',
+              background: 'linear-gradient(135deg, rgba(236,145,12,0.08) 0%, rgba(236,145,12,0.03) 100%)',
+              border: '1px solid rgba(236,145,12,0.15)',
+              textAlign: 'center',
+            }}
+          >
+            <p style={{ fontSize: '14px', color: '#3D3D3D', fontStyle: 'italic' }}>
+              {t.tspotNote}
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================= */}
+      {/* SECTION 8: NUTRIGENETICS */}
+      {/* ============================================= */}
+      <section
+        className="doc-section"
+        style={{
+          padding: 'clamp(60px, 8vw, 120px) 0',
+          backgroundColor: '#FFFFFF',
+        }}
+      >
+        <div className="container-main">
+          <h2
+            style={{
+              fontSize: 'clamp(28px, 4vw, 42px)',
+              fontWeight: '800',
+              color: '#091D33',
+              marginBottom: '16px',
+              textAlign: 'center',
+            }}
+          >
+            <span style={{ color: '#EC910C' }}>GL</span> | {t.nutriTitle.split('| ')[1]}
+          </h2>
+          <p
+            style={{
+              fontSize: '18px',
+              fontWeight: '600',
+              color: '#091D33',
+              textAlign: 'center',
+              marginBottom: '24px',
+            }}
+          >
+            {t.nutriSubtitle}
+          </p>
+          <p
+            style={{
+              fontSize: '15px',
+              lineHeight: '1.8',
+              color: '#3D3D3D',
+              textAlign: 'center',
+              maxWidth: '900px',
+              margin: '0 auto 32px',
+            }}
+          >
+            {t.nutriDesc}
+          </p>
+
+          <div
+            style={{
+              padding: '32px 40px',
+              borderRadius: '16px',
+              background: 'linear-gradient(135deg, rgba(32,157,167,0.06) 0%, rgba(236,145,12,0.04) 100%)',
+              border: '1px solid rgba(32,157,167,0.1)',
+              maxWidth: '800px',
+              margin: '0 auto',
+            }}
+          >
+            <p style={{ fontSize: '15px', lineHeight: '1.8', color: '#3D3D3D', textAlign: 'center' }}>
+              {t.nutriMethod}
+            </p>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+// =============================================
+// ANALYSIS CATEGORY COMPONENT
+// =============================================
+
+function AnalysisCategory({ title, items, color }: { title: string; items: string[]; color: string }) {
+  return (
+    <div
+      style={{
+        borderRadius: '16px',
+        overflow: 'hidden',
+        border: `1px solid ${color}20`,
+        backgroundColor: 'white',
+        boxShadow: '0 2px 12px rgba(0,0,0,0.04)',
+      }}
+    >
+      <div
+        style={{
+          padding: '16px 20px',
+          backgroundColor: `${color}10`,
+          borderBottom: `2px solid ${color}`,
+        }}
+      >
+        <h3 style={{ fontSize: '14px', fontWeight: '700', color, lineHeight: '1.4' }}>
+          {title}
+        </h3>
+      </div>
+      <div style={{ padding: '16px 20px' }}>
+        {items.map((item, i) => (
+          <div
+            key={i}
+            style={{
+              display: 'flex',
+              alignItems: 'flex-start',
+              gap: '10px',
+              padding: '8px 0',
+              borderBottom: i < items.length - 1 ? '1px solid #F3F4F6' : 'none',
+            }}
+          >
+            <div
+              style={{
+                width: '6px',
+                height: '6px',
+                borderRadius: '50%',
+                backgroundColor: color,
+                marginTop: '7px',
+                flexShrink: 0,
+              }}
+            />
+            <span style={{ fontSize: '13px', color: '#3D3D3D', lineHeight: '1.6' }}>
+              {item}
+            </span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
