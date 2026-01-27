@@ -15,6 +15,9 @@ import {
   Zap,
   Shield,
   Users,
+  FlaskConical,
+  BookOpen,
+  FileText,
 } from 'lucide-react';
 
 type Locale = 'ru' | 'kz' | 'en';
@@ -790,28 +793,34 @@ function DoctorsContent({ locale }: { locale: Locale }) {
               </div>
             </div>
 
-            {/* Right: DNA visual / Image placeholder */}
+            {/* Right: DNA visual */}
             <div className="flex-1 flex justify-center">
               <div
                 className="doc-float"
                 style={{
                   position: 'relative',
                   width: '100%',
-                  maxWidth: '460px',
-                  aspectRatio: '1',
-                  borderRadius: '50%',
-                  background: 'linear-gradient(135deg, rgba(32,157,167,0.08) 0%, rgba(236,145,12,0.05) 100%)',
+                  maxWidth: '360px',
+                  aspectRatio: '3/4',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}
               >
+                <div
+                  style={{
+                    position: 'absolute',
+                    inset: '10%',
+                    borderRadius: '50%',
+                    background: 'radial-gradient(circle, rgba(32,157,167,0.08) 0%, transparent 70%)',
+                  }}
+                />
                 <Image
-                  src="/images/hero-doctor.png"
-                  alt="GammaLab"
-                  width={400}
+                  src="/images/dnk.png"
+                  alt="DNA"
+                  width={280}
                   height={400}
-                  style={{ objectFit: 'contain', maxWidth: '85%', height: 'auto' }}
+                  style={{ objectFit: 'contain', maxWidth: '70%', height: 'auto', opacity: 0.85 }}
                   priority
                 />
               </div>
@@ -846,31 +855,52 @@ function DoctorsContent({ locale }: { locale: Locale }) {
             {t.aboutTitle.split(' ').slice(1).join(' ')}
           </h2>
 
-          <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
-            {/* Photo Grid */}
-            <div className="w-full lg:w-1/2">
+          <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-center">
+            {/* Decorative visual */}
+            <div className="w-full lg:w-1/2 flex justify-center">
               <div
-                className="grid grid-cols-2 gap-3"
-                style={{ borderRadius: '16px', overflow: 'hidden' }}
+                style={{
+                  position: 'relative',
+                  width: '100%',
+                  maxWidth: '380px',
+                  aspectRatio: '1',
+                  borderRadius: '24px',
+                  background: 'linear-gradient(135deg, #F0F9FA 0%, #E0F2F4 50%, #FFF9F0 100%)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  overflow: 'hidden',
+                }}
               >
-                {['1about.png', '2about.png', '3about.png', 'about.png'].map((img, i) => (
-                  <div
-                    key={i}
-                    style={{
-                      position: 'relative',
-                      aspectRatio: i === 0 || i === 3 ? '4/3' : '4/3',
-                      borderRadius: '12px',
-                      overflow: 'hidden',
-                    }}
-                  >
-                    <Image
-                      src={`/images/${img}`}
-                      alt={`Laboratory ${i + 1}`}
-                      fill
-                      style={{ objectFit: 'cover' }}
-                    />
-                  </div>
-                ))}
+                <Image
+                  src="/images/dnk.png"
+                  alt="DNA"
+                  width={180}
+                  height={260}
+                  style={{ objectFit: 'contain', opacity: 0.15 }}
+                />
+                <div
+                  style={{
+                    position: 'absolute',
+                    bottom: '24px',
+                    left: '24px',
+                    right: '24px',
+                  }}
+                >
+                  <Image
+                    src="/images/g-logo.png"
+                    alt="GammaLab"
+                    width={50}
+                    height={50}
+                    style={{ objectFit: 'contain', opacity: 0.6, marginBottom: '12px' }}
+                  />
+                  <p style={{ fontSize: '13px', color: '#209DA7', fontWeight: '600' }}>
+                    GammaLab
+                  </p>
+                  <p style={{ fontSize: '11px', color: '#9CA3AF' }}>
+                    Diagnostic Laboratory
+                  </p>
+                </div>
               </div>
             </div>
 
@@ -1532,27 +1562,32 @@ function DoctorsContent({ locale }: { locale: Locale }) {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: '24px',
+                gap: '16px',
                 marginBottom: '40px',
                 flexWrap: 'wrap',
               }}
             >
-              {['🧑', '→', '🧪', '→', '📖'].map((icon, i) => (
+              {[Users, undefined, FlaskConical, undefined, BookOpen].map((Icon, i) => (
                 <div
                   key={i}
                   style={{
                     width: i % 2 === 1 ? 'auto' : '70px',
                     height: i % 2 === 1 ? 'auto' : '70px',
                     borderRadius: '50%',
-                    backgroundColor: i % 2 === 1 ? 'transparent' : '#F0F0F0',
+                    backgroundColor: i % 2 === 1 ? 'transparent' : '#F0F9FA',
+                    border: i % 2 === 1 ? 'none' : '2px solid rgba(32,157,167,0.15)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    fontSize: i % 2 === 1 ? '24px' : '30px',
-                    color: i % 2 === 1 ? '#9CA3AF' : undefined,
                   }}
                 >
-                  {icon}
+                  {i % 2 === 1 ? (
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                      <path d="M5 12h14m-4-4l4 4-4 4" stroke="#9CA3AF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  ) : (
+                    Icon && <Icon size={28} color="#209DA7" />
+                  )}
                 </div>
               ))}
             </div>
@@ -1640,10 +1675,9 @@ function DoctorsContent({ locale }: { locale: Locale }) {
                     alignItems: 'center',
                     justifyContent: 'center',
                     margin: '0 auto 16px',
-                    fontSize: '24px',
                   }}
                 >
-                  📄
+                  <FileText size={26} color="#EC910C" />
                 </div>
                 <h3 style={{ fontSize: '16px', fontWeight: '700', color: '#091D33', marginBottom: '8px' }}>
                   {conf.city}
@@ -1809,15 +1843,16 @@ function DoctorsContent({ locale }: { locale: Locale }) {
             style={{
               width: '60px',
               height: '60px',
-              borderRadius: '14px',
-              background: 'linear-gradient(135deg, #209DA7, #1a8690)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
               margin: '0 auto 24px',
             }}
           >
-            <span style={{ color: 'white', fontWeight: 'bold', fontSize: '24px' }}>G</span>
+            <Image
+              src="/images/g-logo.png"
+              alt="GammaLab"
+              width={60}
+              height={60}
+              style={{ objectFit: 'contain' }}
+            />
           </div>
           <h2
             style={{
