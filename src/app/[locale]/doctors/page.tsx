@@ -194,6 +194,50 @@ const contentTranslations = {
     nutriSubtitle: 'В диагностической лаборатории «GammaLab» можно пройти тест Нутригенетика',
     nutriDesc: 'Нутригенетика — тест для определения пяти однонуклеотидных замен (SNP) в четырех полиморфных генах, продукты которых влияют на эффективность уменьшения избыточного веса.',
     nutriMethod: 'Анализ выполняется методом аллель - специфической полимеразной цепной реакции в режиме реального времени. Метод обладает очень высокой чувствительностью, позволяет анализировать однонуклеотидные полиморфизмы в нескольких нанограммах геномной ДНК.',
+    // SNP Table
+    snpIntro: 'В ходе анализа определяются SNP в генах, кодирующих белки, участвующие в процессах усвоения и обмена жиров.',
+    snpColGene: 'Символ гена и название кодируемого белка',
+    snpColSNP: 'Однонуклеотидные полиморфизмы и определяемые им изоформы',
+    snpColFunc: 'Локализация и функция белка',
+    snpRows: [
+      { gene: 'FABP2', desc: 'Белок, связывающий жирные кислоты 2', snp: 'Rs1799883', poly: 'ACT → GCT\nThr54Ala', func: 'Функционирует в эпителиальных клетках тонкого кишечника. Играет важную роль в усвоении, внутриклеточном метаболизме и транспорте жирных кислот.' },
+      { gene: 'PPARG2', desc: 'Рецептор, активируемый пролифератором пероксисом, типа гамма 2', snp: 'Rs1801282', poly: 'CCC → GCC\nPro12Ala', func: 'Вырабатывается в жировых клетках. Через этот рецептор активируется пролиферация пероксисом (органелл, осуществляющих окисление жирных кислот) и дифференцировка жировых клеток.' },
+      { gene: 'ADRB2', desc: 'Бета-адренергический рецептор 2 (Beta-2 adrenergic receptor)', snp: 'Rs1042713', poly: 'AGA → GGA\nArg16Gly', func: 'Вырабатывается в жировых клетках. Участвует в регуляции процесса превращения жира в энергию под действием адреналина, норадреналина и дофамина.' },
+      { gene: 'ADRB2', desc: 'Бета-адренергический рецептор 2 (Beta-2 adrenergic receptor)', snp: 'Rs1042714', poly: 'CAA → GAA\nGln27Glu', func: 'Вырабатывается в жировых клетках. Участвует в регуляции процесса превращения жира в энергию под действием катехоламинов: адреналина, норадреналина и дофамина.' },
+      { gene: 'ADRB3', desc: 'Бета-адренергический рецептор 3 (Beta-3 adrenergic receptor)', snp: 'Rs4994', poly: 'TGG → CGG\nTrp64Arg', func: 'Вырабатывается главным образом в жировой ткани. Участвует в регуляции процессов липолиза и термогенеза.' },
+    ],
+    // Nutri conclusion
+    nutriConclusion: 'Уже сегодня знание генетического статуса конкретного пациента, имеющего избыточный вес, позволяет подобрать диету или комплекс физических упражнений, с помощью которых можно максимально эффективно уменьшить избыточный вес.',
+    // Conferences
+    confTitle: 'Участие в конференциях | Авторские статьи',
+    confSubtitle: 'Наши специалисты активно участвуют в мировых медицинских конференциях, представляя передовые исследования и технологии, а также являются авторами статей в ведущих мировых медицинских журналах, представляя результаты наших исследований.',
+    conf1: 'Барселона, Испания',
+    conf1date: '8–12 сентября 2018',
+    conf2: 'Базель, Швейцария',
+    conf2date: '3–7 сентября 2022',
+    conf3: 'Монпелье, Франция',
+    conf3date: '1–4 июля 2023',
+    // Why GammaLab
+    whyTitle: 'Почему GammaLab?',
+    whySubtitle: 'Лаборатория GammaLab персонально работает с пациентом/врачом/заказчиком в формате:',
+    whyStep1: 'Согласование услуги',
+    whyStep2: 'Забор образца биоматериала со всех регионов РК',
+    whyStep3: 'Самостоятельная доставка в лабораторию',
+    whyStep4: 'Производство',
+    whyStep5: 'Выдача результата анализа',
+    whyStep6: 'Послетестовое консультирование специалиста',
+    // Advantages
+    advTitle: 'Наши преимущества',
+    adv1: 'Лабораторная информационная система и штрихкодирование образца в месте взятия пробы',
+    adv2: 'Высококвалифицированные специалисты, имеющие большой опыт работы в многопрофильной лаборатории',
+    adv3: 'Максимальная автоматизация всех рабочих процессов',
+    adv4: 'Предоставление курьера и транспортировка образцов с соблюдением требований преаналитического этапа',
+    adv5: 'Оборудование и реагенты ведущих мировых производителей',
+    adv6: 'Участие в системах внешнего контроля качества',
+    adv7: 'Обучение персонала правилам преаналитического этапа',
+    // Final
+    finalTitle: 'Диагностическая лаборатория GammaLab — это современная молекулярно-генетическая лаборатория',
+    finalText: '— это объединение профессионалов, сплочённая команда, решающая ряд перспективных научно-практических задач, связанных с различными направлениями современных технологий в области диагностики заболеваний.',
   },
   kz: {
     feat1: 'Заманауи жабдық',
@@ -295,6 +339,44 @@ const contentTranslations = {
     nutriSubtitle: '«GammaLab» диагностикалық зертханасында Нутригенетика тестін тапсыруға болады',
     nutriDesc: 'Нутригенетика — артық салмақты азайту тиімділігіне әсер ететін төрт полиморфты гендегі бес бір нуклеотидті алмасуды (SNP) анықтауға арналған тест.',
     nutriMethod: 'Талдау нақты уақыт режіміндегі аллель-спецификалық полимеразды тізбекті реакция әдісімен орындалады. Әдіс өте жоғары сезімталдыққа ие, геномдық ДНҚ-ның бірнеше нанограммдарындағы бір нуклеотидті полиморфизмдерді талдауға мүмкіндік береді.',
+    snpIntro: 'Талдау барысында май засімдеу мен алмасу процестеріне қатысатын ақуыздарды кодтайтын гендердегі SNP анықталады.',
+    snpColGene: 'Ген белгісі және кодталатын ақуыз атауы',
+    snpColSNP: 'Бір нуклеотидті полиморфизмдер',
+    snpColFunc: 'Ақуыздың орналасуы мен функциясы',
+    snpRows: [
+      { gene: 'FABP2', desc: 'Май қышқылдарын байланыстыратын ақуыз 2', snp: 'Rs1799883', poly: 'ACT → GCT\nThr54Ala', func: 'Жіңішке ішектің эпителиальды жасушаларында жұмыс істейді. Май қышқылдарын сіңіру, жасушаішілік метаболизм мен тасымалдауда маңызды рөл атқарады.' },
+      { gene: 'PPARG2', desc: 'Пероксисом пролифераторымен белсендірілетін рецептор, гамма 2 түрі', snp: 'Rs1801282', poly: 'CCC → GCC\nPro12Ala', func: 'Май жасушаларында өндіріледі. Осы рецептор арқылы пероксисомалар пролиферациясы белсендіріледі.' },
+      { gene: 'ADRB2', desc: 'Бета-адренергиялық рецептор 2', snp: 'Rs1042713', poly: 'AGA → GGA\nArg16Gly', func: 'Май жасушаларында өндіріледі. Адреналин, норадреналин және дофамин әсерінен майды энергияға айналдыру процесін реттеуге қатысады.' },
+      { gene: 'ADRB2', desc: 'Бета-адренергиялық рецептор 2', snp: 'Rs1042714', poly: 'CAA → GAA\nGln27Glu', func: 'Май жасушаларында өндіріледі. Катехоламиндер әсерінен майды энергияға айналдыру процесін реттеуге қатысады.' },
+      { gene: 'ADRB3', desc: 'Бета-адренергиялық рецептор 3', snp: 'Rs4994', poly: 'TGG → CGG\nTrp64Arg', func: 'Негізінен май тінінде өндіріледі. Липолиз және термогенез процестерін реттеуге қатысады.' },
+    ],
+    nutriConclusion: 'Бүгінгі таңда артық салмағы бар нақты пациенттің генетикалық мәртебесін білу диета немесе дене жаттығулары кешенін таңдауға мүмкіндік береді.',
+    confTitle: 'Конференцияларға қатысу | Авторлық мақалалар',
+    confSubtitle: 'Біздің мамандар әлемдік медициналық конференцияларға белсенді қатысады, алдыңғы қатарлы зерттеулер мен технологияларды ұсынады, сондай-ақ жетекші медициналық журналдарда мақалалар жариялайды.',
+    conf1: 'Барселона, Испания',
+    conf1date: '2018 ж. 8–12 қыркүйек',
+    conf2: 'Базель, Швейцария',
+    conf2date: '2022 ж. 3–7 қыркүйек',
+    conf3: 'Монпелье, Франция',
+    conf3date: '2023 ж. 1–4 шілде',
+    whyTitle: 'Неге GammaLab?',
+    whySubtitle: 'GammaLab зертханасы пациентпен/дәрігермен/тапсырыс берушімен жеке жұмыс істейді:',
+    whyStep1: 'Қызметті келісу',
+    whyStep2: 'ҚР-ның барлық аймақтарынан биоматериал үлгісін алу',
+    whyStep3: 'Зертханаға дербес жеткізу',
+    whyStep4: 'Өндіру',
+    whyStep5: 'Талдау нәтижесін беру',
+    whyStep6: 'Тесттен кейінгі маман кеңесі',
+    advTitle: 'Біздің артықшылықтар',
+    adv1: 'Зертханалық ақпараттық жүйе және сынама алу орнында үлгіні штрих-кодтау',
+    adv2: 'Көп бейінді зертханада үлкен тәжірибесі бар жоғары білікті мамандар',
+    adv3: 'Барлық жұмыс процестерін максималды автоматтандыру',
+    adv4: 'Курьер қызметін ұсыну және преаналитикалық кезең талаптарын сақтай отырып үлгілерді тасымалдау',
+    adv5: 'Жетекші әлемдік өндірушілердің жабдықтары мен реагенттері',
+    adv6: 'Сапаны сыртқы бақылау жүйелеріне қатысу',
+    adv7: 'Персоналды преаналитикалық кезең ережелеріне оқыту',
+    finalTitle: 'GammaLab диагностикалық зертханасы — заманауи молекулярлық-генетикалық зертхана',
+    finalText: '— бұл кәсіпқойлар бірлестігі, аурулардың диагностикасы саласындағы заманауи технологиялардың бағыттарымен байланысты перспективалық ғылыми-практикалық міндеттерді шешетін команда.',
   },
   en: {
     feat1: 'Modern equipment',
@@ -396,6 +478,44 @@ const contentTranslations = {
     nutriSubtitle: 'At the diagnostic laboratory "GammaLab" you can take the Nutrigenetics test',
     nutriDesc: 'Nutrigenetics is a test for determining five single nucleotide polymorphisms (SNP) in four polymorphic genes whose products affect the effectiveness of weight reduction.',
     nutriMethod: 'The analysis is performed by allele-specific polymerase chain reaction in real-time mode. The method has very high sensitivity, allowing analysis of single nucleotide polymorphisms in several nanograms of genomic DNA.',
+    snpIntro: 'During the analysis, SNPs are determined in genes encoding proteins involved in fat absorption and metabolism.',
+    snpColGene: 'Gene symbol and encoded protein name',
+    snpColSNP: 'Single nucleotide polymorphisms and isoforms',
+    snpColFunc: 'Protein localization and function',
+    snpRows: [
+      { gene: 'FABP2', desc: 'Fatty acid-binding protein 2', snp: 'Rs1799883', poly: 'ACT → GCT\nThr54Ala', func: 'Functions in epithelial cells of the small intestine. Plays an important role in absorption, intracellular metabolism and transport of fatty acids.' },
+      { gene: 'PPARG2', desc: 'Peroxisome proliferator-activated receptor gamma 2', snp: 'Rs1801282', poly: 'CCC → GCC\nPro12Ala', func: 'Produced in fat cells. Through this receptor, peroxisome proliferation is activated and fat cell differentiation occurs.' },
+      { gene: 'ADRB2', desc: 'Beta-2 adrenergic receptor', snp: 'Rs1042713', poly: 'AGA → GGA\nArg16Gly', func: 'Produced in fat cells. Participates in regulation of fat-to-energy conversion under the action of adrenaline, noradrenaline and dopamine.' },
+      { gene: 'ADRB2', desc: 'Beta-2 adrenergic receptor', snp: 'Rs1042714', poly: 'CAA → GAA\nGln27Glu', func: 'Produced in fat cells. Participates in regulation of fat-to-energy conversion under the action of catecholamines.' },
+      { gene: 'ADRB3', desc: 'Beta-3 adrenergic receptor', snp: 'Rs4994', poly: 'TGG → CGG\nTrp64Arg', func: 'Produced mainly in adipose tissue. Participates in regulation of lipolysis and thermogenesis.' },
+    ],
+    nutriConclusion: 'Today, knowledge of the genetic status of a specific overweight patient allows selecting a diet or exercise program to most effectively reduce excess weight.',
+    confTitle: 'Conference Participation | Published Articles',
+    confSubtitle: 'Our specialists actively participate in global medical conferences, presenting cutting-edge research and technologies, and publish articles in leading medical journals.',
+    conf1: 'Barcelona, Spain',
+    conf1date: 'September 8–12, 2018',
+    conf2: 'Basel, Switzerland',
+    conf2date: 'September 3–7, 2022',
+    conf3: 'Montpellier, France',
+    conf3date: 'July 1–4, 2023',
+    whyTitle: 'Why GammaLab?',
+    whySubtitle: 'GammaLab laboratory works personally with patients/doctors/clients in the following format:',
+    whyStep1: 'Service coordination',
+    whyStep2: 'Biomaterial sample collection from all regions of Kazakhstan',
+    whyStep3: 'Independent delivery to laboratory',
+    whyStep4: 'Production',
+    whyStep5: 'Analysis result delivery',
+    whyStep6: 'Post-test specialist consultation',
+    advTitle: 'Our Advantages',
+    adv1: 'Laboratory information system and sample barcoding at collection point',
+    adv2: 'Highly qualified specialists with extensive experience in multidisciplinary laboratory',
+    adv3: 'Maximum automation of all work processes',
+    adv4: 'Courier service and sample transportation meeting preanalytical stage requirements',
+    adv5: 'Equipment and reagents from leading global manufacturers',
+    adv6: 'Participation in external quality control systems',
+    adv7: 'Staff training on preanalytical stage rules',
+    finalTitle: 'Diagnostic Laboratory GammaLab — a modern molecular genetic laboratory',
+    finalText: '— an association of professionals, a cohesive team solving promising scientific and practical tasks related to various areas of modern technologies in disease diagnostics.',
   },
 };
 
@@ -1316,6 +1436,403 @@ function DoctorsContent({ locale }: { locale: Locale }) {
               {t.nutriMethod}
             </p>
           </div>
+        </div>
+      </section>
+
+      {/* ============================================= */}
+      {/* SECTION 9: SNP TABLE */}
+      {/* ============================================= */}
+      <section
+        className="doc-section"
+        style={{
+          padding: 'clamp(60px, 8vw, 100px) 0',
+          background: 'linear-gradient(180deg, #F8FDFD 0%, #F0F9FA 100%)',
+        }}
+      >
+        <div className="container-main">
+          <p
+            style={{
+              fontSize: '16px',
+              lineHeight: '1.7',
+              color: '#091D33',
+              fontWeight: '600',
+              textAlign: 'center',
+              maxWidth: '800px',
+              margin: '0 auto 40px',
+            }}
+          >
+            {t.snpIntro}
+          </p>
+
+          <div
+            style={{
+              backgroundColor: 'white',
+              borderRadius: '16px',
+              overflow: 'auto',
+              boxShadow: '0 4px 30px rgba(0,0,0,0.06)',
+            }}
+          >
+            <div style={{ minWidth: '700px' }}>
+              {/* Header */}
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: '1fr 1fr 1.5fr',
+                  backgroundColor: '#209DA7',
+                  color: 'white',
+                  fontSize: '13px',
+                  fontWeight: '700',
+                }}
+              >
+                <div style={{ padding: '14px 20px', borderRight: '1px solid rgba(255,255,255,0.2)' }}>{t.snpColGene}</div>
+                <div style={{ padding: '14px 20px', borderRight: '1px solid rgba(255,255,255,0.2)' }}>{t.snpColSNP}</div>
+                <div style={{ padding: '14px 20px' }}>{t.snpColFunc}</div>
+              </div>
+              {t.snpRows.map((row: { gene: string; desc: string; snp: string; poly: string; func: string }, i: number) => (
+                <div
+                  key={i}
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: '1fr 1fr 1.5fr',
+                    borderBottom: i < t.snpRows.length - 1 ? '1px solid #F3F4F6' : 'none',
+                    fontSize: '13px',
+                    color: '#3D3D3D',
+                  }}
+                >
+                  <div style={{ padding: '14px 20px', borderRight: '1px solid #F3F4F6' }}>
+                    <span style={{ fontWeight: '700', color: '#091D33', display: 'block' }}>{row.gene}</span>
+                    <span style={{ fontSize: '12px', color: '#6B7280' }}>{row.desc}</span>
+                  </div>
+                  <div style={{ padding: '14px 20px', borderRight: '1px solid #F3F4F6' }}>
+                    <span style={{ fontWeight: '600', color: '#209DA7', display: 'block' }}>{row.snp}</span>
+                    <span style={{ fontSize: '12px', color: '#6B7280', whiteSpace: 'pre-line' }}>{row.poly}</span>
+                  </div>
+                  <div style={{ padding: '14px 20px', lineHeight: '1.5' }}>{row.func}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================= */}
+      {/* SECTION 10: NUTRI CONCLUSION */}
+      {/* ============================================= */}
+      <section
+        className="doc-section"
+        style={{
+          padding: 'clamp(60px, 8vw, 100px) 0',
+          backgroundColor: '#FFFFFF',
+        }}
+      >
+        <div className="container-main">
+          <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '24px',
+                marginBottom: '40px',
+                flexWrap: 'wrap',
+              }}
+            >
+              {['🧑', '→', '🧪', '→', '📖'].map((icon, i) => (
+                <div
+                  key={i}
+                  style={{
+                    width: i % 2 === 1 ? 'auto' : '70px',
+                    height: i % 2 === 1 ? 'auto' : '70px',
+                    borderRadius: '50%',
+                    backgroundColor: i % 2 === 1 ? 'transparent' : '#F0F0F0',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: i % 2 === 1 ? '24px' : '30px',
+                    color: i % 2 === 1 ? '#9CA3AF' : undefined,
+                  }}
+                >
+                  {icon}
+                </div>
+              ))}
+            </div>
+            <p style={{ fontSize: '17px', lineHeight: '1.8', color: '#3D3D3D', fontStyle: 'italic' }}>
+              {t.nutriConclusion}
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================= */}
+      {/* SECTION 11: CONFERENCES */}
+      {/* ============================================= */}
+      <section
+        className="doc-section"
+        style={{
+          padding: 'clamp(60px, 8vw, 120px) 0',
+          background: 'linear-gradient(135deg, #F8FDFD 0%, #FFF9F0 100%)',
+        }}
+      >
+        <div className="container-main">
+          <h2
+            style={{
+              fontSize: 'clamp(28px, 4vw, 42px)',
+              fontWeight: '800',
+              color: '#091D33',
+              marginBottom: '20px',
+              textAlign: 'center',
+            }}
+          >
+            <span style={{ color: '#EC910C' }}>{t.confTitle.split(' | ')[0]}</span>
+            {' | '}
+            {t.confTitle.split(' | ')[1]}
+          </h2>
+          <p
+            style={{
+              fontSize: '15px',
+              lineHeight: '1.8',
+              color: '#6B7280',
+              textAlign: 'center',
+              maxWidth: '800px',
+              margin: '0 auto 48px',
+              fontStyle: 'italic',
+            }}
+          >
+            {t.confSubtitle}
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              { city: t.conf1, date: t.conf1date },
+              { city: t.conf2, date: t.conf2date },
+              { city: t.conf3, date: t.conf3date },
+            ].map((conf, i) => (
+              <div
+                key={i}
+                className="doc-step-card"
+                style={{
+                  padding: '32px 24px',
+                  borderRadius: '16px',
+                  backgroundColor: 'white',
+                  border: '1px solid rgba(236,145,12,0.2)',
+                  textAlign: 'center',
+                  position: 'relative',
+                  overflow: 'hidden',
+                }}
+              >
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    height: '4px',
+                    background: 'linear-gradient(90deg, #EC910C, #209DA7)',
+                  }}
+                />
+                <div
+                  style={{
+                    width: '60px',
+                    height: '60px',
+                    borderRadius: '50%',
+                    backgroundColor: 'rgba(236,145,12,0.1)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    margin: '0 auto 16px',
+                    fontSize: '24px',
+                  }}
+                >
+                  📄
+                </div>
+                <h3 style={{ fontSize: '16px', fontWeight: '700', color: '#091D33', marginBottom: '8px' }}>
+                  {conf.city}
+                </h3>
+                <p style={{ fontSize: '13px', color: '#6B7280' }}>{conf.date}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================= */}
+      {/* SECTION 12: WHY GAMMALAB */}
+      {/* ============================================= */}
+      <section
+        className="doc-section"
+        style={{
+          padding: 'clamp(60px, 8vw, 120px) 0',
+          backgroundColor: '#FFFFFF',
+        }}
+      >
+        <div className="container-main">
+          <h2
+            style={{
+              fontSize: 'clamp(28px, 4vw, 42px)',
+              fontWeight: '800',
+              color: '#091D33',
+              marginBottom: '16px',
+              textAlign: 'center',
+            }}
+          >
+            <span style={{ color: '#EC910C' }}>GL</span> | {t.whyTitle}
+          </h2>
+          <p
+            style={{
+              fontSize: '16px',
+              color: '#3D3D3D',
+              textAlign: 'center',
+              maxWidth: '700px',
+              margin: '0 auto 48px',
+              lineHeight: '1.7',
+            }}
+          >
+            {t.whySubtitle}
+          </p>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-5 max-w-[800px] mx-auto">
+            {[t.whyStep1, t.whyStep2, t.whyStep3, t.whyStep4, t.whyStep5, t.whyStep6].map((step, i) => (
+              <div
+                key={i}
+                className="doc-step-card"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '14px',
+                  padding: '20px',
+                  borderRadius: '14px',
+                  backgroundColor: '#F8FDFD',
+                  border: '1px solid rgba(32,157,167,0.12)',
+                }}
+              >
+                <div
+                  style={{
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '50%',
+                    background: 'linear-gradient(135deg, #EC910C, #d4820a)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: 'white',
+                    fontWeight: '800',
+                    fontSize: '16px',
+                    flexShrink: 0,
+                  }}
+                >
+                  {i + 1}
+                </div>
+                <span style={{ fontSize: '13px', fontWeight: '600', color: '#091D33', lineHeight: '1.4' }}>
+                  {step}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================= */}
+      {/* SECTION 13: ADVANTAGES */}
+      {/* ============================================= */}
+      <section
+        className="doc-section"
+        style={{
+          padding: 'clamp(60px, 8vw, 120px) 0',
+          background: 'linear-gradient(180deg, #F8FDFD 0%, #F0F9FA 100%)',
+        }}
+      >
+        <div className="container-main">
+          <h2
+            style={{
+              fontSize: 'clamp(28px, 4vw, 42px)',
+              fontWeight: '800',
+              color: '#091D33',
+              marginBottom: '48px',
+              textAlign: 'center',
+            }}
+          >
+            <span style={{ color: '#EC910C' }}>GL</span> | {t.advTitle}
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-[900px] mx-auto">
+            {[t.adv1, t.adv2, t.adv3, t.adv4, t.adv5, t.adv6, t.adv7].map((adv, i) => (
+              <div
+                key={i}
+                className="doc-feature-card"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '16px',
+                  padding: '20px 24px',
+                  borderRadius: '14px',
+                  backgroundColor: 'white',
+                  border: '2px solid #EC910C',
+                  boxShadow: '0 2px 12px rgba(0,0,0,0.04)',
+                }}
+              >
+                <div
+                  style={{
+                    width: '44px',
+                    height: '44px',
+                    borderRadius: '12px',
+                    background: 'linear-gradient(135deg, #EC910C, #d4820a)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                  }}
+                >
+                  <CheckCircle2 size={22} color="white" />
+                </div>
+                <span style={{ fontSize: '14px', fontWeight: '500', color: '#091D33', lineHeight: '1.5' }}>
+                  {adv}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================= */}
+      {/* SECTION 14: FINAL */}
+      {/* ============================================= */}
+      <section
+        className="doc-section"
+        style={{
+          padding: 'clamp(80px, 10vw, 140px) 0',
+          background: 'linear-gradient(135deg, #FFFFFF 0%, #F0F9FA 40%, #E0F2F4 100%)',
+          textAlign: 'center',
+        }}
+      >
+        <div className="container-main" style={{ maxWidth: '700px' }}>
+          <div
+            style={{
+              width: '60px',
+              height: '60px',
+              borderRadius: '14px',
+              background: 'linear-gradient(135deg, #209DA7, #1a8690)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 24px',
+            }}
+          >
+            <span style={{ color: 'white', fontWeight: 'bold', fontSize: '24px' }}>G</span>
+          </div>
+          <h2
+            style={{
+              fontSize: 'clamp(24px, 3.5vw, 36px)',
+              fontWeight: '800',
+              color: '#EC910C',
+              lineHeight: '1.3',
+              marginBottom: '16px',
+            }}
+          >
+            {t.finalTitle}
+          </h2>
+          <p style={{ fontSize: '17px', lineHeight: '1.8', color: '#3D3D3D' }}>
+            {t.finalText}
+          </p>
         </div>
       </section>
     </div>
