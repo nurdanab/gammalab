@@ -291,6 +291,32 @@ export interface Database {
           created_at?: string
         }
       }
+      doctor_registrations: {
+        Row: {
+          id: string
+          full_name: string
+          phone: string
+          workplace: string
+          profession: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          full_name: string
+          phone: string
+          workplace: string
+          profession: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          full_name?: string
+          phone?: string
+          workplace?: string
+          profession?: string
+          created_at?: string
+        }
+      }
       homepage_categories: {
         Row: {
           id: string

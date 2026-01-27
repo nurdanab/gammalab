@@ -778,6 +778,93 @@ export async function deleteSubmission(id: string): Promise<boolean> {
   return true
 }
 
+// ============ DOCTOR REGISTRATIONS ============
+
+export interface DoctorRegistration {
+  id: string
+  fullName: string
+  phone: string
+  workplace: string
+  profession: string
+  createdAt: string
+}
+
+export interface DoctorRegistrationInsert {
+  fullName: string
+  phone: string
+  workplace: string
+  profession: string
+}
+
+interface DoctorRegistrationRow {
+  id: string
+  full_name: string
+  phone: string
+  workplace: string
+  profession: string
+  created_at: string
+}
+
+function mapDoctorRegistrationRow(row: DoctorRegistrationRow): DoctorRegistration {
+  return {
+    id: row.id,
+    fullName: row.full_name,
+    phone: row.phone,
+    workplace: row.workplace,
+    profession: row.profession,
+    createdAt: row.created_at,
+  }
+}
+
+export async function getDoctorRegistrations(): Promise<DoctorRegistration[]> {
+  const supabase = createAdminClient()
+  const { data, error } = await supabase
+    .from('doctor_registrations')
+    .select('*')
+    .order('created_at', { ascending: false })
+
+  if (error) {
+    console.error('Error fetching doctor registrations:', error)
+    return []
+  }
+  return (data as DoctorRegistrationRow[]).map(mapDoctorRegistrationRow)
+}
+
+export async function createDoctorRegistration(reg: DoctorRegistrationInsert): Promise<DoctorRegistration | null> {
+  const supabase = createAdminClient()
+
+  const { data, error } = await supabase
+    .from('doctor_registrations')
+    .insert({
+      full_name: reg.fullName,
+      phone: reg.phone,
+      workplace: reg.workplace,
+      profession: reg.profession,
+    } as never)
+    .select()
+    .single()
+
+  if (error) {
+    console.error('Error creating doctor registration:', error)
+    return null
+  }
+  return mapDoctorRegistrationRow(data as DoctorRegistrationRow)
+}
+
+export async function deleteDoctorRegistration(id: string): Promise<boolean> {
+  const supabase = createAdminClient()
+  const { error } = await supabase
+    .from('doctor_registrations')
+    .delete()
+    .eq('id', id)
+
+  if (error) {
+    console.error('Error deleting doctor registration:', error)
+    return false
+  }
+  return true
+}
+
 // ============ HOMEPAGE SERVICES ============
 
 export interface HomepageService {

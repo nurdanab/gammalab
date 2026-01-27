@@ -1,295 +1,233 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { useLocale } from 'next-intl';
 import { Link } from '@/i18n/routing';
-import { FlaskConical, Microscope, Shield, Clock, CheckCircle, FileText, Beaker } from 'lucide-react';
+import {
+  FlaskConical,
+  Microscope,
+  Sun,
+  Heart,
+  Dna,
+  Brain,
+  Droplets,
+  Building2,
+  User,
+  Phone,
+  Briefcase,
+  MapPin,
+  ChevronDown,
+} from 'lucide-react';
 
 type Locale = 'ru' | 'kz' | 'en';
 
-const translations = {
+const STORAGE_KEY = 'gammalab_doctor_registered';
+
+// Sidebar navigation config
+const sidebarItems = [
+  { id: 'about', icon: Building2 },
+  { id: 'lung', icon: FlaskConical },
+  { id: 'melanoma', icon: Sun },
+  { id: 'breast', icon: Heart },
+  { id: 'colorectal', icon: Microscope },
+  { id: 'fgfr', icon: Dna },
+  { id: 'glioma', icon: Brain },
+  { id: 'liquidBiopsy', icon: Droplets },
+];
+
+const sidebarLabels = {
   ru: {
-    home: 'Главная',
-    title: 'Врачам',
-    subtitle: 'Информация для специалистов',
-
-    // About section
-    aboutTitle: 'О лаборатории GammaLab',
-    aboutText: 'Диагностическая лаборатория «GammaLab» (ГаммаЛаб) — это современная молекулярно-генетическая лаборатория, объединение профессионалов, сплочённая команда, решающая ряд перспективных научно-практических задач, связанных с различными направлениями современных технологий в области диагностики заболеваний.',
-
-    // Advantages
-    advantagesTitle: 'Преимущества лаборатории',
-    adv1Title: 'Современное оборудование',
-    adv1Desc: 'Лаборатория оснащена новейшим оборудованием, позволяющим проводить исследования на уровне международных стандартов',
-    adv2Title: 'Квалифицированный персонал',
-    adv2Desc: 'Специалисты лаборатории — авторы публикаций в казахстанских и зарубежных научных журналах',
-    adv3Title: 'Высокое качество',
-    adv3Desc: 'Многоуровневая система контроля качества обеспечивает достоверность результатов',
-    adv4Title: 'Комплексный подход',
-    adv4Desc: 'Полный цикл диагностики от забора материала до выдачи результатов',
-
-    // Directions
-    directionsTitle: 'Направления исследований',
-    oncoTitle: 'Онкогенетика',
-    oncoDesc: 'Молекулярно-генетические исследования для выявления мутаций в генах и подбора таргетной терапии',
-    tspotTitle: 'Диагностика туберкулеза',
-    tspotDesc: 'Тест T-SPOT.TB — современный иммунологический метод диагностики туберкулезной инфекции',
-
-    // Oncogenetics section
-    oncoSectionTitle: 'Онкогенетика',
-    oncoSectionDesc: 'Лаборатория «GammaLab» предлагает различные виды исследований для выявления мутаций в генах',
-
-    // Cancer types table
-    cancerType: 'Тип рака',
-    mutations: 'Исследуемые мутации',
-    lungCancer: 'Рак легкого',
-    breastCancer: 'Рак молочной железы',
-    ovarianCancer: 'Рак яичников',
-    colorectalCancer: 'Колоректальный рак',
-    melanomaCancer: 'Меланома',
-
-    // Materials
-    materialsTitle: 'Материалы для исследования',
-    material1: 'Парафиновый блок опухолевой ткани, фиксированной формалином',
-    material2: 'Плазма крови',
-    material3: 'Стекло-оттпечаток (для ИГХ)',
-
-    // Deadlines
-    deadlinesTitle: 'Сроки выполнения',
-    deadline1: '5-7 рабочих дней — ПЦР исследования',
-    deadline2: '5-14 рабочих дней — ИГХ исследования',
-    deadline3: 'до 14 рабочих дней — Жидкостная биопсия',
-
-    // T-SPOT section
-    tspotSectionTitle: 'Диагностика туберкулеза методом T-SPOT.TB',
-    tspotSectionDesc: 'T-SPOT.TB — это анализ крови, также известный как «тест высвобождения гамма-интерферона» (IGRA), иммунологический тест для диагностики инфицирования микобактериями туберкулеза.',
-
-    // T-SPOT advantages
-    tspotAdvTitle: 'Преимущества теста T-SPOT.TB',
-    tspotAdv1: 'Чувствительность теста — 98,8%',
-    tspotAdv2: 'Специфичность теста свыше 99%',
-    tspotAdv3: 'Не зависит от вакцинации БЦЖ',
-    tspotAdv4: 'Превосходит по клинической эффективности туберкулиновую кожную пробу (ТКП)',
-    tspotAdv5: 'Требуется только один визит пациента',
-    tspotAdv6: 'Подходит для всех групп населения (дети, взрослые, беременные)',
-    tspotAdv7: 'Определяет инфекцию вне зависимости от локализации',
-    tspotAdv8: 'Не имеет противопоказаний и ограничений',
-
-    // T-SPOT indications
-    tspotIndicTitle: 'Показания к применению T-SPOT.TB',
-    tspotIndic1: 'Дети, привитые БЦЖ, с ложноположительной реакцией Манту',
-    tspotIndic2: 'Лица с аллергическими и аутоиммунными заболеваниями',
-    tspotIndic3: 'Медицинские работники, военные, беременные',
-    tspotIndic4: 'Лица, контактирующие с туберкулезными больными',
-    tspotIndic5: 'Пациенты на иммуносупрессивной терапии',
-    tspotIndic6: 'Пациенты с хроническими заболеваниями (диабет, ВИЧ)',
-    tspotIndic7: 'Подозрение на внелегочные формы туберкулеза',
-
-    // Requirements
-    requirementsTitle: 'Требования к отправляемому материалу',
-    reqGeneral: 'Общие требования',
-    req1: 'Образцы биологического материала должны быть промаркированы врачом',
-    req2: 'Маркировка должна быть водостойкой и стойкой к истиранию',
-    req3: 'Номер гистологического блока должен совпадать с номером на стекле-оттпечатке',
-
-    reqHistoTitle: 'Гистологический материал',
-    reqHisto1: 'Материал — парафиновый гистологический блок (фиксированный в формалине)',
-    reqHisto2: 'Температура плавления парафина не должна превышать 60°C',
-    reqHisto3: 'Материал должен фиксироваться в 10%-ном нейтральном забуференном формалине',
-    reqHisto4: 'Фиксация материала должна быть начата не более чем через 1 час после взятия ткани',
-    reqHisto5: 'Содержание опухолевых клеток в препарате должно быть не менее 20%',
-
-    // Contact
-    contactTitle: 'Контакты для сотрудничества',
-    contactDesc: 'Для получения дополнительной информации или оформления сотрудничества свяжитесь с нами',
-
-    learnMore: 'Подробнее',
-    downloadPdf: 'Скачать PDF',
+    about: 'О лаборатории',
+    lung: 'Рак легкого',
+    melanoma: 'Меланома',
+    breast: 'Рак молочной железы',
+    colorectal: 'Колоректальный рак',
+    fgfr: 'Семейство генов FGFR',
+    glioma: 'Глиома',
+    liquidBiopsy: 'Жидкостная биопсия',
   },
   kz: {
-    home: 'Басты бет',
-    title: 'Дәрігерлерге',
-    subtitle: 'Мамандарға арналған ақпарат',
-
-    aboutTitle: 'GammaLab зертханасы туралы',
-    aboutText: '«GammaLab» (ГаммаЛаб) диагностикалық зертханасы — бұл заманауи молекулярлық-генетикалық зертхана, аурулардың диагностикасы саласындағы заманауи технологиялардың әртүрлі бағыттарымен байланысты бірқатар перспективалық ғылыми-практикалық міндеттерді шешетін кәсіпқойлар бірлестігі.',
-
-    advantagesTitle: 'Зертхананың артықшылықтары',
-    adv1Title: 'Заманауи жабдық',
-    adv1Desc: 'Зертхана халықаралық стандарттар деңгейінде зерттеулер жүргізуге мүмкіндік беретін жаңа жабдықтармен жабдықталған',
-    adv2Title: 'Білікті персонал',
-    adv2Desc: 'Зертхана мамандары — қазақстандық және шетелдік ғылыми журналдардағы жарияланымдардың авторлары',
-    adv3Title: 'Жоғары сапа',
-    adv3Desc: 'Көп деңгейлі сапаны бақылау жүйесі нәтижелердің дұрыстығын қамтамасыз етеді',
-    adv4Title: 'Кешенді тәсіл',
-    adv4Desc: 'Материал алудан нәтижелерді беруге дейінгі толық диагностика циклі',
-
-    directionsTitle: 'Зерттеу бағыттары',
-    oncoTitle: 'Онкогенетика',
-    oncoDesc: 'Гендердегі мутацияларды анықтау және таргетті терапияны таңдау үшін молекулярлық-генетикалық зерттеулер',
-    tspotTitle: 'Туберкулезді диагностикалау',
-    tspotDesc: 'T-SPOT.TB тесті — туберкулез инфекциясын диагностикалаудың заманауи иммунологиялық әдісі',
-
-    oncoSectionTitle: 'Онкогенетика',
-    oncoSectionDesc: '«GammaLab» зертханасы гендердегі мутацияларды анықтау үшін әртүрлі зерттеулер ұсынады',
-
-    cancerType: 'Рак түрі',
-    mutations: 'Зерттелетін мутациялар',
-    lungCancer: 'Өкпе рагі',
-    breastCancer: 'Сүт безі рагі',
-    ovarianCancer: 'Аналық без рагі',
-    colorectalCancer: 'Колоректальды рак',
-    melanomaCancer: 'Меланома',
-
-    materialsTitle: 'Зерттеуге арналған материалдар',
-    material1: 'Формалинмен бекітілген ісік тінінің парафин блогы',
-    material2: 'Қан плазмасы',
-    material3: 'Шыны-бедер (ИГХ үшін)',
-
-    deadlinesTitle: 'Орындау мерзімдері',
-    deadline1: '5-7 жұмыс күні — ПТР зерттеулері',
-    deadline2: '5-14 жұмыс күні — ИГХ зерттеулері',
-    deadline3: '14 жұмыс күніне дейін — Сұйық биопсия',
-
-    tspotSectionTitle: 'T-SPOT.TB әдісімен туберкулезді диагностикалау',
-    tspotSectionDesc: 'T-SPOT.TB — бұл «гамма-интерферон босату тесті» (IGRA) деп те белгілі қан анализі, микобактериялармен туберкулез инфекциясын диагностикалауға арналған иммунологиялық тест.',
-
-    tspotAdvTitle: 'T-SPOT.TB тестінің артықшылықтары',
-    tspotAdv1: 'Тест сезімталдығы — 98,8%',
-    tspotAdv2: 'Тест спецификалығы 99%-дан жоғары',
-    tspotAdv3: 'БЦЖ вакцинациясына тәуелді емес',
-    tspotAdv4: 'Туберкулинді тері сынамасынан (ТТС) клиникалық тиімділігі жоғары',
-    tspotAdv5: 'Пациенттің тек бір рет келуі қажет',
-    tspotAdv6: 'Барлық топтарға жарамды (балалар, ересектер, жүкті әйелдер)',
-    tspotAdv7: 'Инфекцияны локализациясына қарамастан анықтайды',
-    tspotAdv8: 'Қарсы көрсетулері мен шектеулері жоқ',
-
-    tspotIndicTitle: 'T-SPOT.TB қолдану көрсеткіштері',
-    tspotIndic1: 'БЦЖ егілген, Манту жалған оң реакциясы бар балалар',
-    tspotIndic2: 'Аллергиялық және аутоиммундық аурулары бар адамдар',
-    tspotIndic3: 'Медицина қызметкерлері, әскерилер, жүкті әйелдер',
-    tspotIndic4: 'Туберкулезбен ауыратын науқастармен байланысатын адамдар',
-    tspotIndic5: 'Иммуносупрессивті терапиядағы пациенттер',
-    tspotIndic6: 'Созылмалы аурулары бар пациенттер (диабет, АИТВ)',
-    tspotIndic7: 'Өкпеден тыс туберкулез формаларына күдік',
-
-    requirementsTitle: 'Жіберілетін материалға қойылатын талаптар',
-    reqGeneral: 'Жалпы талаптар',
-    req1: 'Биологиялық материал үлгілері дәрігермен таңбалануы керек',
-    req2: 'Таңбалау суға төзімді және тозуға төзімді болуы керек',
-    req3: 'Гистологиялық блок нөмірі шыны-бедердегі нөмірмен сәйкес келуі керек',
-
-    reqHistoTitle: 'Гистологиялық материал',
-    reqHisto1: 'Материал — парафинді гистологиялық блок (формалинде бекітілген)',
-    reqHisto2: 'Парафиннің балқу температурасы 60°C-тан аспауы керек',
-    reqHisto3: 'Материал 10%-дық бейтарап буферленген формалинде бекітілуі керек',
-    reqHisto4: 'Материалды бекіту тінді алғаннан кейін 1 сағаттан кешіктірмей басталуы керек',
-    reqHisto5: 'Препараттағы ісік жасушаларының мөлшері кемінде 20% болуы керек',
-
-    contactTitle: 'Ынтымақтастық үшін байланыстар',
-    contactDesc: 'Қосымша ақпарат алу немесе ынтымақтастықты рәсімдеу үшін бізбен байланысыңыз',
-
-    learnMore: 'Толығырақ',
-    downloadPdf: 'PDF жүктеу',
+    about: 'Зертхана туралы',
+    lung: 'Өкпе рагі',
+    melanoma: 'Меланома',
+    breast: 'Сүт безі рагі',
+    colorectal: 'Колоректальды рак',
+    fgfr: 'FGFR гендер отбасы',
+    glioma: 'Глиома',
+    liquidBiopsy: 'Сұйық биопсия',
   },
   en: {
-    home: 'Home',
-    title: 'For Doctors',
-    subtitle: 'Information for specialists',
-
-    aboutTitle: 'About GammaLab Laboratory',
-    aboutText: 'Diagnostic Laboratory "GammaLab" is a modern molecular genetic laboratory, an association of professionals, a cohesive team solving a number of promising scientific and practical tasks related to various areas of modern technologies in the field of disease diagnostics.',
-
-    advantagesTitle: 'Laboratory advantages',
-    adv1Title: 'Modern equipment',
-    adv1Desc: 'The laboratory is equipped with the latest equipment that allows research at international standards level',
-    adv2Title: 'Qualified personnel',
-    adv2Desc: 'Laboratory specialists are authors of publications in Kazakhstani and foreign scientific journals',
-    adv3Title: 'High quality',
-    adv3Desc: 'Multi-level quality control system ensures the reliability of results',
-    adv4Title: 'Comprehensive approach',
-    adv4Desc: 'Full diagnostic cycle from material collection to results delivery',
-
-    directionsTitle: 'Research directions',
-    oncoTitle: 'Oncogenetics',
-    oncoDesc: 'Molecular genetic studies for detecting gene mutations and selecting targeted therapy',
-    tspotTitle: 'Tuberculosis diagnostics',
-    tspotDesc: 'T-SPOT.TB test — modern immunological method for tuberculosis infection diagnosis',
-
-    oncoSectionTitle: 'Oncogenetics',
-    oncoSectionDesc: 'GammaLab laboratory offers various types of research for detecting gene mutations',
-
-    cancerType: 'Cancer type',
-    mutations: 'Studied mutations',
-    lungCancer: 'Lung cancer',
-    breastCancer: 'Breast cancer',
-    ovarianCancer: 'Ovarian cancer',
-    colorectalCancer: 'Colorectal cancer',
-    melanomaCancer: 'Melanoma',
-
-    materialsTitle: 'Materials for research',
-    material1: 'Formalin-fixed paraffin-embedded tumor tissue block',
-    material2: 'Blood plasma',
-    material3: 'Glass slide (for IHC)',
-
-    deadlinesTitle: 'Execution deadlines',
-    deadline1: '5-7 working days — PCR studies',
-    deadline2: '5-14 working days — IHC studies',
-    deadline3: 'up to 14 working days — Liquid biopsy',
-
-    tspotSectionTitle: 'Tuberculosis diagnosis by T-SPOT.TB method',
-    tspotSectionDesc: 'T-SPOT.TB is a blood test, also known as "interferon-gamma release assay" (IGRA), an immunological test for diagnosing mycobacterium tuberculosis infection.',
-
-    tspotAdvTitle: 'Advantages of T-SPOT.TB test',
-    tspotAdv1: 'Test sensitivity — 98.8%',
-    tspotAdv2: 'Test specificity over 99%',
-    tspotAdv3: 'Independent of BCG vaccination',
-    tspotAdv4: 'Superior clinical effectiveness compared to tuberculin skin test (TST)',
-    tspotAdv5: 'Only one patient visit required',
-    tspotAdv6: 'Suitable for all population groups (children, adults, pregnant women)',
-    tspotAdv7: 'Detects infection regardless of localization',
-    tspotAdv8: 'No contraindications or limitations',
-
-    tspotIndicTitle: 'Indications for T-SPOT.TB',
-    tspotIndic1: 'BCG-vaccinated children with false-positive Mantoux reaction',
-    tspotIndic2: 'People with allergic and autoimmune diseases',
-    tspotIndic3: 'Healthcare workers, military personnel, pregnant women',
-    tspotIndic4: 'People in contact with tuberculosis patients',
-    tspotIndic5: 'Patients on immunosuppressive therapy',
-    tspotIndic6: 'Patients with chronic diseases (diabetes, HIV)',
-    tspotIndic7: 'Suspected extrapulmonary tuberculosis',
-
-    requirementsTitle: 'Requirements for submitted material',
-    reqGeneral: 'General requirements',
-    req1: 'Biological material samples must be labeled by a doctor',
-    req2: 'Labeling must be waterproof and abrasion resistant',
-    req3: 'Histological block number must match the number on the glass slide',
-
-    reqHistoTitle: 'Histological material',
-    reqHisto1: 'Material — paraffin histological block (formalin-fixed)',
-    reqHisto2: 'Paraffin melting temperature should not exceed 60°C',
-    reqHisto3: 'Material must be fixed in 10% neutral buffered formalin',
-    reqHisto4: 'Material fixation must begin no later than 1 hour after tissue collection',
-    reqHisto5: 'Tumor cell content in the preparation must be at least 20%',
-
-    contactTitle: 'Contacts for cooperation',
-    contactDesc: 'For additional information or cooperation arrangements, please contact us',
-
-    learnMore: 'Learn more',
-    downloadPdf: 'Download PDF',
+    about: 'About the laboratory',
+    lung: 'Lung cancer',
+    melanoma: 'Melanoma',
+    breast: 'Breast cancer',
+    colorectal: 'Colorectal cancer',
+    fgfr: 'FGFR gene family',
+    glioma: 'Glioma',
+    liquidBiopsy: 'Liquid biopsy',
   },
 };
 
-const cancerData = [
-  { type: 'lungCancer', mutations: ['EGFR (T790M)', 'KRAS', 'NRAS', 'ALK', 'ROS1', 'PD-L1', 'BRAF'] },
-  { type: 'breastCancer', mutations: ['BRCA1/2', 'PD-L1', 'HER2/neu', 'PIK3CA'] },
-  { type: 'ovarianCancer', mutations: ['BRCA1/2'] },
-  { type: 'colorectalCancer', mutations: ['KRAS', 'NRAS', 'BRAF'] },
-  { type: 'melanomaCancer', mutations: ['BRAF', 'KRAS', 'NRAS'] },
-];
+const heroTranslations = {
+  ru: { home: 'Главная', title: 'Врачам', subtitle: 'Информация для специалистов' },
+  kz: { home: 'Басты бет', title: 'Дәрігерлерге', subtitle: 'Мамандарға арналған ақпарат' },
+  en: { home: 'Home', title: 'For Doctors', subtitle: 'Information for specialists' },
+};
+
+const formTranslations = {
+  ru: {
+    formTitle: 'Заполните анкету',
+    formSubtitle: 'Для доступа к материалам, пожалуйста, заполните форму',
+    fullName: 'ФИО',
+    fullNamePlaceholder: 'ФИО',
+    phone: 'Номер телефона',
+    phonePlaceholder: '+7 (___) ___-__-__',
+    workplace: 'Место работы',
+    workplacePlaceholder: 'Название медицинского учреждения',
+    profession: 'Профессия',
+    professionPlaceholder: 'Выберите профессию',
+    professions: ['Врач', 'Медсестра', 'Фельдшер', 'Фармацевт', 'Лаборант', 'Другое'],
+    submit: 'Получить доступ',
+    sending: 'Отправка...',
+    error: 'Произошла ошибка. Попробуйте ещё раз.',
+    required: 'Обязательное поле',
+  },
+  kz: {
+    formTitle: 'Сауалнаманы толтырыңыз',
+    formSubtitle: 'Материалдарға қол жеткізу үшін форманы толтырыңыз',
+    fullName: 'Аты-жөні',
+    fullNamePlaceholder: 'ФИО',
+    phone: 'Телефон нөмірі',
+    phonePlaceholder: '+7 (___) ___-__-__',
+    workplace: 'Жұмыс орны',
+    workplacePlaceholder: 'Медициналық мекеменің атауы',
+    profession: 'Мамандық',
+    professionPlaceholder: 'Мамандықты таңдаңыз',
+    professions: ['Дәрігер', 'Медбике', 'Фельдшер', 'Фармацевт', 'Лаборант', 'Басқа'],
+    submit: 'Қол жеткізу',
+    sending: 'Жіберілуде...',
+    error: 'Қате орын алды. Қайталап көріңіз.',
+    required: 'Міндетті өріс',
+  },
+  en: {
+    formTitle: 'Fill out the form',
+    formSubtitle: 'To access the materials, please fill out the form',
+    fullName: 'Full name',
+    fullNamePlaceholder: 'John Smith',
+    phone: 'Phone number',
+    phonePlaceholder: '+7 (___) ___-__-__',
+    workplace: 'Workplace',
+    workplacePlaceholder: 'Name of medical institution',
+    profession: 'Profession',
+    professionPlaceholder: 'Select profession',
+    professions: ['Doctor', 'Nurse', 'Paramedic', 'Pharmacist', 'Lab technician', 'Other'],
+    submit: 'Get access',
+    sending: 'Sending...',
+    error: 'An error occurred. Please try again.',
+    required: 'Required field',
+  },
+};
+
+// =============================================
+// MAIN COMPONENT
+// =============================================
 
 export default function DoctorsPage() {
   const locale = useLocale() as Locale;
-  const t = translations[locale] || translations.ru;
+  const [activeSection, setActiveSection] = useState('about');
+  const [isRegistered, setIsRegistered] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const registered = localStorage.getItem(STORAGE_KEY);
+    setIsRegistered(registered === 'true');
+  }, []);
+
+  const handleRegistrationComplete = () => {
+    localStorage.setItem(STORAGE_KEY, 'true');
+    setIsRegistered(true);
+  };
+
+  const hero = heroTranslations[locale] || heroTranslations.ru;
+  const labels = sidebarLabels[locale] || sidebarLabels.ru;
+
+  const getContent = () => {
+    switch (activeSection) {
+      case 'about':
+        return { title: labels.about, content: <AboutSection locale={locale} /> };
+      case 'lung':
+        return { title: labels.lung, content: <p>Контент в разработке</p> };
+      case 'melanoma':
+        return { title: labels.melanoma, content: <p>Контент в разработке</p> };
+      case 'breast':
+        return { title: labels.breast, content: <p>Контент в разработке</p> };
+      case 'colorectal':
+        return { title: labels.colorectal, content: <p>Контент в разработке</p> };
+      case 'fgfr':
+        return { title: labels.fgfr, content: <p>Контент в разработке</p> };
+      case 'glioma':
+        return { title: labels.glioma, content: <p>Контент в разработке</p> };
+      case 'liquidBiopsy':
+        return { title: labels.liquidBiopsy, content: <p>Контент в разработке</p> };
+      default:
+        return { title: '', content: null };
+    }
+  };
+
+  // Loading state — ждём чтения localStorage
+  if (isRegistered === null) {
+    return (
+      <div className="flex flex-col min-h-screen bg-gray-50">
+        <section
+          className="relative pt-[100px] sm:pt-[110px] lg:pt-[120px] pb-8 lg:pb-10"
+          style={{ backgroundColor: '#EEF6F6' }}
+        >
+          <div className="container-main">
+            <div className="flex items-center gap-2 mb-6">
+              <Link href="/" className="text-[13px]" style={{ color: '#9CA3AF' }}>{hero.home}</Link>
+              <span className="text-[13px]" style={{ color: '#9CA3AF' }}>/</span>
+              <span className="text-[13px]" style={{ color: '#209DA7' }}>{hero.title}</span>
+            </div>
+            <h1 className="text-[28px] sm:text-[36px] lg:text-[42px] font-semibold mb-3" style={{ color: '#091D33' }}>
+              {hero.title}
+            </h1>
+          </div>
+        </section>
+      </div>
+    );
+  }
+
+  // Не зарегистрирован — показываем форму
+  if (!isRegistered) {
+    return (
+      <div className="flex flex-col min-h-screen bg-gray-50">
+        <section
+          className="relative pt-[100px] sm:pt-[110px] lg:pt-[120px] pb-8 lg:pb-10"
+          style={{ backgroundColor: '#EEF6F6' }}
+        >
+          <div className="container-main">
+            <div className="flex items-center gap-2 mb-6">
+              <Link href="/" className="text-[13px]" style={{ color: '#9CA3AF' }}>{hero.home}</Link>
+              <span className="text-[13px]" style={{ color: '#9CA3AF' }}>/</span>
+              <span className="text-[13px]" style={{ color: '#209DA7' }}>{hero.title}</span>
+            </div>
+            <h1 className="text-[28px] sm:text-[36px] lg:text-[42px] font-semibold mb-3" style={{ color: '#091D33' }}>
+              {hero.title}
+            </h1>
+            <p className="text-[16px] lg:text-[18px]" style={{ color: '#6B7280' }}>
+              {hero.subtitle}
+            </p>
+          </div>
+        </section>
+
+        <section className="bg-white px-5 sm:px-8 md:px-12 lg:px-20 py-12 lg:py-20">
+          <RegistrationForm locale={locale} onSuccess={handleRegistrationComplete} />
+        </section>
+      </div>
+    );
+  }
+
+  // Зарегистрирован — показываем контент
+  const currentContent = getContent();
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
@@ -299,396 +237,397 @@ export default function DoctorsPage() {
         style={{ backgroundColor: '#EEF6F6' }}
       >
         <div className="container-main">
-          {/* Breadcrumbs */}
           <div className="flex items-center gap-2 mb-6">
-            <Link href="/" className="text-[13px]" style={{ color: '#9CA3AF' }}>
-              {t.home}
-            </Link>
+            <Link href="/" className="text-[13px]" style={{ color: '#9CA3AF' }}>{hero.home}</Link>
             <span className="text-[13px]" style={{ color: '#9CA3AF' }}>/</span>
-            <span className="text-[13px]" style={{ color: '#209DA7' }}>
-              {t.title}
-            </span>
+            <span className="text-[13px]" style={{ color: '#209DA7' }}>{hero.title}</span>
           </div>
-
-          {/* Title */}
-          <h1
-            className="text-[28px] sm:text-[36px] lg:text-[42px] font-semibold mb-3"
-            style={{ color: '#091D33' }}
-          >
-            {t.title}
+          <h1 className="text-[28px] sm:text-[36px] lg:text-[42px] font-semibold mb-3" style={{ color: '#091D33' }}>
+            {hero.title}
           </h1>
           <p className="text-[16px] lg:text-[18px]" style={{ color: '#6B7280' }}>
-            {t.subtitle}
+            {hero.subtitle}
           </p>
         </div>
       </section>
 
-      {/* About Section */}
-      <section className="bg-white py-12 lg:py-16">
-        <div className="container-main">
-          <h2
-            className="text-[24px] sm:text-[28px] lg:text-[32px] font-semibold mb-6"
-            style={{ color: '#091D33' }}
+      {/* Main Content */}
+      <section className="bg-white px-5 sm:px-8 md:px-12 lg:px-20 py-12 lg:py-20">
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
+          {/* Sidebar Navigation */}
+          <aside
+            className="lg:w-72 flex-shrink-0"
+            style={{
+              backgroundColor: 'white',
+              borderRadius: '12px',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+              overflow: 'hidden',
+              height: 'fit-content',
+            }}
           >
-            {t.aboutTitle}
-          </h2>
-          <p
-            className="text-[15px] lg:text-[16px] leading-[1.8] max-w-[900px]"
-            style={{ color: '#4B5563' }}
-          >
-            {t.aboutText}
-          </p>
-        </div>
-      </section>
+            <nav>
+              {sidebarItems.map((item) => {
+                const Icon = item.icon;
+                const isActive = activeSection === item.id;
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => setActiveSection(item.id)}
+                    className="w-full text-left flex items-center gap-3 transition-colors"
+                    style={{
+                      padding: '16px 20px',
+                      backgroundColor: isActive ? '#209DA7' : 'transparent',
+                      color: isActive ? 'white' : '#3D3D3D',
+                      borderBottom: '1px solid #f0f0f0',
+                      fontSize: '14px',
+                      fontWeight: isActive ? '500' : '400',
+                    }}
+                  >
+                    <Icon size={18} style={{ color: isActive ? 'white' : '#EC910C' }} />
+                    {labels[item.id as keyof typeof labels]}
+                  </button>
+                );
+              })}
+            </nav>
+          </aside>
 
-      {/* Advantages Section */}
-      <section className="py-12 lg:py-16" style={{ backgroundColor: '#F9FAFB' }}>
-        <div className="container-main">
-          <h2
-            className="text-[24px] sm:text-[28px] lg:text-[32px] font-semibold mb-8"
-            style={{ color: '#091D33' }}
-          >
-            {t.advantagesTitle}
-          </h2>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { icon: Microscope, title: t.adv1Title, desc: t.adv1Desc },
-              { icon: Shield, title: t.adv2Title, desc: t.adv2Desc },
-              { icon: CheckCircle, title: t.adv3Title, desc: t.adv3Desc },
-              { icon: FlaskConical, title: t.adv4Title, desc: t.adv4Desc },
-            ].map((item, index) => (
+          {/* Content Area */}
+          <main className="flex-1">
+            <div
+              className="p-6 sm:p-8 lg:p-[50px_60px]"
+              style={{
+                backgroundColor: '#e8f5f6',
+                borderRadius: '12px',
+              }}
+            >
+              <h2
+                className="text-2xl"
+                style={{
+                  color: '#EC910C',
+                  marginBottom: '24px',
+                  textAlign: 'center',
+                  fontWeight: '700',
+                }}
+              >
+                {currentContent.title}
+              </h2>
               <div
-                key={index}
-                className="bg-white rounded-xl p-6 shadow-sm"
+                style={{
+                  color: '#3D3D3D',
+                  fontSize: '15px',
+                  lineHeight: '1.8',
+                }}
               >
-                <div
-                  className="w-12 h-12 rounded-lg flex items-center justify-center mb-4"
-                  style={{ backgroundColor: '#EEF6F6' }}
-                >
-                  <item.icon size={24} style={{ color: '#209DA7' }} />
-                </div>
-                <h3
-                  className="text-[16px] font-semibold mb-2"
-                  style={{ color: '#091D33' }}
-                >
-                  {item.title}
-                </h3>
-                <p className="text-[14px] leading-[1.6]" style={{ color: '#6B7280' }}>
-                  {item.desc}
-                </p>
+                {currentContent.content}
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Directions Section */}
-      <section className="bg-white py-12 lg:py-16">
-        <div className="container-main">
-          <h2
-            className="text-[24px] sm:text-[28px] lg:text-[32px] font-semibold mb-8"
-            style={{ color: '#091D33' }}
-          >
-            {t.directionsTitle}
-          </h2>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Oncogenetics Card */}
-            <div
-              className="rounded-xl p-6 lg:p-8"
-              style={{ backgroundColor: '#FFF7ED', border: '1px solid #FDBA74' }}
-            >
-              <div
-                className="w-14 h-14 rounded-lg flex items-center justify-center mb-4"
-                style={{ backgroundColor: '#F97316' }}
-              >
-                <FlaskConical size={28} style={{ color: 'white' }} />
-              </div>
-              <h3
-                className="text-[20px] lg:text-[22px] font-semibold mb-3"
-                style={{ color: '#091D33' }}
-              >
-                {t.oncoTitle}
-              </h3>
-              <p className="text-[15px] leading-[1.7]" style={{ color: '#4B5563' }}>
-                {t.oncoDesc}
-              </p>
             </div>
-
-            {/* T-SPOT Card */}
-            <div
-              className="rounded-xl p-6 lg:p-8"
-              style={{ backgroundColor: '#EEF6F6', border: '1px solid #209DA7' }}
-            >
-              <div
-                className="w-14 h-14 rounded-lg flex items-center justify-center mb-4"
-                style={{ backgroundColor: '#209DA7' }}
-              >
-                <Beaker size={28} style={{ color: 'white' }} />
-              </div>
-              <h3
-                className="text-[20px] lg:text-[22px] font-semibold mb-3"
-                style={{ color: '#091D33' }}
-              >
-                {t.tspotTitle}
-              </h3>
-              <p className="text-[15px] leading-[1.7]" style={{ color: '#4B5563' }}>
-                {t.tspotDesc}
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Oncogenetics Section */}
-      <section id="oncogenetics" className="py-12 lg:py-16" style={{ backgroundColor: '#FFF7ED' }}>
-        <div className="container-main">
-          <h2
-            className="text-[24px] sm:text-[28px] lg:text-[32px] font-semibold mb-4"
-            style={{ color: '#091D33' }}
-          >
-            {t.oncoSectionTitle}
-          </h2>
-          <p className="text-[15px] lg:text-[16px] mb-8" style={{ color: '#4B5563' }}>
-            {t.oncoSectionDesc}
-          </p>
-
-          {/* Cancer Types Table */}
-          <div className="bg-white rounded-xl overflow-hidden shadow-sm mb-8">
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr style={{ backgroundColor: '#F97316' }}>
-                    <th className="text-left px-6 py-4 text-white font-semibold text-[14px]">
-                      {t.cancerType}
-                    </th>
-                    <th className="text-left px-6 py-4 text-white font-semibold text-[14px]">
-                      {t.mutations}
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {cancerData.map((item, index) => (
-                    <tr
-                      key={index}
-                      className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}
-                      style={{ verticalAlign: 'top' }}
-                    >
-                      <td
-                        className="px-6 py-4 text-[14px] font-medium"
-                        style={{ color: '#091D33' }}
-                      >
-                        {t[item.type as keyof typeof t]}
-                      </td>
-                      <td
-                        className="px-6 py-4 text-[14px]"
-                        style={{ color: '#4B5563' }}
-                      >
-                        <div className="flex flex-col gap-1">
-                          {item.mutations.map((mutation, idx) => (
-                            <span key={idx}>{mutation}</span>
-                          ))}
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          {/* Materials and Deadlines */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Materials */}
-            <div className="bg-white rounded-xl p-6 shadow-sm">
-              <div className="flex items-center gap-3 mb-4">
-                <FileText size={24} style={{ color: '#F97316' }} />
-                <h3
-                  className="text-[18px] font-semibold"
-                  style={{ color: '#091D33' }}
-                >
-                  {t.materialsTitle}
-                </h3>
-              </div>
-              <ul className="space-y-3">
-                {[t.material1, t.material2, t.material3].map((item, index) => (
-                  <li key={index} className="flex items-start gap-3">
-                    <CheckCircle size={18} className="mt-0.5 flex-shrink-0" style={{ color: '#F97316' }} />
-                    <span className="text-[14px]" style={{ color: '#4B5563' }}>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Deadlines */}
-            <div className="bg-white rounded-xl p-6 shadow-sm">
-              <div className="flex items-center gap-3 mb-4">
-                <Clock size={24} style={{ color: '#F97316' }} />
-                <h3
-                  className="text-[18px] font-semibold"
-                  style={{ color: '#091D33' }}
-                >
-                  {t.deadlinesTitle}
-                </h3>
-              </div>
-              <ul className="space-y-3">
-                {[t.deadline1, t.deadline2, t.deadline3].map((item, index) => (
-                  <li key={index} className="flex items-start gap-3">
-                    <CheckCircle size={18} className="mt-0.5 flex-shrink-0" style={{ color: '#F97316' }} />
-                    <span className="text-[14px]" style={{ color: '#4B5563' }}>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* T-SPOT Section */}
-      <section id="tspot" className="py-12 lg:py-16" style={{ backgroundColor: '#EEF6F6' }}>
-        <div className="container-main">
-          <h2
-            className="text-[24px] sm:text-[28px] lg:text-[32px] font-semibold mb-4"
-            style={{ color: '#091D33' }}
-          >
-            {t.tspotSectionTitle}
-          </h2>
-          <p className="text-[15px] lg:text-[16px] mb-8 max-w-[900px]" style={{ color: '#4B5563' }}>
-            {t.tspotSectionDesc}
-          </p>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Advantages */}
-            <div className="bg-white rounded-xl p-6 shadow-sm">
-              <h3
-                className="text-[18px] font-semibold mb-4"
-                style={{ color: '#091D33' }}
-              >
-                {t.tspotAdvTitle}
-              </h3>
-              <ul className="space-y-3">
-                {[
-                  t.tspotAdv1, t.tspotAdv2, t.tspotAdv3, t.tspotAdv4,
-                  t.tspotAdv5, t.tspotAdv6, t.tspotAdv7, t.tspotAdv8
-                ].map((item, index) => (
-                  <li key={index} className="flex items-start gap-3">
-                    <CheckCircle size={18} className="mt-0.5 flex-shrink-0" style={{ color: '#209DA7' }} />
-                    <span className="text-[14px]" style={{ color: '#4B5563' }}>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Indications */}
-            <div className="bg-white rounded-xl p-6 shadow-sm">
-              <h3
-                className="text-[18px] font-semibold mb-4"
-                style={{ color: '#091D33' }}
-              >
-                {t.tspotIndicTitle}
-              </h3>
-              <ul className="space-y-3">
-                {[
-                  t.tspotIndic1, t.tspotIndic2, t.tspotIndic3, t.tspotIndic4,
-                  t.tspotIndic5, t.tspotIndic6, t.tspotIndic7
-                ].map((item, index) => (
-                  <li key={index} className="flex items-start gap-3">
-                    <CheckCircle size={18} className="mt-0.5 flex-shrink-0" style={{ color: '#209DA7' }} />
-                    <span className="text-[14px]" style={{ color: '#4B5563' }}>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Requirements Section */}
-      <section className="bg-white py-12 lg:py-16">
-        <div className="container-main">
-          <h2
-            className="text-[24px] sm:text-[28px] lg:text-[32px] font-semibold mb-8"
-            style={{ color: '#091D33' }}
-          >
-            {t.requirementsTitle}
-          </h2>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* General Requirements */}
-            <div
-              className="rounded-xl p-6"
-              style={{ backgroundColor: '#F9FAFB', border: '1px solid #E5E7EB' }}
-            >
-              <h3
-                className="text-[18px] font-semibold mb-4"
-                style={{ color: '#091D33' }}
-              >
-                {t.reqGeneral}
-              </h3>
-              <ul className="space-y-3">
-                {[t.req1, t.req2, t.req3].map((item, index) => (
-                  <li key={index} className="flex items-start gap-3">
-                    <CheckCircle size={18} className="mt-0.5 flex-shrink-0" style={{ color: '#209DA7' }} />
-                    <span className="text-[14px]" style={{ color: '#4B5563' }}>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Histological Requirements */}
-            <div
-              className="rounded-xl p-6"
-              style={{ backgroundColor: '#F9FAFB', border: '1px solid #E5E7EB' }}
-            >
-              <h3
-                className="text-[18px] font-semibold mb-4"
-                style={{ color: '#091D33' }}
-              >
-                {t.reqHistoTitle}
-              </h3>
-              <ul className="space-y-3">
-                {[t.reqHisto1, t.reqHisto2, t.reqHisto3, t.reqHisto4, t.reqHisto5].map((item, index) => (
-                  <li key={index} className="flex items-start gap-3">
-                    <CheckCircle size={18} className="mt-0.5 flex-shrink-0" style={{ color: '#209DA7' }} />
-                    <span className="text-[14px]" style={{ color: '#4B5563' }}>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Contact Section */}
-      <section className="py-12 lg:py-16" style={{ backgroundColor: '#091D33' }}>
-        <div className="container-main text-center">
-          <h2
-            className="text-[24px] sm:text-[28px] lg:text-[32px] font-semibold mb-4 text-white"
-          >
-            {t.contactTitle}
-          </h2>
-          <p className="text-[15px] lg:text-[16px] mb-8 text-gray-300 max-w-[600px] mx-auto">
-            {t.contactDesc}
-          </p>
-
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a
-              href="tel:+77051000333"
-              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-[15px] font-medium transition-colors"
-              style={{ backgroundColor: '#209DA7', color: 'white' }}
-            >
-              +7 (705) 1000-333
-            </a>
-            <a
-              href="mailto:info@gammalab.kz"
-              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-[15px] font-medium transition-colors border border-white/30 text-white hover:bg-white/10"
-            >
-              info@gammalab.kz
-            </a>
-          </div>
+          </main>
         </div>
       </section>
     </div>
+  );
+}
+
+// =============================================
+// REGISTRATION FORM
+// =============================================
+
+function RegistrationForm({ locale, onSuccess }: { locale: Locale; onSuccess: () => void }) {
+  const t = formTranslations[locale] || formTranslations.ru;
+
+  const [fullName, setFullName] = useState('');
+  const [phone, setPhone] = useState('+7 ');
+  const [workplace, setWorkplace] = useState('');
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const input = e.target.value;
+    // Extract only digits
+    let digits = input.replace(/\D/g, '');
+    // Always start with 7
+    if (digits.length === 0) {
+      setPhone('+7 ');
+      return;
+    }
+    if (digits[0] === '8') digits = '7' + digits.slice(1);
+    if (digits[0] !== '7') digits = '7' + digits;
+    // Limit to 11 digits (7 + 10)
+    digits = digits.slice(0, 11);
+
+    let formatted = '+7';
+    if (digits.length > 1) formatted += ' (' + digits.slice(1, 4);
+    if (digits.length >= 4) formatted += ') ';
+    if (digits.length > 4) formatted += digits.slice(4, 7);
+    if (digits.length > 7) formatted += '-' + digits.slice(7, 9);
+    if (digits.length > 9) formatted += '-' + digits.slice(9, 11);
+
+    setPhone(formatted);
+  };
+
+  const isPhoneComplete = phone.replace(/\D/g, '').length === 11;
+  const [profession, setProfession] = useState('');
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState('');
+  const [touched, setTouched] = useState({
+    fullName: false,
+    phone: false,
+    workplace: false,
+    profession: false,
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setTouched({ fullName: true, phone: true, workplace: true, profession: true });
+
+    if (!fullName.trim() || !isPhoneComplete || !workplace.trim() || !profession) {
+      return;
+    }
+
+    setSending(true);
+    setError('');
+
+    try {
+      const res = await fetch('/api/doctors/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fullName: fullName.trim(),
+          phone: phone.trim(),
+          workplace: workplace.trim(),
+          profession,
+        }),
+      });
+
+      if (!res.ok) {
+        throw new Error('Failed');
+      }
+
+      onSuccess();
+    } catch {
+      setError(t.error);
+      setSending(false);
+    }
+  };
+
+  const inputStyle: React.CSSProperties = {
+    width: '100%',
+    padding: '14px 16px 14px 46px',
+    borderRadius: '10px',
+    border: '1.5px solid #E5E7EB',
+    fontSize: '15px',
+    color: '#091D33',
+    backgroundColor: 'white',
+    outline: 'none',
+    transition: 'border-color 0.2s',
+  };
+
+  const inputErrorStyle: React.CSSProperties = {
+    ...inputStyle,
+    borderColor: '#EF4444',
+  };
+
+  const iconStyle: React.CSSProperties = {
+    position: 'absolute',
+    left: '16px',
+    top: '50%',
+    transform: 'translateY(-50%)',
+    color: '#9CA3AF',
+    pointerEvents: 'none',
+  };
+
+  return (
+    <div className="max-w-[500px] mx-auto">
+      <div
+        style={{
+          backgroundColor: '#e8f5f6',
+          borderRadius: '16px',
+          padding: '40px 32px',
+        }}
+      >
+        <div className="text-center mb-8">
+          <div
+            className="w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center"
+            style={{ backgroundColor: '#209DA7' }}
+          >
+            <User size={28} color="white" />
+          </div>
+          <h2
+            className="text-[22px] sm:text-[26px] font-semibold mb-2"
+            style={{ color: '#091D33' }}
+          >
+            {t.formTitle}
+          </h2>
+          <p className="text-[14px]" style={{ color: '#6B7280' }}>
+            {t.formSubtitle}
+          </p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+          {/* ФИО */}
+          <div>
+            <label className="block text-[13px] font-medium mb-1.5" style={{ color: '#374151' }}>
+              {t.fullName} <span style={{ color: '#EF4444' }}>*</span>
+            </label>
+            <div style={{ position: 'relative' }}>
+              <User size={18} style={iconStyle} />
+              <input
+                type="text"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                onBlur={() => setTouched((p) => ({ ...p, fullName: true }))}
+                placeholder={t.fullNamePlaceholder}
+                style={touched.fullName && !fullName.trim() ? inputErrorStyle : inputStyle}
+                onFocus={(e) => (e.target.style.borderColor = '#209DA7')}
+              />
+            </div>
+            {touched.fullName && !fullName.trim() && (
+              <p className="text-[12px] mt-1" style={{ color: '#EF4444' }}>{t.required}</p>
+            )}
+          </div>
+
+          {/* Телефон */}
+          <div>
+            <label className="block text-[13px] font-medium mb-1.5" style={{ color: '#374151' }}>
+              {t.phone} <span style={{ color: '#EF4444' }}>*</span>
+            </label>
+            <div style={{ position: 'relative' }}>
+              <Phone size={18} style={iconStyle} />
+              <input
+                type="tel"
+                value={phone}
+                onChange={handlePhoneChange}
+                onBlur={() => setTouched((p) => ({ ...p, phone: true }))}
+                placeholder={t.phonePlaceholder}
+                style={touched.phone && !isPhoneComplete ? inputErrorStyle : inputStyle}
+                onFocus={(e) => {
+                  e.target.style.borderColor = '#209DA7';
+                  if (!phone) setPhone('+7 ');
+                }}
+              />
+            </div>
+            {touched.phone && !isPhoneComplete && (
+              <p className="text-[12px] mt-1" style={{ color: '#EF4444' }}>{t.required}</p>
+            )}
+          </div>
+
+          {/* Место работы */}
+          <div>
+            <label className="block text-[13px] font-medium mb-1.5" style={{ color: '#374151' }}>
+              {t.workplace} <span style={{ color: '#EF4444' }}>*</span>
+            </label>
+            <div style={{ position: 'relative' }}>
+              <MapPin size={18} style={iconStyle} />
+              <input
+                type="text"
+                value={workplace}
+                onChange={(e) => setWorkplace(e.target.value)}
+                onBlur={() => setTouched((p) => ({ ...p, workplace: true }))}
+                placeholder={t.workplacePlaceholder}
+                style={touched.workplace && !workplace.trim() ? inputErrorStyle : inputStyle}
+                onFocus={(e) => (e.target.style.borderColor = '#209DA7')}
+              />
+            </div>
+            {touched.workplace && !workplace.trim() && (
+              <p className="text-[12px] mt-1" style={{ color: '#EF4444' }}>{t.required}</p>
+            )}
+          </div>
+
+          {/* Профессия */}
+          <div>
+            <label className="block text-[13px] font-medium mb-1.5" style={{ color: '#374151' }}>
+              {t.profession} <span style={{ color: '#EF4444' }}>*</span>
+            </label>
+            <div style={{ position: 'relative' }}>
+              <Briefcase size={18} style={iconStyle} />
+              <select
+                value={profession}
+                onChange={(e) => setProfession(e.target.value)}
+                onBlur={() => setTouched((p) => ({ ...p, profession: true }))}
+                style={{
+                  ...(touched.profession && !profession ? inputErrorStyle : inputStyle),
+                  appearance: 'none',
+                  paddingRight: '42px',
+                  color: profession ? '#091D33' : '#9CA3AF',
+                }}
+                onFocus={(e) => (e.target.style.borderColor = '#209DA7')}
+              >
+                <option value="" disabled>{t.professionPlaceholder}</option>
+                {t.professions.map((p) => (
+                  <option key={p} value={p}>{p}</option>
+                ))}
+              </select>
+              <ChevronDown
+                size={18}
+                style={{
+                  position: 'absolute',
+                  right: '14px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  color: '#9CA3AF',
+                  pointerEvents: 'none',
+                }}
+              />
+            </div>
+            {touched.profession && !profession && (
+              <p className="text-[12px] mt-1" style={{ color: '#EF4444' }}>{t.required}</p>
+            )}
+          </div>
+
+          {/* Error */}
+          {error && (
+            <p className="text-[13px] text-center" style={{ color: '#EF4444' }}>{error}</p>
+          )}
+
+          {/* Submit */}
+          <button
+            type="submit"
+            disabled={sending}
+            className="w-full py-3.5 rounded-full text-[15px] font-medium transition-opacity"
+            style={{
+              backgroundColor: '#209DA7',
+              color: 'white',
+              opacity: sending ? 0.7 : 1,
+              cursor: sending ? 'not-allowed' : 'pointer',
+              marginTop: '8px',
+            }}
+          >
+            {sending ? t.sending : t.submit}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+// =============================================
+// SECTION COMPONENTS
+// =============================================
+
+function AboutSection({ locale }: { locale: Locale }) {
+  const t = {
+    ru: {
+      p1: 'Диагностическая лаборатория «Gammalab (ГаммаЛаб)» — это современная молекулярно-генетическая лаборатория — это объединение профессионалов, сплочённая команда, решающая ряд перспективных научно-практических задач, связанных с различными направлениями современных технологий в области диагностики заболеваний.',
+      p2: 'Основной целью работы лаборатории является научно-исследовательская деятельность по перспективным направлениям в сфере лабораторной диагностики, а также внедрение новых решений, связанных с молекулярным профилированием опухоли, обеспечивая первую ступень персонифицированной медицины.',
+      p3: 'Лаборатория оснащена самым современным оборудованием, позволяющим проводить исследования на уровне, соответствующем международным стандартам.',
+    },
+    kz: {
+      p1: '«Gammalab (ГаммаЛаб)» диагностикалық зертханасы — бұл заманауи молекулярлық-генетикалық зертхана, аурулардың диагностикасы саласындағы заманауи технологиялардың әртүрлі бағыттарымен байланысты бірқатар перспективалық ғылыми-практикалық міндеттерді шешетін кәсіпқойлар бірлестігі.',
+      p2: 'Зертхананың негізгі мақсаты — зертханалық диагностика саласындағы перспективалық бағыттар бойынша ғылыми-зерттеу қызметі, сондай-ақ ісіктің молекулярлық профилін жасаумен байланысты жаңа шешімдерді енгізу, персонализацияланған медицинаның бірінші сатысын қамтамасыз ету.',
+      p3: 'Зертхана халықаралық стандарттарға сәйкес деңгейде зерттеулер жүргізуге мүмкіндік беретін ең заманауи жабдықтармен жабдықталған.',
+    },
+    en: {
+      p1: 'Diagnostic Laboratory "Gammalab" is a modern molecular genetic laboratory — an association of professionals, a cohesive team solving a number of promising scientific and practical tasks related to various areas of modern technologies in the field of disease diagnostics.',
+      p2: 'The main goal of the laboratory is research activities in promising areas of laboratory diagnostics, as well as the implementation of new solutions related to molecular tumor profiling, providing the first step of personalized medicine.',
+      p3: 'The laboratory is equipped with the most modern equipment, allowing research at a level that meets international standards.',
+    },
+  };
+
+  const text = t[locale] || t.ru;
+
+  return (
+    <>
+      <p style={{ marginBottom: '16px' }}>{text.p1}</p>
+      <p style={{ marginBottom: '16px' }}>{text.p2}</p>
+      <p>{text.p3}</p>
+    </>
   );
 }

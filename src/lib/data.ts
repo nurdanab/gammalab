@@ -28,6 +28,8 @@ export type {
   Document,
   DocumentCreate,
   DocumentUpdate,
+  DoctorRegistration,
+  DoctorRegistrationInsert,
 } from './supabase/queries'
 
 export {
@@ -63,6 +65,11 @@ export {
   getSubmissionById,
   createSubmission,
   deleteSubmission,
+
+  // Doctor Registrations
+  getDoctorRegistrations,
+  createDoctorRegistration,
+  deleteDoctorRegistration,
 
   // Homepage Services
   getHomepageServices,
