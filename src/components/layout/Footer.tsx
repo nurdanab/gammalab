@@ -23,7 +23,7 @@ const translations: Record<string, Record<string, string>> = {
     closed: 'выходной',
     tspotCollection: 'Забор на T-SPOT',
     otherMaterials: 'Прием материалов',
-    copyright: '© 2024 GammaLab - Все права защищены',
+    copyright: '© 2026 GammaLab - Все права защищены',
     madeWith: 'Разработано с заботой о здоровье',
   },
   kz: {
@@ -43,7 +43,7 @@ const translations: Record<string, Record<string, string>> = {
     closed: 'демалыс',
     tspotCollection: 'T-SPOT алу',
     otherMaterials: 'Материалдар қабылдау',
-    copyright: '© 2024 GammaLab - Барлық құқықтар қорғалған',
+    copyright: '© 2026 GammaLab - Барлық құқықтар қорғалған',
     madeWith: 'Денсаулыққа қамқорлықпен жасалған',
   },
   en: {
@@ -63,7 +63,7 @@ const translations: Record<string, Record<string, string>> = {
     closed: 'closed',
     tspotCollection: 'T-SPOT Collection',
     otherMaterials: 'Materials Reception',
-    copyright: '© 2024 GammaLab - All rights reserved',
+    copyright: '© 2026 GammaLab - All rights reserved',
     madeWith: 'Made with care for health',
   },
 };
@@ -104,11 +104,11 @@ export default function Footer() {
               <div className="flex items-center gap-3">
                 <Mail className="h-4 w-4 flex-shrink-0" style={{ color: '#209DA7' }} />
                 <a
-                  href="mailto:Salem@Gammalab.kz"
+                  href="mailto:salem@gammalab.kz"
                   className="text-[13px] hover:opacity-70 transition-opacity"
                   style={{ color: '#6B7280' }}
                 >
-                  Salem@Gammalab.kz
+                  salem@gammalab.kz
                 </a>
               </div>
               <div className="flex items-center gap-3">
@@ -160,20 +160,20 @@ export default function Footer() {
               <Link href="/" className="text-[13px] hover:text-[#209DA7] transition-colors" style={{ color: '#6B7280' }}>
                 {t.home}
               </Link>
-              <Link href="/about" className="text-[13px] hover:text-[#209DA7] transition-colors" style={{ color: '#6B7280' }}>
-                {t.about}
-              </Link>
               <Link href="/analyses" className="text-[13px] hover:text-[#209DA7] transition-colors" style={{ color: '#6B7280' }}>
                 {t.services}
               </Link>
               <Link href="/patients" className="text-[13px] hover:text-[#209DA7] transition-colors" style={{ color: '#6B7280' }}>
                 {t.patients}
               </Link>
-              <Link href="/news" className="text-[13px] hover:text-[#209DA7] transition-colors" style={{ color: '#6B7280' }}>
-                {t.news}
-              </Link>
               <Link href="/contacts" className="text-[13px] hover:text-[#209DA7] transition-colors" style={{ color: '#6B7280' }}>
                 {t.contacts}
+              </Link>
+              <Link href="/about" className="text-[13px] hover:text-[#209DA7] transition-colors" style={{ color: '#6B7280' }}>
+                {t.about}
+              </Link>
+              <Link href="/news" className="text-[13px] hover:text-[#209DA7] transition-colors" style={{ color: '#6B7280' }}>
+                {t.news}
               </Link>
               <Link href="/privacy" className="text-[13px] hover:text-[#209DA7] transition-colors" style={{ color: '#6B7280' }}>
                 {t.privacy}
@@ -194,14 +194,6 @@ export default function Footer() {
               <div className="flex justify-between items-center gap-3">
                 <span className="text-[13px]" style={{ color: '#6B7280' }}>{t.weekend}</span>
                 <span className="text-[13px] font-medium" style={{ color: '#209DA7' }}>{t.closed}</span>
-              </div>
-              <div className="flex justify-between items-start gap-3">
-                <span className="text-[13px]" style={{ color: '#6B7280' }}>{t.tspotCollection}</span>
-                <span className="text-[13px] font-medium text-right" style={{ color: '#209DA7' }}>09:00 - 12:00</span>
-              </div>
-              <div className="flex justify-between items-start gap-3">
-                <span className="text-[13px]" style={{ color: '#6B7280' }}>{t.otherMaterials}</span>
-                <span className="text-[13px] font-medium text-right" style={{ color: '#209DA7' }}>09:00 - 17:00</span>
               </div>
             </div>
           </div>

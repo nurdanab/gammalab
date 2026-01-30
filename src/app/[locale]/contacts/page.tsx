@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useLocale } from 'next-intl';
 import { Link } from '@/i18n/routing';
+import Image from 'next/image';
 import { MapPin, Clock, Phone, Mail, MessageCircle, Star, ExternalLink } from 'lucide-react';
 import { formatPhoneNumber } from '@/utils/phoneFormat';
 import { useReCaptcha } from '@/components/ReCaptchaProvider';
@@ -206,33 +207,35 @@ export default function ContactsPage() {
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section
-        className="relative pt-[100px] sm:pt-[110px] lg:pt-[120px] pb-8 lg:pb-10"
-        style={{ backgroundColor: '#EEF6F6' }}
-      >
-        <div className="px-5 sm:px-8 md:px-12 lg:px-20">
+      <section className="relative pt-[100px] sm:pt-[110px] lg:pt-[120px] pb-6 lg:pb-8">
+        {/* Background Image */}
+        <Image
+          src="/images/hero-about.jpg"
+          alt="Background"
+          fill
+          className="object-cover object-center"
+          priority
+        />
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#091D33]/60 via-[#091D33]/40 to-[#091D33]/60" />
+
+        <div className="relative z-10 px-5 sm:px-8 md:px-12 lg:px-20">
           {/* Breadcrumbs */}
           <div className="flex items-center gap-2 mb-6">
-            <Link href="/" className="text-[13px]" style={{ color: '#9CA3AF' }}>
+            <Link href="/" className="text-[13px] text-white/70 hover:text-white transition-colors">
               {t.home}
             </Link>
-            <span className="text-[13px]" style={{ color: '#9CA3AF' }}>/</span>
-            <span className="text-[13px]" style={{ color: '#209DA7' }}>
+            <span className="text-[13px] text-white/50">/</span>
+            <span className="text-[13px] text-white">
               {t.pageTitle}
             </span>
           </div>
 
           {/* Title */}
-          <h1
-            className="text-[28px] sm:text-[36px] lg:text-[42px] font-semibold mb-4"
-            style={{ color: '#091D33' }}
-          >
+          <h1 className="text-[28px] sm:text-[36px] lg:text-[42px] font-semibold mb-4 text-white">
             {t.pageTitle}
           </h1>
-          <p
-            className="text-[15px] leading-[1.8] max-w-[600px]"
-            style={{ color: '#6B7280' }}
-          >
+          <p className="text-[15px] leading-[1.8] max-w-[600px] text-white/80">
             {t.pageSubtitle}
           </p>
         </div>

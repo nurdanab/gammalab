@@ -1778,3 +1778,305 @@ export async function deleteDocumentFile(fileUrl: string): Promise<boolean> {
   }
   return true
 }
+
+// ============ HERO CAROUSELS ============
+
+export interface HeroCarousel {
+  id: string
+  title: string
+  titleKz: string
+  titleEn: string
+  description: string
+  descriptionKz: string
+  descriptionEn: string
+  image: string
+  order: number
+  isActive: boolean
+  createdAt?: string
+}
+
+export interface HeroCarouselInsert {
+  title: string
+  titleKz?: string
+  titleEn?: string
+  description?: string
+  descriptionKz?: string
+  descriptionEn?: string
+  image: string
+  order?: number
+  isActive?: boolean
+}
+
+export type HeroCarouselUpdate = Partial<HeroCarouselInsert>
+
+interface HeroCarouselRow {
+  id: string
+  title: string
+  title_kz: string
+  title_en: string
+  description: string
+  description_kz: string
+  description_en: string
+  image: string
+  order: number
+  is_active: boolean
+  created_at: string
+}
+
+function mapHeroCarouselRow(row: HeroCarouselRow): HeroCarousel {
+  return {
+    id: row.id,
+    title: row.title,
+    titleKz: row.title_kz,
+    titleEn: row.title_en,
+    description: row.description,
+    descriptionKz: row.description_kz,
+    descriptionEn: row.description_en,
+    image: row.image,
+    order: row.order,
+    isActive: row.is_active,
+    createdAt: row.created_at,
+  }
+}
+
+export async function getHeroCarousels(): Promise<HeroCarousel[]> {
+  const supabase = createPublicClient()
+  const { data, error } = await supabase
+    .from('hero_carousels')
+    .select('*')
+    .eq('is_active', true)
+    .order('order')
+
+  if (error) {
+    console.error('Error fetching hero carousels:', error)
+    return []
+  }
+  return (data as HeroCarouselRow[]).map(mapHeroCarouselRow)
+}
+
+export async function getAllHeroCarousels(): Promise<HeroCarousel[]> {
+  const supabase = createAdminClient()
+  const { data, error } = await supabase
+    .from('hero_carousels')
+    .select('*')
+    .order('order')
+
+  if (error) {
+    console.error('Error fetching all hero carousels:', error)
+    return []
+  }
+  return (data as HeroCarouselRow[]).map(mapHeroCarouselRow)
+}
+
+export async function getHeroCarouselById(id: string): Promise<HeroCarousel | null> {
+  const supabase = createAdminClient()
+  const { data, error } = await supabase
+    .from('hero_carousels')
+    .select('*')
+    .eq('id', id)
+    .single()
+
+  if (error) {
+    console.error('Error fetching hero carousel by id:', error)
+    return null
+  }
+  return mapHeroCarouselRow(data as HeroCarouselRow)
+}
+
+export async function createHeroCarousel(carousel: HeroCarouselInsert): Promise<HeroCarousel | null> {
+  const supabase = createAdminClient()
+  const { data, error } = await supabase
+    .from('hero_carousels')
+    .insert({
+      title: carousel.title,
+      title_kz: carousel.titleKz || '',
+      title_en: carousel.titleEn || '',
+      description: carousel.description || '',
+      description_kz: carousel.descriptionKz || '',
+      description_en: carousel.descriptionEn || '',
+      image: carousel.image,
+      order: carousel.order || 0,
+      is_active: carousel.isActive ?? true,
+    } as never)
+    .select()
+    .single()
+
+  if (error) {
+    console.error('Error creating hero carousel:', error)
+    return null
+  }
+  return mapHeroCarouselRow(data as HeroCarouselRow)
+}
+
+export async function updateHeroCarousel(id: string, updates: HeroCarouselUpdate): Promise<HeroCarousel | null> {
+  const supabase = createAdminClient()
+  const dbUpdates: Record<string, unknown> = {}
+
+  if (updates.title !== undefined) dbUpdates.title = updates.title
+  if (updates.titleKz !== undefined) dbUpdates.title_kz = updates.titleKz
+  if (updates.titleEn !== undefined) dbUpdates.title_en = updates.titleEn
+  if (updates.description !== undefined) dbUpdates.description = updates.description
+  if (updates.descriptionKz !== undefined) dbUpdates.description_kz = updates.descriptionKz
+  if (updates.descriptionEn !== undefined) dbUpdates.description_en = updates.descriptionEn
+  if (updates.image !== undefined) dbUpdates.image = updates.image
+  if (updates.order !== undefined) dbUpdates.order = updates.order
+  if (updates.isActive !== undefined) dbUpdates.is_active = updates.isActive
+
+  const { data, error } = await supabase
+    .from('hero_carousels')
+    .update(dbUpdates as never)
+    .eq('id', id)
+    .select()
+    .single()
+
+  if (error) {
+    console.error('Error updating hero carousel:', error)
+    return null
+  }
+  return mapHeroCarouselRow(data as HeroCarouselRow)
+}
+
+export async function deleteHeroCarousel(id: string): Promise<boolean> {
+  const supabase = createAdminClient()
+  const { error } = await supabase
+    .from('hero_carousels')
+    .delete()
+    .eq('id', id)
+
+  if (error) {
+    console.error('Error deleting hero carousel:', error)
+    return false
+  }
+  return true
+}
+
+// ============ NGS CONTENT ============
+
+export interface NgsSection {
+  title: string
+  items: string[]
+}
+
+export interface NgsContent {
+  id: string
+  title: string
+  titleKz: string
+  titleEn: string
+  description: string
+  descriptionKz: string
+  descriptionEn: string
+  sections: NgsSection[]
+  sectionsKz: NgsSection[]
+  sectionsEn: NgsSection[]
+  isActive: boolean
+  createdAt?: string
+  updatedAt?: string
+}
+
+export interface NgsContentUpdate {
+  title?: string
+  titleKz?: string
+  titleEn?: string
+  description?: string
+  descriptionKz?: string
+  descriptionEn?: string
+  sections?: NgsSection[]
+  sectionsKz?: NgsSection[]
+  sectionsEn?: NgsSection[]
+  isActive?: boolean
+}
+
+interface NgsContentRow {
+  id: string
+  title: string
+  title_kz: string
+  title_en: string
+  description: string
+  description_kz: string
+  description_en: string
+  sections: NgsSection[]
+  sections_kz: NgsSection[]
+  sections_en: NgsSection[]
+  is_active: boolean
+  created_at: string
+  updated_at: string
+}
+
+function mapNgsContentRow(row: NgsContentRow): NgsContent {
+  return {
+    id: row.id,
+    title: row.title,
+    titleKz: row.title_kz,
+    titleEn: row.title_en,
+    description: row.description,
+    descriptionKz: row.description_kz,
+    descriptionEn: row.description_en,
+    sections: row.sections || [],
+    sectionsKz: row.sections_kz || [],
+    sectionsEn: row.sections_en || [],
+    isActive: row.is_active,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  }
+}
+
+export async function getNgsContent(): Promise<NgsContent | null> {
+  const supabase = createPublicClient()
+  const { data, error } = await supabase
+    .from('ngs_content')
+    .select('*')
+    .eq('is_active', true)
+    .single()
+
+  if (error) {
+    console.error('Error fetching NGS content:', error)
+    return null
+  }
+  return mapNgsContentRow(data as NgsContentRow)
+}
+
+export async function getNgsContentAdmin(): Promise<NgsContent | null> {
+  const supabase = createAdminClient()
+  const { data, error } = await supabase
+    .from('ngs_content')
+    .select('*')
+    .limit(1)
+    .single()
+
+  if (error) {
+    console.error('Error fetching NGS content (admin):', error)
+    return null
+  }
+  return mapNgsContentRow(data as NgsContentRow)
+}
+
+export async function updateNgsContent(id: string, updates: NgsContentUpdate): Promise<NgsContent | null> {
+  const supabase = createAdminClient()
+  const dbUpdates: Record<string, unknown> = {
+    updated_at: new Date().toISOString(),
+  }
+
+  if (updates.title !== undefined) dbUpdates.title = updates.title
+  if (updates.titleKz !== undefined) dbUpdates.title_kz = updates.titleKz
+  if (updates.titleEn !== undefined) dbUpdates.title_en = updates.titleEn
+  if (updates.description !== undefined) dbUpdates.description = updates.description
+  if (updates.descriptionKz !== undefined) dbUpdates.description_kz = updates.descriptionKz
+  if (updates.descriptionEn !== undefined) dbUpdates.description_en = updates.descriptionEn
+  if (updates.sections !== undefined) dbUpdates.sections = updates.sections
+  if (updates.sectionsKz !== undefined) dbUpdates.sections_kz = updates.sectionsKz
+  if (updates.sectionsEn !== undefined) dbUpdates.sections_en = updates.sectionsEn
+  if (updates.isActive !== undefined) dbUpdates.is_active = updates.isActive
+
+  const { data, error } = await supabase
+    .from('ngs_content')
+    .update(dbUpdates as never)
+    .eq('id', id)
+    .select()
+    .single()
+
+  if (error) {
+    console.error('Error updating NGS content:', error)
+    return null
+  }
+  return mapNgsContentRow(data as NgsContentRow)
+}

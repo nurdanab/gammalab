@@ -141,11 +141,6 @@ export default function Header() {
     setSearchQuery('');
   };
 
-  const moreMenuItems = [
-    { href: '/news', label: t.news },
-    { href: '/test-locations', label: t.testLocations },
-    { href: '/submit-analysis', label: t.submitAnalysis },
-  ];
 
   const handleLocaleChange = (locale: Locale) => {
     router.replace(pathname, { locale });
@@ -160,12 +155,12 @@ export default function Header() {
 
   const navItems = [
     { href: '/', label: t.home },
-    { href: '/about', label: t.about },
     { href: '/analyses', label: t.services },
     { href: '/patients', label: t.patients },
     { href: '/doctors', label: t.doctors },
     { href: '/contacts', label: t.contacts },
-    { href: '/more', label: t.more, hasDropdown: true },
+    { href: '/about', label: t.about },
+    { href: '/news', label: t.news },
   ];
 
   const isActive = (href: string) => {
@@ -203,10 +198,10 @@ export default function Header() {
                 </a>
                 <span className="text-gray-300">|</span>
                 <a
-                  href="mailto:Salem@Gammalab.kz"
+                  href="mailto:salem@gammalab.kz"
                   className="text-gray-500 hover:text-primary transition-colors"
                 >
-                  Salem@Gammalab.kz
+                  salem@gammalab.kz
                 </a>
               </div>
               <span className="flex items-center gap-2 text-gray-500 text-[13px]">
@@ -313,48 +308,14 @@ export default function Header() {
               <nav className="flex items-center">
                 {navItems.map((item, index) => (
                   <div key={item.href} className="flex items-center">
-                    {item.hasDropdown ? (
-                      <div className="relative">
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setIsMoreOpen(!isMoreOpen);
-                          }}
-                          className={`flex items-center gap-1.5 px-5 xl:px-6 py-2.5 text-[14px] transition-colors hover:text-primary whitespace-nowrap ${
-                            isMoreOpen ? 'text-primary' : 'text-[#091D33]'
-                          }`}
-                        >
-                          {item.label}
-                          <ChevronDown className={`h-3.5 w-3.5 transition-transform ${isMoreOpen ? 'rotate-180' : ''}`} />
-                        </button>
-                        {isMoreOpen && (
-                          <div
-                            className="absolute left-1/2 -translate-x-1/2 top-full mt-3 bg-white rounded-xl shadow-lg border border-gray-100 min-w-[220px] py-2 z-50"
-                            style={{ boxShadow: '0 8px 24px rgba(0, 0, 0, 0.12)' }}
-                          >
-                            {moreMenuItems.map((menuItem) => (
-                              <Link
-                                key={menuItem.href}
-                                href={menuItem.href}
-                                className="block px-5 py-3 text-[14px] text-gray-600 hover:text-primary hover:bg-gray-50 transition-colors"
-                                onClick={() => setIsMoreOpen(false)}
-                              >
-                                {menuItem.label}
-                              </Link>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    ) : (
-                      <Link
-                        href={item.href}
-                        className={`px-5 xl:px-6 py-2.5 text-[14px] transition-colors hover:text-primary whitespace-nowrap ${
-                          isActive(item.href) ? 'text-primary font-medium' : 'text-[#091D33]'
-                        }`}
-                      >
-                        {item.label}
-                      </Link>
-                    )}
+                    <Link
+                      href={item.href}
+                      className={`px-5 xl:px-6 py-2.5 text-[14px] transition-colors hover:text-primary whitespace-nowrap ${
+                        isActive(item.href) ? 'text-primary font-medium' : 'text-[#091D33]'
+                      }`}
+                    >
+                      {item.label}
+                    </Link>
                     {index < navItems.length - 1 && (
                       <div className="w-px h-[14px] bg-gray-200" />
                     )}
@@ -480,11 +441,11 @@ export default function Header() {
                   <span>info@gammalab.kz</span>
                 </a>
                 <a
-                  href="mailto:Salem@Gammalab.kz"
+                  href="mailto:salem@gammalab.kz"
                   className="flex items-center gap-3 text-gray-600 text-sm"
                 >
                   <Mail className="h-4 w-4 text-primary" />
-                  <span>Salem@Gammalab.kz</span>
+                  <span>salem@gammalab.kz</span>
                 </a>
                 <span className="flex items-center gap-3 text-gray-600 text-sm">
                   <MapPin className="h-4 w-4 text-primary" />
@@ -497,44 +458,16 @@ export default function Header() {
             <nav className="p-4">
               <div className="flex flex-col gap-1">
                 {navItems.map((item) => (
-                  item.hasDropdown ? (
-                    <div key={item.href}>
-                      <button
-                        onClick={() => setIsMoreOpen(!isMoreOpen)}
-                        className={`flex items-center justify-between w-full py-3 text-[15px] font-medium ${
-                          isMoreOpen ? 'text-primary' : 'text-gray-700'
-                        }`}
-                      >
-                        {item.label}
-                        <ChevronDown className={`h-4 w-4 transition-transform ${isMoreOpen ? 'rotate-180' : ''}`} />
-                      </button>
-                      {isMoreOpen && (
-                        <div className="pl-4 pb-2 flex flex-col gap-1">
-                          {moreMenuItems.map((menuItem) => (
-                            <Link
-                              key={menuItem.href}
-                              href={menuItem.href}
-                              className="py-2 text-[14px] text-gray-500 hover:text-primary transition-colors"
-                              onClick={() => setIsMenuOpen(false)}
-                            >
-                              {menuItem.label}
-                            </Link>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  ) : (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className={`py-3 text-[15px] font-medium transition-colors ${
-                        isActive(item.href) ? 'text-primary' : 'text-gray-700 hover:text-primary'
-                      }`}
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      {item.label}
-                    </Link>
-                  )
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={`py-3 text-[15px] font-medium transition-colors ${
+                      isActive(item.href) ? 'text-primary' : 'text-gray-700 hover:text-primary'
+                    }`}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {item.label}
+                  </Link>
                 ))}
               </div>
             </nav>

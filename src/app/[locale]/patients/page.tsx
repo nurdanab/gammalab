@@ -2,6 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
+import Image from 'next/image';
 import {
   FileText,
   Droplets,
@@ -39,8 +40,19 @@ export default function PatientsPage() {
   return (
     <div className="flex flex-col min-h-screen bg-white">
       {/* Hero */}
-      <section className="pt-[140px] sm:pt-[160px] lg:pt-[170px] pb-8 lg:pb-10" style={{ backgroundColor: '#209DA7' }}>
-        <div className="px-5 sm:px-8 md:px-12 lg:px-20 text-center">
+      <section className="relative pt-[100px] sm:pt-[110px] lg:pt-[120px] pb-6 lg:pb-8">
+        {/* Background Image */}
+        <Image
+          src="/images/hero-about.jpg"
+          alt="Background"
+          fill
+          className="object-cover object-center"
+          priority
+        />
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#091D33]/60 via-[#091D33]/40 to-[#091D33]/60" />
+
+        <div className="relative z-10 px-5 sm:px-8 md:px-12 lg:px-20 text-center">
           {/* Navigation */}
           <nav className="flex flex-wrap justify-center items-center" style={{ gap: '24px' }}>
             {sections.map((section, index) => (

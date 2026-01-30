@@ -2,27 +2,18 @@
 
 import { useState, useEffect } from 'react';
 import { useLocale } from 'next-intl';
-import { Link } from '@/i18n/routing';
 import Image from 'next/image';
 import {
   User,
   Phone,
-  Briefcase,
-  MapPin,
-  ChevronDown,
   CheckCircle2,
-  Target,
-  Zap,
-  Shield,
-  Users,
-  FlaskConical,
-  BookOpen,
-  FileText,
+  MessageCircle,
+  X,
+  MessageSquare,
+  ChevronDown,
 } from 'lucide-react';
 
 type Locale = 'ru' | 'kz' | 'en';
-
-const STORAGE_KEY = 'gammalab_doctor_registered';
 
 // =============================================
 // TRANSLATIONS
@@ -36,55 +27,49 @@ const heroTranslations = {
 
 const formTranslations = {
   ru: {
-    formTitle: 'Заполните анкету',
-    formSubtitle: 'Для доступа к материалам, пожалуйста, заполните форму',
+    formTitle: 'Связаться с нами',
+    formSubtitle: 'Оставьте свои контакты и мы свяжемся с вами',
     fullName: 'ФИО',
-    fullNamePlaceholder: 'ФИО',
+    fullNamePlaceholder: 'Введите ваше имя',
     phone: 'Номер телефона',
     phonePlaceholder: '+7 (___) ___-__-__',
-    workplace: 'Место работы',
-    workplacePlaceholder: 'Название медицинского учреждения',
-    profession: 'Профессия',
-    professionPlaceholder: 'Выберите профессию',
-    professions: ['Врач', 'Медсестра', 'Фельдшер', 'Фармацевт', 'Лаборант', 'Другое'],
-    submit: 'Получить доступ',
+    comment: 'Комментарий',
+    commentPlaceholder: 'Ваш вопрос или комментарий (необязательно)',
+    submit: 'Отправить',
     sending: 'Отправка...',
     error: 'Произошла ошибка. Попробуйте ещё раз.',
-    required: 'Обязательное поле',
+    success: 'Спасибо! Мы свяжемся с вами.',
+    floatingButton: 'Связаться',
   },
   kz: {
-    formTitle: 'Сауалнаманы толтырыңыз',
-    formSubtitle: 'Материалдарға қол жеткізу үшін форманы толтырыңыз',
+    formTitle: 'Бізбен байланысу',
+    formSubtitle: 'Байланыс деректеріңізді қалдырыңыз, біз сізбен хабарласамыз',
     fullName: 'Аты-жөні',
-    fullNamePlaceholder: 'ФИО',
+    fullNamePlaceholder: 'Атыңызды енгізіңіз',
     phone: 'Телефон нөмірі',
     phonePlaceholder: '+7 (___) ___-__-__',
-    workplace: 'Жұмыс орны',
-    workplacePlaceholder: 'Медициналық мекеменің атауы',
-    profession: 'Мамандық',
-    professionPlaceholder: 'Мамандықты таңдаңыз',
-    professions: ['Дәрігер', 'Медбике', 'Фельдшер', 'Фармацевт', 'Лаборант', 'Басқа'],
-    submit: 'Қол жеткізу',
+    comment: 'Пікір',
+    commentPlaceholder: 'Сұрағыңыз немесе пікіріңіз (міндетті емес)',
+    submit: 'Жіберу',
     sending: 'Жіберілуде...',
     error: 'Қате орын алды. Қайталап көріңіз.',
-    required: 'Міндетті өріс',
+    success: 'Рахмет! Біз сізбен хабарласамыз.',
+    floatingButton: 'Байланысу',
   },
   en: {
-    formTitle: 'Fill out the form',
-    formSubtitle: 'To access the materials, please fill out the form',
+    formTitle: 'Contact Us',
+    formSubtitle: 'Leave your contact details and we will get back to you',
     fullName: 'Full name',
-    fullNamePlaceholder: 'John Smith',
+    fullNamePlaceholder: 'Enter your name',
     phone: 'Phone number',
     phonePlaceholder: '+7 (___) ___-__-__',
-    workplace: 'Workplace',
-    workplacePlaceholder: 'Name of medical institution',
-    profession: 'Profession',
-    professionPlaceholder: 'Select profession',
-    professions: ['Doctor', 'Nurse', 'Paramedic', 'Pharmacist', 'Lab technician', 'Other'],
-    submit: 'Get access',
+    comment: 'Comment',
+    commentPlaceholder: 'Your question or comment (optional)',
+    submit: 'Submit',
     sending: 'Sending...',
     error: 'An error occurred. Please try again.',
-    required: 'Required field',
+    success: 'Thank you! We will contact you.',
+    floatingButton: 'Contact',
   },
 };
 
@@ -101,7 +86,8 @@ const contentTranslations = {
     directionsTitle: 'Направления',
     dir1: 'Онкогенетика',
     dir2: 'Диагностика туберкулеза метод T-SPOT',
-    dir3: 'Нутригенетика',
+    dir3: 'Next-generation sequencing (NGS)',
+    contactBtn: 'Связаться с нами',
     // Goal
     goalTitle: 'Цель GL | ONCO',
     goalText: 'Основная цель диагностической лаборатории «GammaLab» является деятельность по перспективным направлениям в сфере лабораторной диагностики, а также внедрение новых решений, связанные с исследованием мутаций в опухолевой ткани для подбора таргетной терапии.',
@@ -252,7 +238,8 @@ const contentTranslations = {
     directionsTitle: 'Бағыттар',
     dir1: 'Онкогенетика',
     dir2: 'Туберкулез диагностикасы T-SPOT әдісі',
-    dir3: 'Нутригенетика',
+    dir3: 'Next-generation sequencing (NGS)',
+    contactBtn: 'Бізбен байланысу',
     goalTitle: 'GL | ONCO мақсаты',
     goalText: '«GammaLab» диагностикалық зертханасының негізгі мақсаты — таргеттік терапияны таңдау үшін ісік тінінің мутацияларын зерттеумен байланысты жаңа шешімдерді енгізу.',
     therapy1: 'Иммуно\nтерапия',
@@ -391,7 +378,8 @@ const contentTranslations = {
     directionsTitle: 'Directions',
     dir1: 'Oncogenetics',
     dir2: 'Tuberculosis diagnostics T-SPOT method',
-    dir3: 'Nutrigenetics',
+    dir3: 'Next-generation sequencing (NGS)',
+    contactBtn: 'Contact Us',
     goalTitle: 'Goal GL | ONCO',
     goalText: 'The main goal of the diagnostic laboratory "GammaLab" is to work in promising areas of laboratory diagnostics, as well as to implement new solutions related to the study of mutations in tumor tissue for the selection of targeted therapy.',
     therapy1: 'Immuno\ntherapy',
@@ -528,83 +516,195 @@ const contentTranslations = {
 
 export default function DoctorsPage() {
   const locale = useLocale() as Locale;
-  const [isRegistered, setIsRegistered] = useState<boolean | null>(null);
-
-  useEffect(() => {
-    const registered = localStorage.getItem(STORAGE_KEY);
-    setIsRegistered(registered === 'true');
-  }, []);
-
-  const handleRegistrationComplete = () => {
-    localStorage.setItem(STORAGE_KEY, 'true');
-    setIsRegistered(true);
-  };
-
-  const hero = heroTranslations[locale] || heroTranslations.ru;
-
-  // Loading
-  if (isRegistered === null) {
-    return (
-      <div className="flex flex-col min-h-screen bg-gray-50">
-        <section
-          className="relative pt-[100px] sm:pt-[110px] lg:pt-[120px] pb-8 lg:pb-10"
-          style={{ backgroundColor: '#EEF6F6' }}
-        >
-          <div className="container-main">
-            <div className="flex items-center gap-2 mb-6">
-              <Link href="/" className="text-[13px]" style={{ color: '#9CA3AF' }}>{hero.home}</Link>
-              <span className="text-[13px]" style={{ color: '#9CA3AF' }}>/</span>
-              <span className="text-[13px]" style={{ color: '#209DA7' }}>{hero.title}</span>
-            </div>
-            <h1 className="text-[28px] sm:text-[36px] lg:text-[42px] font-semibold mb-3" style={{ color: '#091D33' }}>
-              {hero.title}
-            </h1>
-          </div>
-        </section>
-      </div>
-    );
-  }
-
-  // Not registered — show form
-  if (!isRegistered) {
-    return (
-      <div className="flex flex-col min-h-screen bg-gray-50">
-        <section
-          className="relative pt-[100px] sm:pt-[110px] lg:pt-[120px] pb-8 lg:pb-10"
-          style={{ backgroundColor: '#EEF6F6' }}
-        >
-          <div className="container-main">
-            <div className="flex items-center gap-2 mb-6">
-              <Link href="/" className="text-[13px]" style={{ color: '#9CA3AF' }}>{hero.home}</Link>
-              <span className="text-[13px]" style={{ color: '#9CA3AF' }}>/</span>
-              <span className="text-[13px]" style={{ color: '#209DA7' }}>{hero.title}</span>
-            </div>
-            <h1 className="text-[28px] sm:text-[36px] lg:text-[42px] font-semibold mb-3" style={{ color: '#091D33' }}>
-              {hero.title}
-            </h1>
-            <p className="text-[16px] lg:text-[18px]" style={{ color: '#6B7280' }}>
-              {hero.subtitle}
-            </p>
-          </div>
-        </section>
-
-        <section className="bg-white px-5 sm:px-8 md:px-12 lg:px-20 py-12 lg:py-20">
-          <RegistrationForm locale={locale} onSuccess={handleRegistrationComplete} />
-        </section>
-      </div>
-    );
-  }
-
-  // Registered — show presentation-style content
   return <DoctorsContent locale={locale} />;
 }
 
 // =============================================
-// DOCTORS CONTENT — Presentation-style sections
+// DOCTORS CONTENT — Simplified
 // =============================================
+
+// Custom SVG Icons (outline style, orange on dark blue)
+const TestTubeIcon = () => (
+  <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#EC910C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M15 6h18" />
+    <path d="M17 6v24c0 6-3 10-3 10h20s-3-4-3-10V6" />
+    <path d="M17 20h14" />
+    <path d="M17 26h14" />
+    <circle cx="21" cy="34" r="2" fill="#EC910C" />
+    <circle cx="27" cy="32" r="1.5" fill="#EC910C" />
+  </svg>
+);
+
+const ShieldCheckIcon = () => (
+  <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#EC910C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M24 4L6 12v12c0 11 8 18 18 22 10-4 18-11 18-22V12L24 4z" />
+    <path d="M16 24l6 6 10-12" />
+  </svg>
+);
+
+const DNAHelixIcon = () => (
+  <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#EC910C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 6c0 8 6 12 12 12s12 4 12 12" />
+    <path d="M36 6c0 8-6 12-12 12S12 22 12 30" />
+    <path d="M12 30c0 6 6 12 12 12" />
+    <path d="M36 30c0 6-6 12-12 12" />
+    <line x1="14" y1="12" x2="34" y2="12" />
+    <line x1="14" y1="18" x2="34" y2="18" />
+    <line x1="14" y1="30" x2="34" y2="30" />
+    <line x1="14" y1="36" x2="34" y2="36" />
+  </svg>
+);
+
+interface NgsSection {
+  title: string;
+  items: string[];
+}
+
+interface NgsContent {
+  description: string;
+  descriptionKz: string;
+  descriptionEn: string;
+  sections: NgsSection[];
+  sectionsKz: NgsSection[];
+  sectionsEn: NgsSection[];
+}
 
 function DoctorsContent({ locale }: { locale: Locale }) {
   const t = contentTranslations[locale] || contentTranslations.ru;
+  const [isPopupOpen, setIsPopupOpen] = useState(true);
+  const [openAccordion, setOpenAccordion] = useState<number | null>(null);
+  const [ngsContent, setNgsContent] = useState<NgsContent | null>(null);
+
+  useEffect(() => {
+    const fetchNgsContent = async () => {
+      try {
+        const res = await fetch('/api/ngs-content');
+        if (res.ok) {
+          const data = await res.json();
+          if (data) {
+            setNgsContent(data);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching NGS content:', error);
+      }
+    };
+    fetchNgsContent();
+  }, []);
+
+  const tspotText = locale === 'ru'
+    ? 'Иммунологическое исследование для диагностики туберкулеза методом T-SPOT.TB — это анализ крови, также известный как «тест высвобождения гамма-интерферона» (IGRA), тест для диагностики инфицирования микобактериями туберкулеза.'
+    : locale === 'kz'
+    ? 'T-SPOT.TB әдісімен туберкулезді диагностикалауға арналған иммунологиялық зерттеу — бұл қан анализі, «гамма-интерферон шығару тесті» (IGRA) деп те аталады.'
+    : 'T-SPOT.TB immunological test for tuberculosis diagnosis is a blood test, also known as "Interferon Gamma Release Assay" (IGRA), a test for diagnosing infection with Mycobacterium tuberculosis.';
+
+  const tspotDetails = locale === 'ru'
+    ? [
+        'В ЧЕМ СУТЬ МЕТОДИКИ ВЫПОЛНЕНИЯ ТЕСТА T-SPOT.TB?',
+        'Тестирование T-SPOT.TB проводится «in vitro». При этом выявляется процесс продуцирования гамма-интерферонов Т-лимфоцитами при его встрече с белками ESAT6 и CFP-10 микобактерий туберкулеза.',
+        'Наличие заболевания выявляется по числу Т-клеток, реагирующих на присутствие соответствующих туберкулезной палочке антигенов.',
+      ]
+    : locale === 'kz'
+    ? [
+        'T-SPOT.TB ТЕСТІН ОРЫНДАУ ӘДІСТЕМЕСІНІҢ МӘНІ НЕДЕ?',
+        'T-SPOT.TB тестілеуі «in vitro» жүргізіледі. Бұл кезде Т-лимфоциттердің туберкулез микобактерияларының ESAT6 және CFP-10 ақуыздарымен кездескенде гамма-интерферондарды өндіру процесі анықталады.',
+        'Аурудың болуы туберкулез таяқшасына сәйкес антигендердің болуына жауап беретін Т-жасушалардың саны бойынша анықталады.',
+      ]
+    : [
+        'WHAT IS THE ESSENCE OF THE T-SPOT.TB TEST METHODOLOGY?',
+        'T-SPOT.TB testing is performed "in vitro". It detects the process of gamma-interferon production by T-lymphocytes when they encounter ESAT6 and CFP-10 proteins of Mycobacterium tuberculosis.',
+        'The presence of the disease is detected by the number of T-cells responding to the presence of antigens corresponding to the tuberculosis bacillus.',
+      ];
+
+  // Get NGS content based on locale
+  const getNgsDescription = () => {
+    if (!ngsContent) {
+      return locale === 'ru'
+        ? 'Информация скоро будет добавлена.'
+        : locale === 'kz'
+        ? 'Ақпарат жақында қосылады.'
+        : 'Information coming soon.';
+    }
+    if (locale === 'kz') return ngsContent.descriptionKz || ngsContent.description;
+    if (locale === 'en') return ngsContent.descriptionEn || ngsContent.description;
+    return ngsContent.description;
+  };
+
+  const getNgsSections = (): NgsSection[] => {
+    if (!ngsContent) return [];
+    if (locale === 'kz') return ngsContent.sectionsKz?.length ? ngsContent.sectionsKz : ngsContent.sections || [];
+    if (locale === 'en') return ngsContent.sectionsEn?.length ? ngsContent.sectionsEn : ngsContent.sections || [];
+    return ngsContent.sections || [];
+  };
+
+  const oncoSections = [
+    {
+      title: 'ГЕНЕТИЧЕСКИЕ МАРКЕРЫ ПРЕДРАСПОЛОЖЕННОСТИ К РАЗВИТИЮ РАКА МОЛОЧНОЙ ЖЕЛЕЗЫ И РАКА ЯИЧНИКОВ',
+      items: [
+        'Комплекс: определение 16 герминальных мутаций в генах BRCA1 и BRCA2 методом ПЦР',
+      ],
+    },
+    {
+      title: 'ГЕНЕТИЧЕСКИЕ МАРКЕРЫ ЧУВСТВИТЕЛЬНОСТИ/УСТОЙЧИВОСТИ К ТАРГЕТНЫМ ПРОТИВООПУХОЛЕВЫМ ПРЕПАРАТАМ',
+      items: [
+        'Определение мутации гена KRAS методом ПЦР',
+        'Определение мутаций гена NRAS методом ПЦР',
+        'Определение комплекса исследований мутаций гена KRAS гена NRAS методом ПЦР',
+        'Определение комплекса мутаций в гене EGFR методом ПЦР',
+        'Определение мутации V600E в гене BRAF методом ПЦР',
+        'Определение дозы гена HER2/neu в геномной ДНК человека с использованием ПЦР в режиме реального времени',
+        'Определение мутаций гена PIK3CA методом полимеразной цепной реакции (ПЦР)',
+        'Определение мутаций гена IDH1, IDH2 методом полимеразной цепной реакции (ПЦР)',
+      ],
+    },
+    {
+      title: 'ИММУНОГИСТОХИМИЧЕСКИЕ ИССЛЕДОВАНИЕ (ИГХ)',
+      items: [
+        'Определение мутации гена ALK из биоптата опухолевой ткани ИГХ методом',
+        'Определение рецептора PD-L1 из биоптата опухолевой ткани ИГХ методом',
+        'Стандартизованное ИГХ исследование: рецепторный статус при раке молочной железы (PR, ER, ki67, C-erbB-2 (HER2/neu)',
+        'Определение экспрессии белка при транслокации гена ROS1 из биоптата опухолевой ткани ИГХ методом',
+        'Определение экспрессии Her2/neu из биоптата опухолевой ткани ИГХ методом',
+        'Определение экспрессии Ki-67 из биоптата опухолевой ткани ИГХ методом',
+        'Определение белка S100 из биоптата опухолевой ткани ИГХ методом',
+        'Определение рецепторов андрогенов (AR) иммуногистохимическим методом',
+      ],
+    },
+    {
+      title: 'ЖИДКОСТНАЯ БИОПСИЯ',
+      items: [
+        'Комплексное исследование по определению содержания циркулирующих опухолевых клеток (ЦОК) в периферической крови',
+      ],
+    },
+  ];
+
+  const directions = [
+    {
+      title: t.dir1,
+      icon: TestTubeIcon,
+      description: '',
+      details: [],
+      sections: oncoSections,
+    },
+    {
+      title: t.dir2,
+      icon: ShieldCheckIcon,
+      description: tspotText,
+      details: tspotDetails,
+      sections: [],
+    },
+    {
+      title: t.dir3,
+      icon: DNAHelixIcon,
+      description: getNgsDescription(),
+      details: [],
+      sections: getNgsSections(),
+    },
+  ];
+
+  const toggleAccordion = (index: number) => {
+    setOpenAccordion(openAccordion === index ? null : index);
+  };
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -613,1335 +713,274 @@ function DoctorsContent({ locale }: { locale: Locale }) {
           from { opacity: 0; transform: translateY(30px); }
           to { opacity: 1; transform: translateY(0); }
         }
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-10px); }
-        }
-        @keyframes pulse-ring {
-          0% { transform: scale(0.95); opacity: 0.7; }
-          50% { transform: scale(1.05); opacity: 1; }
-          100% { transform: scale(0.95); opacity: 0.7; }
-        }
-        .doc-section { animation: fadeInUp 0.6s ease-out both; }
-        .doc-float { animation: float 6s ease-in-out infinite; }
-        .doc-pulse { animation: pulse-ring 3s ease-in-out infinite; }
-        .doc-feature-card {
-          backdrop-filter: blur(10px);
-          transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .doc-feature-card:hover {
-          transform: translateY(-4px);
-          box-shadow: 0 12px 40px rgba(32,157,167,0.15);
-        }
-        .doc-direction-btn {
-          transition: all 0.3s ease;
-          position: relative;
+        .accordion-content {
+          max-height: 0;
           overflow: hidden;
+          transition: max-height 0.4s ease, padding 0.4s ease;
         }
-        .doc-direction-btn:hover {
-          transform: translateX(8px);
-          box-shadow: 0 4px 20px rgba(236,145,12,0.2);
+        .accordion-content.open {
+          max-height: 1200px;
         }
-        .doc-therapy-node {
+        .accordion-card {
           transition: all 0.3s ease;
         }
-        .doc-therapy-node:hover {
-          transform: scale(1.08);
-          box-shadow: 0 8px 30px rgba(32,157,167,0.25);
-        }
-        .doc-step-card {
-          transition: all 0.3s ease;
-        }
-        .doc-step-card:hover {
+        .accordion-card:hover {
           transform: translateY(-4px);
-          box-shadow: 0 8px 30px rgba(0,0,0,0.1);
         }
-        .doc-gene-tag {
-          transition: all 0.2s ease;
+        .chevron-icon {
+          transition: transform 0.3s ease;
         }
-        .doc-gene-tag:hover {
-          transform: scale(1.05);
-          box-shadow: 0 2px 10px rgba(32,157,167,0.2);
+        .chevron-icon.open {
+          transform: rotate(180deg);
         }
       `}</style>
 
-      {/* ============================================= */}
-      {/* SECTION 1: HERO / COVER */}
-      {/* ============================================= */}
-      <section
-        className="doc-section relative overflow-hidden"
-        style={{
-          minHeight: '100vh',
-          background: 'linear-gradient(135deg, #FFFFFF 0%, #F0F9FA 40%, #E0F2F4 100%)',
-          display: 'flex',
-          alignItems: 'center',
-        }}
-      >
-        {/* Background decorative elements */}
-        <div
-          className="doc-float"
-          style={{
-            position: 'absolute',
-            top: '10%',
-            right: '-5%',
-            width: '500px',
-            height: '500px',
-            borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(32,157,167,0.06) 0%, transparent 70%)',
-            pointerEvents: 'none',
-          }}
+      {/* Fixed Background */}
+      <div className="fixed inset-0 -z-10">
+        <Image
+          src="/images/hero-about.jpg"
+          alt="Background"
+          fill
+          className="object-cover"
+          priority
         />
-        <div
-          style={{
-            position: 'absolute',
-            bottom: '5%',
-            left: '-3%',
-            width: '300px',
-            height: '300px',
-            borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(236,145,12,0.05) 0%, transparent 70%)',
-            pointerEvents: 'none',
-          }}
-        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#091D33]/50 via-[#091D33]/30 to-[#091D33]/50" />
+      </div>
 
-        <div className="container-main w-full" style={{ paddingTop: '120px', paddingBottom: '80px' }}>
-          <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
-            {/* Left: Text */}
-            <div className="flex-1 max-w-xl">
-              <div
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  padding: '6px 16px',
-                  borderRadius: '50px',
-                  backgroundColor: 'rgba(32,157,167,0.1)',
-                  marginBottom: '24px',
-                }}
-              >
-                <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#209DA7' }} />
-                <span style={{ fontSize: '13px', fontWeight: '600', color: '#209DA7', letterSpacing: '0.5px' }}>
-                  GammaLab
-                </span>
-              </div>
-
-              <h1
-                style={{
-                  fontSize: 'clamp(36px, 5vw, 56px)',
-                  fontWeight: '800',
-                  lineHeight: '1.1',
-                  color: '#091D33',
-                  marginBottom: '16px',
-                }}
-              >
-                GammaLab
-              </h1>
-              <p
-                style={{
-                  fontSize: 'clamp(16px, 2vw, 20px)',
-                  color: '#6B7280',
-                  marginBottom: '48px',
-                  lineHeight: '1.6',
-                }}
-              >
-                Диагностическая лаборатория
-              </p>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {[
-                  { icon: Zap, text: t.feat1 },
-                  { icon: Users, text: t.feat2 },
-                  { icon: Shield, text: t.feat3 },
-                  { icon: Target, text: t.feat4 },
-                ].map((feat, i) => {
-                  const Icon = feat.icon;
-                  return (
-                    <div
-                      key={i}
-                      className="doc-feature-card"
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '14px',
-                        padding: '18px 20px',
-                        borderRadius: '14px',
-                        backgroundColor: 'rgba(255,255,255,0.8)',
-                        border: '1px solid rgba(32,157,167,0.12)',
-                        boxShadow: '0 4px 20px rgba(0,0,0,0.04)',
-                      }}
-                    >
-                      <div
-                        style={{
-                          width: '42px',
-                          height: '42px',
-                          borderRadius: '12px',
-                          background: 'linear-gradient(135deg, #209DA7, #1a8690)',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          flexShrink: 0,
-                        }}
-                      >
-                        <Icon size={20} color="white" />
-                      </div>
-                      <span style={{ fontSize: '14px', fontWeight: '600', color: '#091D33' }}>
-                        {feat.text}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Right: DNA visual */}
-            <div className="flex-1 flex justify-center">
-              <div
-                className="doc-float"
-                style={{
-                  position: 'relative',
-                  width: '100%',
-                  maxWidth: '360px',
-                  aspectRatio: '3/4',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <div
-                  style={{
-                    position: 'absolute',
-                    inset: '10%',
-                    borderRadius: '50%',
-                    background: 'radial-gradient(circle, rgba(32,157,167,0.08) 0%, transparent 70%)',
-                  }}
-                />
-                <Image
-                  src="/images/dnk.png"
-                  alt="DNA"
-                  width={280}
-                  height={400}
-                  style={{ objectFit: 'contain', maxWidth: '70%', height: 'auto', opacity: 0.85 }}
-                  priority
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ============================================= */}
-      {/* SECTION 2: ABOUT COMPANY */}
-      {/* ============================================= */}
+      {/* Hero Section */}
       <section
-        className="doc-section"
+        className="relative"
         style={{
-          padding: 'clamp(60px, 8vw, 120px) 0',
-          backgroundColor: '#FFFFFF',
+          paddingTop: '140px',
+          paddingBottom: '80px',
         }}
       >
-        <div className="container-main">
-          <h2
-            style={{
-              fontSize: 'clamp(28px, 4vw, 42px)',
-              fontWeight: '800',
-              color: '#091D33',
-              marginBottom: '48px',
-              textAlign: 'center',
-            }}
-          >
-            <span style={{ color: '#EC910C' }}>
-              {t.aboutTitle.split(' ')[0]}
-            </span>{' '}
-            {t.aboutTitle.split(' ').slice(1).join(' ')}
-          </h2>
 
-          <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-center">
-            {/* Decorative visual */}
-            <div className="w-full lg:w-1/2 flex justify-center">
-              <div
-                style={{
-                  position: 'relative',
-                  width: '100%',
-                  maxWidth: '380px',
-                  aspectRatio: '1',
-                  borderRadius: '24px',
-                  background: 'linear-gradient(135deg, #F0F9FA 0%, #E0F2F4 50%, #FFF9F0 100%)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  overflow: 'hidden',
-                }}
-              >
-                <Image
-                  src="/images/dnk.png"
-                  alt="DNA"
-                  width={180}
-                  height={260}
-                  style={{ objectFit: 'contain', opacity: 0.15 }}
-                />
-                <div
-                  style={{
-                    position: 'absolute',
-                    bottom: '24px',
-                    left: '24px',
-                    right: '24px',
-                  }}
-                >
-                  <Image
-                    src="/images/g-logo.png"
-                    alt="GammaLab"
-                    width={50}
-                    height={50}
-                    style={{ objectFit: 'contain', opacity: 0.6, marginBottom: '12px' }}
-                  />
-                  <p style={{ fontSize: '13px', color: '#209DA7', fontWeight: '600' }}>
-                    GammaLab
-                  </p>
-                  <p style={{ fontSize: '11px', color: '#9CA3AF' }}>
-                    Diagnostic Laboratory
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Text + Directions */}
-            <div className="w-full lg:w-1/2">
-              <p
-                style={{
-                  fontSize: '16px',
-                  lineHeight: '1.8',
-                  color: '#3D3D3D',
-                  marginBottom: '40px',
-                }}
-              >
-                {t.aboutText}
-              </p>
-
-              <h3
-                style={{
-                  fontSize: '20px',
-                  fontWeight: '700',
-                  color: '#091D33',
-                  marginBottom: '20px',
-                }}
-              >
-                {t.directionsTitle}
-              </h3>
-
-              <div className="flex flex-col gap-3">
-                {[t.dir1, t.dir2, t.dir3].map((dir, i) => (
-                  <div
-                    key={i}
-                    className="doc-direction-btn"
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      padding: '18px 24px',
-                      borderRadius: '14px',
-                      border: '2px solid #EC910C',
-                      backgroundColor: i === 0 ? 'rgba(236,145,12,0.06)' : 'white',
-                      cursor: 'default',
-                    }}
-                  >
-                    <span style={{ fontSize: '15px', fontWeight: '600', color: '#091D33' }}>
-                      {dir}
-                    </span>
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style={{ flexShrink: 0 }}>
-                      <path d="M7 4l6 6-6 6" stroke="#EC910C" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ============================================= */}
-      {/* SECTION 3: GOAL GL|ONCO */}
-      {/* ============================================= */}
-      <section
-        className="doc-section"
-        style={{
-          padding: 'clamp(60px, 8vw, 120px) 0',
-          background: 'linear-gradient(180deg, #F8FDFD 0%, #F0F9FA 100%)',
-        }}
-      >
-        <div className="container-main">
-          <h2
-            style={{
-              fontSize: 'clamp(28px, 4vw, 42px)',
-              fontWeight: '800',
-              color: '#091D33',
-              marginBottom: '60px',
-              textAlign: 'center',
-            }}
-          >
-            <span style={{ color: '#EC910C' }}>{t.goalTitle.split(' ')[0]}</span>{' '}
-            {t.goalTitle.split(' ').slice(1).join(' ')}
-          </h2>
-
-          <div className="flex flex-col lg:flex-row gap-12 lg:gap-20 items-center">
-            {/* Therapy diagram */}
-            <div className="w-full lg:w-1/2 flex justify-center">
-              <div style={{ position: 'relative', width: '100%', maxWidth: '440px' }}>
-                {/* Central node */}
-                <div
-                  className="doc-pulse"
-                  style={{
-                    width: '140px',
-                    height: '140px',
-                    borderRadius: '50%',
-                    background: 'linear-gradient(135deg, #209DA7, #1a8690)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    margin: '0 auto',
-                    boxShadow: '0 8px 40px rgba(32,157,167,0.3)',
-                    position: 'relative',
-                    zIndex: 2,
-                  }}
-                >
-                  <span style={{ color: 'white', fontWeight: '700', fontSize: '13px', textAlign: 'center', lineHeight: '1.3', padding: '10px' }}>
-                    {t.therapy3.split('\n').map((line, i) => (
-                      <span key={i}>{line}<br /></span>
-                    ))}
-                  </span>
-                </div>
-
-                {/* Surrounding nodes */}
-                <div
-                  className="grid grid-cols-2 gap-4"
-                  style={{ marginTop: '-30px', position: 'relative', zIndex: 1 }}
-                >
-                  {[t.therapy1, t.therapy2, t.therapy4, t.therapy5].map((therapy, i) => (
-                    <div
-                      key={i}
-                      className="doc-therapy-node"
-                      style={{
-                        padding: '20px 16px',
-                        borderRadius: '16px',
-                        backgroundColor: 'white',
-                        border: '2px solid rgba(32,157,167,0.15)',
-                        textAlign: 'center',
-                        boxShadow: '0 4px 20px rgba(0,0,0,0.04)',
-                      }}
-                    >
-                      <span style={{ fontSize: '13px', fontWeight: '600', color: '#091D33', lineHeight: '1.4', whiteSpace: 'pre-line' }}>
-                        {therapy}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Goal text */}
-            <div className="w-full lg:w-1/2">
-              <p
-                style={{
-                  fontSize: '17px',
-                  lineHeight: '1.9',
-                  color: '#3D3D3D',
-                }}
-              >
-                {t.goalText}
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ============================================= */}
-      {/* SECTION 4: PROCESS GL|ONCO */}
-      {/* ============================================= */}
-      <section
-        className="doc-section"
-        style={{
-          padding: 'clamp(60px, 8vw, 120px) 0',
-          backgroundColor: '#FFFFFF',
-        }}
-      >
-        <div className="container-main">
-          <h2
-            style={{
-              fontSize: 'clamp(28px, 4vw, 42px)',
-              fontWeight: '800',
-              color: '#091D33',
-              marginBottom: '60px',
-              textAlign: 'center',
-            }}
-          >
-            <span style={{ color: '#EC910C' }}>{t.processTitle.split(' ')[0]}</span>{' '}
-            {t.processTitle.split(' ').slice(1).join(' ')}
-          </h2>
-
-          {/* Steps */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-            {[
-              { num: '01', title: t.step1, details: [t.step1d1, t.step1d2, t.step1d3] },
-              { num: '02', title: t.step2, details: [t.step2d1, t.step2d2, t.step2d3] },
-              { num: '03', title: t.step3, details: [t.step3d1, t.step3d2, t.step3d3] },
-              { num: '04', title: t.step4, details: [t.step4d1] },
-            ].map((step, i) => (
-              <div
-                key={i}
-                className="doc-step-card"
-                style={{
-                  padding: '28px 24px',
-                  borderRadius: '16px',
-                  backgroundColor: i === 3 ? '#209DA7' : '#F8FDFD',
-                  border: i === 3 ? 'none' : '1px solid rgba(32,157,167,0.12)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                }}
-              >
-                <div
-                  style={{
-                    fontSize: '32px',
-                    fontWeight: '800',
-                    color: i === 3 ? 'rgba(255,255,255,0.3)' : 'rgba(32,157,167,0.2)',
-                    marginBottom: '16px',
-                    lineHeight: '1',
-                  }}
-                >
-                  {step.num}
-                </div>
-                <h3
-                  style={{
-                    fontSize: '15px',
-                    fontWeight: '700',
-                    color: i === 3 ? 'white' : '#091D33',
-                    marginBottom: '16px',
-                    lineHeight: '1.4',
-                  }}
-                >
-                  {step.title}
-                </h3>
-                <div style={{ flex: 1 }}>
-                  {step.details.map((d, j) => (
-                    <div
-                      key={j}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'flex-start',
-                        gap: '8px',
-                        marginBottom: '8px',
-                        fontSize: '13px',
-                        color: i === 3 ? 'rgba(255,255,255,0.85)' : '#6B7280',
-                        lineHeight: '1.5',
-                      }}
-                    >
-                      <CheckCircle2
-                        size={14}
-                        style={{
-                          color: i === 3 ? 'rgba(255,255,255,0.6)' : '#209DA7',
-                          marginTop: '2px',
-                          flexShrink: 0,
-                        }}
-                      />
-                      <span>{d}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Note */}
-          <div
-            style={{
-              padding: '32px 40px',
-              borderRadius: '16px',
-              background: 'linear-gradient(135deg, rgba(32,157,167,0.06) 0%, rgba(236,145,12,0.04) 100%)',
-              border: '1px solid rgba(32,157,167,0.1)',
-              textAlign: 'center',
-            }}
-          >
-            <p style={{ fontSize: '15px', color: '#091D33', fontWeight: '600', marginBottom: '8px' }}>
-              {t.processNote}
-            </p>
-            <p style={{ fontSize: '14px', color: '#6B7280' }}>
-              {t.processNote2}
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* ============================================= */}
-      {/* SECTION 5: RESEARCH TABLE */}
-      {/* ============================================= */}
-      <section
-        className="doc-section"
-        style={{
-          padding: 'clamp(60px, 8vw, 120px) 0',
-          background: 'linear-gradient(180deg, #F8FDFD 0%, #F0F9FA 100%)',
-        }}
-      >
-        <div className="container-main">
-          <h2
-            style={{
-              fontSize: 'clamp(28px, 4vw, 42px)',
-              fontWeight: '800',
-              color: '#091D33',
-              marginBottom: '16px',
-              textAlign: 'center',
-            }}
-          >
-            <span style={{ color: '#EC910C' }}>
-              {t.researchTitle.split(' ')[0]}
-            </span>{' '}
-            {t.researchTitle.split(' ').slice(1).join(' ')}
-          </h2>
-          <p
-            style={{
-              fontSize: '16px',
-              color: '#6B7280',
-              textAlign: 'center',
-              marginBottom: '48px',
-              maxWidth: '700px',
-              margin: '0 auto 48px',
-              lineHeight: '1.7',
-            }}
-          >
-            {t.researchSubtitle}
-          </p>
-
-          <div
-            style={{
-              backgroundColor: 'white',
-              borderRadius: '20px',
-              overflow: 'hidden',
-              boxShadow: '0 4px 30px rgba(0,0,0,0.06)',
-            }}
-          >
-            {[
-              { label: t.lungCancer, genes: ['EGFR (T790M)', 'KRAS, NRAS', 'ALK', 'ROS1', 'PD-L1', 'BRAF'] },
-              { label: t.breastCancer, genes: ['BRCA1/2', 'PD-L1', 'CHEK2', 'HER2/neu', 'PIK3CA'] },
-              { label: t.ovarianCancer, genes: ['BRCA1/2', 'CHEK2'] },
-              { label: t.colorectalCancer, genes: ['KRAS, NRAS', 'BRAF'] },
-              { label: t.urothelialCancer, genes: ['FGFR', 'PD-L1'] },
-              { label: t.melanoma, genes: ['BRAF', 'KRAS, NRAS'] },
-              { label: t.glioblastoma, genes: ['IDH 1,2'] },
-            ].map((row, i) => (
-              <div
-                key={i}
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  padding: '20px 28px',
-                  borderBottom: i < 6 ? '1px solid #F3F4F6' : 'none',
-                  gap: '16px',
-                  flexWrap: 'wrap',
-                }}
-              >
-                <div
-                  style={{
-                    minWidth: '200px',
-                    fontWeight: '700',
-                    fontSize: '15px',
-                    color: '#EC910C',
-                    flexShrink: 0,
-                  }}
-                >
-                  {row.label}
-                </div>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', flex: 1 }}>
-                  {row.genes.map((gene, j) => (
-                    <span
-                      key={j}
-                      className="doc-gene-tag"
-                      style={{
-                        display: 'inline-block',
-                        padding: '6px 16px',
-                        borderRadius: '50px',
-                        backgroundColor: '#F0F9FA',
-                        border: '1px solid rgba(32,157,167,0.15)',
-                        fontSize: '13px',
-                        fontWeight: '600',
-                        color: '#209DA7',
-                        whiteSpace: 'nowrap',
-                      }}
-                    >
-                      {gene}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ============================================= */}
-      {/* SECTION 6: DETAILED ANALYSIS LIST */}
-      {/* ============================================= */}
-      <section
-        className="doc-section"
-        style={{
-          padding: 'clamp(60px, 8vw, 120px) 0',
-          backgroundColor: '#FFFFFF',
-        }}
-      >
-        <div className="container-main">
-          <h2
-            style={{
-              fontSize: 'clamp(28px, 4vw, 42px)',
-              fontWeight: '800',
-              color: '#091D33',
-              marginBottom: '48px',
-              textAlign: 'center',
-            }}
-          >
-            <span style={{ color: '#EC910C' }}>
-              {t.analysisTitle.split(' ')[0]}
-            </span>{' '}
-            {t.analysisTitle.split(' ').slice(1).join(' ')}
-          </h2>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Left column */}
-            <div className="flex flex-col gap-6">
-              <AnalysisCategory title={t.catPredisposition} items={t.predItems} color="#EC910C" />
-              <AnalysisCategory title={t.catSensitivity} items={t.sensItems} color="#209DA7" />
-              <AnalysisCategory title={t.catLiquidBiopsy} items={t.liquidItems} color="#EC910C" />
-            </div>
-            {/* Right column */}
-            <div className="flex flex-col gap-6">
-              <AnalysisCategory title={t.catIHC} items={t.ihcItems} color="#209DA7" />
-              <AnalysisCategory title={t.catCytogenetic} items={t.cytoItems} color="#EC910C" />
-              <AnalysisCategory title={t.catPathohistological} items={t.pathoItems} color="#209DA7" />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ============================================= */}
-      {/* SECTION 7: T-SPOT.TB */}
-      {/* ============================================= */}
-      <section
-        className="doc-section"
-        style={{
-          padding: 'clamp(60px, 8vw, 120px) 0',
-          background: 'linear-gradient(180deg, #F8FDFD 0%, #F0F9FA 100%)',
-        }}
-      >
-        <div className="container-main">
-          <h2
-            style={{
-              fontSize: 'clamp(28px, 4vw, 42px)',
-              fontWeight: '800',
-              color: '#091D33',
-              marginBottom: '16px',
-              textAlign: 'center',
-            }}
-          >
-            <span style={{ color: '#EC910C' }}>GL</span> | T-SPOT.TB
-          </h2>
-          <p
-            style={{
-              fontSize: '18px',
-              fontWeight: '600',
-              color: '#091D33',
-              textAlign: 'center',
-              marginBottom: '24px',
-            }}
-          >
-            {t.tspotSubtitle}
-          </p>
-          <p
-            style={{
-              fontSize: '15px',
-              lineHeight: '1.8',
-              color: '#3D3D3D',
-              textAlign: 'center',
-              maxWidth: '900px',
-              margin: '0 auto 48px',
-            }}
-          >
-            {t.tspotDesc}
-          </p>
-
-          {/* 4 Feature cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-12">
-            {[t.tspotCard1, t.tspotCard2, t.tspotCard3, t.tspotCard4].map((card, i) => (
-              <div
-                key={i}
-                className="doc-step-card"
-                style={{
-                  padding: '24px 20px',
-                  borderRadius: '16px',
-                  backgroundColor: 'white',
-                  border: '2px solid #EC910C',
-                  textAlign: 'center',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  minHeight: '140px',
-                }}
-              >
-                <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#3D3D3D', fontWeight: '500' }}>
-                  {card}
-                </p>
-              </div>
-            ))}
-          </div>
-
-          {/* Note */}
-          <div
-            style={{
-              padding: '24px 32px',
-              borderRadius: '14px',
-              background: 'linear-gradient(135deg, rgba(236,145,12,0.08) 0%, rgba(236,145,12,0.03) 100%)',
-              border: '1px solid rgba(236,145,12,0.15)',
-              textAlign: 'center',
-            }}
-          >
-            <p style={{ fontSize: '14px', color: '#3D3D3D', fontStyle: 'italic' }}>
-              {t.tspotNote}
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* ============================================= */}
-      {/* SECTION 8: NUTRIGENETICS */}
-      {/* ============================================= */}
-      <section
-        className="doc-section"
-        style={{
-          padding: 'clamp(60px, 8vw, 120px) 0',
-          backgroundColor: '#FFFFFF',
-        }}
-      >
-        <div className="container-main">
-          <h2
-            style={{
-              fontSize: 'clamp(28px, 4vw, 42px)',
-              fontWeight: '800',
-              color: '#091D33',
-              marginBottom: '16px',
-              textAlign: 'center',
-            }}
-          >
-            <span style={{ color: '#EC910C' }}>GL</span> | {t.nutriTitle.split('| ')[1]}
-          </h2>
-          <p
-            style={{
-              fontSize: '18px',
-              fontWeight: '600',
-              color: '#091D33',
-              textAlign: 'center',
-              marginBottom: '24px',
-            }}
-          >
-            {t.nutriSubtitle}
-          </p>
-          <p
-            style={{
-              fontSize: '15px',
-              lineHeight: '1.8',
-              color: '#3D3D3D',
-              textAlign: 'center',
-              maxWidth: '900px',
-              margin: '0 auto 32px',
-            }}
-          >
-            {t.nutriDesc}
-          </p>
-
-          <div
-            style={{
-              padding: '32px 40px',
-              borderRadius: '16px',
-              background: 'linear-gradient(135deg, rgba(32,157,167,0.06) 0%, rgba(236,145,12,0.04) 100%)',
-              border: '1px solid rgba(32,157,167,0.1)',
-              maxWidth: '800px',
-              margin: '0 auto',
-            }}
-          >
-            <p style={{ fontSize: '15px', lineHeight: '1.8', color: '#3D3D3D', textAlign: 'center' }}>
-              {t.nutriMethod}
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* ============================================= */}
-      {/* SECTION 9: SNP TABLE */}
-      {/* ============================================= */}
-      <section
-        className="doc-section"
-        style={{
-          padding: 'clamp(60px, 8vw, 100px) 0',
-          background: 'linear-gradient(180deg, #F8FDFD 0%, #F0F9FA 100%)',
-        }}
-      >
-        <div className="container-main">
-          <p
-            style={{
-              fontSize: '16px',
-              lineHeight: '1.7',
-              color: '#091D33',
-              fontWeight: '600',
-              textAlign: 'center',
-              maxWidth: '800px',
-              margin: '0 auto 40px',
-            }}
-          >
-            {t.snpIntro}
-          </p>
-
-          <div
-            style={{
-              backgroundColor: 'white',
-              borderRadius: '16px',
-              overflow: 'auto',
-              boxShadow: '0 4px 30px rgba(0,0,0,0.06)',
-            }}
-          >
-            <div style={{ minWidth: '700px' }}>
-              {/* Header */}
-              <div
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: '1fr 1fr 1.5fr',
-                  backgroundColor: '#209DA7',
-                  color: 'white',
-                  fontSize: '13px',
-                  fontWeight: '700',
-                }}
-              >
-                <div style={{ padding: '14px 20px', borderRight: '1px solid rgba(255,255,255,0.2)' }}>{t.snpColGene}</div>
-                <div style={{ padding: '14px 20px', borderRight: '1px solid rgba(255,255,255,0.2)' }}>{t.snpColSNP}</div>
-                <div style={{ padding: '14px 20px' }}>{t.snpColFunc}</div>
-              </div>
-              {t.snpRows.map((row: { gene: string; desc: string; snp: string; poly: string; func: string }, i: number) => (
-                <div
-                  key={i}
-                  style={{
-                    display: 'grid',
-                    gridTemplateColumns: '1fr 1fr 1.5fr',
-                    borderBottom: i < t.snpRows.length - 1 ? '1px solid #F3F4F6' : 'none',
-                    fontSize: '13px',
-                    color: '#3D3D3D',
-                  }}
-                >
-                  <div style={{ padding: '14px 20px', borderRight: '1px solid #F3F4F6' }}>
-                    <span style={{ fontWeight: '700', color: '#091D33', display: 'block' }}>{row.gene}</span>
-                    <span style={{ fontSize: '12px', color: '#6B7280' }}>{row.desc}</span>
-                  </div>
-                  <div style={{ padding: '14px 20px', borderRight: '1px solid #F3F4F6' }}>
-                    <span style={{ fontWeight: '600', color: '#209DA7', display: 'block' }}>{row.snp}</span>
-                    <span style={{ fontSize: '12px', color: '#6B7280', whiteSpace: 'pre-line' }}>{row.poly}</span>
-                  </div>
-                  <div style={{ padding: '14px 20px', lineHeight: '1.5' }}>{row.func}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ============================================= */}
-      {/* SECTION 10: NUTRI CONCLUSION */}
-      {/* ============================================= */}
-      <section
-        className="doc-section"
-        style={{
-          padding: 'clamp(60px, 8vw, 100px) 0',
-          backgroundColor: '#FFFFFF',
-        }}
-      >
-        <div className="container-main">
-          <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
-            <div
+        <div className="relative z-10 px-5 sm:px-8 md:px-12 lg:px-20">
+          <div className="text-center max-w-4xl mx-auto mb-12" style={{ animation: 'fadeInUp 0.6s ease-out' }}>
+            {/* Title */}
+            <h1
               style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '16px',
-                marginBottom: '40px',
-                flexWrap: 'wrap',
+                fontSize: 'clamp(32px, 5vw, 48px)',
+                fontWeight: '700',
+                lineHeight: '1.2',
+                color: 'white',
+                marginBottom: '16px',
+                textShadow: '0 2px 20px rgba(0,0,0,0.3)',
               }}
             >
-              {[Users, undefined, FlaskConical, undefined, BookOpen].map((Icon, i) => (
-                <div
-                  key={i}
-                  style={{
-                    width: i % 2 === 1 ? 'auto' : '70px',
-                    height: i % 2 === 1 ? 'auto' : '70px',
-                    borderRadius: '50%',
-                    backgroundColor: i % 2 === 1 ? 'transparent' : '#F0F9FA',
-                    border: i % 2 === 1 ? 'none' : '2px solid rgba(32,157,167,0.15)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  {i % 2 === 1 ? (
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                      <path d="M5 12h14m-4-4l4 4-4 4" stroke="#9CA3AF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  ) : (
-                    Icon && <Icon size={28} color="#209DA7" />
-                  )}
-                </div>
-              ))}
-            </div>
-            <p style={{ fontSize: '17px', lineHeight: '1.8', color: '#3D3D3D', fontStyle: 'italic' }}>
-              {t.nutriConclusion}
+              {t.directionsTitle}
+            </h1>
+
+            {/* Subtitle */}
+            <p
+              style={{
+                fontSize: 'clamp(15px, 2vw, 18px)',
+                color: 'rgba(255,255,255,0.85)',
+                lineHeight: '1.6',
+                maxWidth: '600px',
+                marginLeft: 'auto',
+                marginRight: 'auto',
+              }}
+            >
+              Диагностическая лаборатория GammaLab
             </p>
           </div>
-        </div>
-      </section>
 
-      {/* ============================================= */}
-      {/* SECTION 11: CONFERENCES */}
-      {/* ============================================= */}
-      <section
-        className="doc-section"
-        style={{
-          padding: 'clamp(60px, 8vw, 120px) 0',
-          background: 'linear-gradient(135deg, #F8FDFD 0%, #FFF9F0 100%)',
-        }}
-      >
-        <div className="container-main">
-          <h2
-            style={{
-              fontSize: 'clamp(28px, 4vw, 42px)',
-              fontWeight: '800',
-              color: '#091D33',
-              marginBottom: '20px',
-              textAlign: 'center',
-            }}
-          >
-            <span style={{ color: '#EC910C' }}>{t.confTitle.split(' | ')[0]}</span>
-            {' | '}
-            {t.confTitle.split(' | ')[1]}
-          </h2>
-          <p
-            style={{
-              fontSize: '15px',
-              lineHeight: '1.8',
-              color: '#6B7280',
-              textAlign: 'center',
-              maxWidth: '800px',
-              margin: '0 auto 48px',
-              fontStyle: 'italic',
-            }}
-          >
-            {t.confSubtitle}
-          </p>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              { city: t.conf1, date: t.conf1date },
-              { city: t.conf2, date: t.conf2date },
-              { city: t.conf3, date: t.conf3date },
-            ].map((conf, i) => (
-              <div
-                key={i}
-                className="doc-step-card"
-                style={{
-                  padding: '32px 24px',
-                  borderRadius: '16px',
-                  backgroundColor: 'white',
-                  border: '1px solid rgba(236,145,12,0.2)',
-                  textAlign: 'center',
-                  position: 'relative',
-                  overflow: 'hidden',
-                }}
-              >
+          {/* Accordion Cards */}
+          <div className="max-w-4xl mx-auto flex flex-col gap-4">
+            {directions.map((dir, i) => {
+              const Icon = dir.icon;
+              const isOpen = openAccordion === i;
+              return (
                 <div
+                  key={i}
+                  className="accordion-card"
                   style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    height: '4px',
-                    background: 'linear-gradient(90deg, #EC910C, #209DA7)',
-                  }}
-                />
-                <div
-                  style={{
-                    width: '60px',
-                    height: '60px',
-                    borderRadius: '50%',
-                    backgroundColor: 'rgba(236,145,12,0.1)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    margin: '0 auto 16px',
+                    backgroundColor: 'rgba(255,255,255,0.95)',
+                    borderRadius: '16px',
+                    overflow: 'hidden',
+                    boxShadow: '0 10px 40px rgba(0,0,0,0.15)',
                   }}
                 >
-                  <FileText size={26} color="#EC910C" />
+                  {/* Header - clickable */}
+                  <button
+                    onClick={() => toggleAccordion(i)}
+                    className="w-full flex items-center gap-5 text-left"
+                    style={{
+                      padding: '24px 28px',
+                    }}
+                  >
+                    {/* Icon */}
+                    <div
+                      style={{
+                        width: '80px',
+                        height: '80px',
+                        borderRadius: '14px',
+                        backgroundColor: '#091D33',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexShrink: 0,
+                      }}
+                    >
+                      <Icon />
+                    </div>
+
+                    {/* Title */}
+                    <div className="flex-1">
+                      <h3
+                        style={{
+                          fontSize: '20px',
+                          fontWeight: '600',
+                          color: '#091D33',
+                          lineHeight: '1.3',
+                        }}
+                      >
+                        {dir.title}
+                      </h3>
+                      <p
+                        style={{
+                          fontSize: '14px',
+                          color: '#6B7280',
+                          marginTop: '6px',
+                        }}
+                      >
+                        {locale === 'ru' ? 'Подробнее' : locale === 'kz' ? 'Толығырақ' : 'Read more'} →
+                      </p>
+                    </div>
+
+                    {/* Chevron */}
+                    <ChevronDown
+                      size={24}
+                      color="#209DA7"
+                      className={`chevron-icon ${isOpen ? 'open' : ''}`}
+                    />
+                  </button>
+
+                  {/* Content - expandable */}
+                  <div className={`accordion-content ${isOpen ? 'open' : ''}`}>
+                    <div
+                      style={{
+                        padding: isOpen ? '0 28px 28px 28px' : '0 28px',
+                        borderTop: '1px solid #E5E7EB',
+                      }}
+                    >
+                      {/* For sections (oncogenetics) */}
+                      {dir.sections && dir.sections.length > 0 ? (
+                        <div style={{ marginTop: '20px' }}>
+                          {dir.sections.map((section, si) => (
+                            <div key={si} style={{ marginBottom: '24px' }}>
+                              <h4
+                                style={{
+                                  fontSize: '14px',
+                                  fontWeight: '600',
+                                  color: '#209DA7',
+                                  marginBottom: '12px',
+                                  textTransform: 'uppercase',
+                                  letterSpacing: '0.5px',
+                                }}
+                              >
+                                {section.title}
+                              </h4>
+                              <ul style={{ margin: 0, paddingLeft: '20px' }}>
+                                {section.items.map((item, ii) => (
+                                  <li
+                                    key={ii}
+                                    style={{
+                                      fontSize: '14px',
+                                      color: '#374151',
+                                      lineHeight: '1.6',
+                                      marginBottom: '8px',
+                                    }}
+                                  >
+                                    {item}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <>
+                          {dir.description && (
+                            <p
+                              style={{
+                                fontSize: '15px',
+                                color: '#374151',
+                                lineHeight: '1.7',
+                                marginTop: '20px',
+                                marginBottom: '16px',
+                              }}
+                            >
+                              {dir.description}
+                            </p>
+                          )}
+                          {dir.details.length > 0 && (
+                            <ul style={{ margin: 0, paddingLeft: '20px' }}>
+                              {dir.details.map((detail, j) => (
+                                <li
+                                  key={j}
+                                  style={{
+                                    fontSize: '14px',
+                                    color: '#4B5563',
+                                    lineHeight: '1.6',
+                                    marginBottom: '8px',
+                                  }}
+                                >
+                                  {detail}
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </>
+                      )}
+                    </div>
+                  </div>
                 </div>
-                <h3 style={{ fontSize: '16px', fontWeight: '700', color: '#091D33', marginBottom: '8px' }}>
-                  {conf.city}
-                </h3>
-                <p style={{ fontSize: '13px', color: '#6B7280' }}>{conf.date}</p>
-              </div>
-            ))}
+              );
+            })}
           </div>
-        </div>
-      </section>
 
-      {/* ============================================= */}
-      {/* SECTION 12: WHY GAMMALAB */}
-      {/* ============================================= */}
-      <section
-        className="doc-section"
-        style={{
-          padding: 'clamp(60px, 8vw, 120px) 0',
-          backgroundColor: '#FFFFFF',
-        }}
-      >
-        <div className="container-main">
-          <h2
-            style={{
-              fontSize: 'clamp(28px, 4vw, 42px)',
-              fontWeight: '800',
-              color: '#091D33',
-              marginBottom: '16px',
-              textAlign: 'center',
-            }}
-          >
-            <span style={{ color: '#EC910C' }}>GL</span> | {t.whyTitle}
-          </h2>
-          <p
-            style={{
-              fontSize: '16px',
-              color: '#3D3D3D',
-              textAlign: 'center',
-              maxWidth: '700px',
-              margin: '0 auto 48px',
-              lineHeight: '1.7',
-            }}
-          >
-            {t.whySubtitle}
-          </p>
-
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-5 max-w-[800px] mx-auto">
-            {[t.whyStep1, t.whyStep2, t.whyStep3, t.whyStep4, t.whyStep5, t.whyStep6].map((step, i) => (
-              <div
-                key={i}
-                className="doc-step-card"
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '14px',
-                  padding: '20px',
-                  borderRadius: '14px',
-                  backgroundColor: '#F8FDFD',
-                  border: '1px solid rgba(32,157,167,0.12)',
-                }}
-              >
-                <div
-                  style={{
-                    width: '40px',
-                    height: '40px',
-                    borderRadius: '50%',
-                    background: 'linear-gradient(135deg, #EC910C, #d4820a)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: 'white',
-                    fontWeight: '800',
-                    fontSize: '16px',
-                    flexShrink: 0,
-                  }}
-                >
-                  {i + 1}
-                </div>
-                <span style={{ fontSize: '13px', fontWeight: '600', color: '#091D33', lineHeight: '1.4' }}>
-                  {step}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ============================================= */}
-      {/* SECTION 13: ADVANTAGES */}
-      {/* ============================================= */}
-      <section
-        className="doc-section"
-        style={{
-          padding: 'clamp(60px, 8vw, 120px) 0',
-          background: 'linear-gradient(180deg, #F8FDFD 0%, #F0F9FA 100%)',
-        }}
-      >
-        <div className="container-main">
-          <h2
-            style={{
-              fontSize: 'clamp(28px, 4vw, 42px)',
-              fontWeight: '800',
-              color: '#091D33',
-              marginBottom: '48px',
-              textAlign: 'center',
-            }}
-          >
-            <span style={{ color: '#EC910C' }}>GL</span> | {t.advTitle}
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-[900px] mx-auto">
-            {[t.adv1, t.adv2, t.adv3, t.adv4, t.adv5, t.adv6, t.adv7].map((adv, i) => (
-              <div
-                key={i}
-                className="doc-feature-card"
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '16px',
-                  padding: '20px 24px',
-                  borderRadius: '14px',
-                  backgroundColor: 'white',
-                  border: '2px solid #EC910C',
-                  boxShadow: '0 2px 12px rgba(0,0,0,0.04)',
-                }}
-              >
-                <div
-                  style={{
-                    width: '44px',
-                    height: '44px',
-                    borderRadius: '12px',
-                    background: 'linear-gradient(135deg, #EC910C, #d4820a)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexShrink: 0,
-                  }}
-                >
-                  <CheckCircle2 size={22} color="white" />
-                </div>
-                <span style={{ fontSize: '14px', fontWeight: '500', color: '#091D33', lineHeight: '1.5' }}>
-                  {adv}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ============================================= */}
-      {/* SECTION 14: FINAL */}
-      {/* ============================================= */}
-      <section
-        className="doc-section"
-        style={{
-          padding: 'clamp(80px, 10vw, 140px) 0',
-          background: 'linear-gradient(135deg, #FFFFFF 0%, #F0F9FA 40%, #E0F2F4 100%)',
-          textAlign: 'center',
-        }}
-      >
-        <div className="container-main" style={{ maxWidth: '700px' }}>
-          <div
-            style={{
-              width: '60px',
-              height: '60px',
-              margin: '0 auto 24px',
-            }}
-          >
-            <Image
-              src="/images/g-logo.png"
-              alt="GammaLab"
-              width={60}
-              height={60}
-              style={{ objectFit: 'contain' }}
-            />
-          </div>
-          <h2
-            style={{
-              fontSize: 'clamp(24px, 3.5vw, 36px)',
-              fontWeight: '800',
-              color: '#EC910C',
-              lineHeight: '1.3',
-              marginBottom: '16px',
-            }}
-          >
-            {t.finalTitle}
-          </h2>
-          <p style={{ fontSize: '17px', lineHeight: '1.8', color: '#3D3D3D' }}>
-            {t.finalText}
-          </p>
-        </div>
-      </section>
-    </div>
-  );
-}
-
-// =============================================
-// ANALYSIS CATEGORY COMPONENT
-// =============================================
-
-function AnalysisCategory({ title, items, color }: { title: string; items: string[]; color: string }) {
-  return (
-    <div
-      style={{
-        borderRadius: '16px',
-        overflow: 'hidden',
-        border: `1px solid ${color}20`,
-        backgroundColor: 'white',
-        boxShadow: '0 2px 12px rgba(0,0,0,0.04)',
-      }}
-    >
-      <div
-        style={{
-          padding: '16px 20px',
-          backgroundColor: `${color}10`,
-          borderBottom: `2px solid ${color}`,
-        }}
-      >
-        <h3 style={{ fontSize: '14px', fontWeight: '700', color, lineHeight: '1.4' }}>
-          {title}
-        </h3>
-      </div>
-      <div style={{ padding: '16px 20px' }}>
-        {items.map((item, i) => (
-          <div
-            key={i}
-            style={{
-              display: 'flex',
-              alignItems: 'flex-start',
-              gap: '10px',
-              padding: '8px 0',
-              borderBottom: i < items.length - 1 ? '1px solid #F3F4F6' : 'none',
-            }}
-          >
-            <div
+          {/* Contact Button */}
+          <div className="text-center mt-10">
+            <button
+              onClick={() => setIsPopupOpen(true)}
+              className="inline-flex items-center gap-3 px-8 py-4 rounded-full font-semibold text-[16px] transition-all hover:scale-105 hover:shadow-xl"
               style={{
-                width: '6px',
-                height: '6px',
-                borderRadius: '50%',
-                backgroundColor: color,
-                marginTop: '7px',
-                flexShrink: 0,
+                backgroundColor: '#EC910C',
+                color: 'white',
+                boxShadow: '0 8px 30px rgba(236,145,12,0.4)',
               }}
-            />
-            <span style={{ fontSize: '13px', color: '#3D3D3D', lineHeight: '1.6' }}>
-              {item}
-            </span>
+            >
+              <MessageCircle size={22} />
+              {t.contactBtn}
+            </button>
           </div>
-        ))}
-      </div>
+        </div>
+      </section>
+
+      {/* Popup */}
+      {isPopupOpen && (
+        <ContactFormPopup locale={locale} onClose={() => setIsPopupOpen(false)} />
+      )}
     </div>
   );
 }
 
 // =============================================
-// REGISTRATION FORM
+// CONTACT FORM POPUP
 // =============================================
 
-function RegistrationForm({ locale, onSuccess }: { locale: Locale; onSuccess: () => void }) {
+function ContactFormPopup({ locale, onClose }: { locale: Locale; onClose: () => void }) {
   const t = formTranslations[locale] || formTranslations.ru;
 
   const [fullName, setFullName] = useState('');
   const [phone, setPhone] = useState('+7 ');
-  const [workplace, setWorkplace] = useState('');
+  const [comment, setComment] = useState('');
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value;
@@ -1964,24 +1003,8 @@ function RegistrationForm({ locale, onSuccess }: { locale: Locale; onSuccess: ()
     setPhone(formatted);
   };
 
-  const isPhoneComplete = phone.replace(/\D/g, '').length === 11;
-  const [profession, setProfession] = useState('');
-  const [sending, setSending] = useState(false);
-  const [error, setError] = useState('');
-  const [touched, setTouched] = useState({
-    fullName: false,
-    phone: false,
-    workplace: false,
-    profession: false,
-  });
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setTouched({ fullName: true, phone: true, workplace: true, profession: true });
-
-    if (!fullName.trim() || !isPhoneComplete || !workplace.trim() || !profession) {
-      return;
-    }
 
     setSending(true);
     setError('');
@@ -1991,10 +1014,9 @@ function RegistrationForm({ locale, onSuccess }: { locale: Locale; onSuccess: ()
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          fullName: fullName.trim(),
-          phone: phone.trim(),
-          workplace: workplace.trim(),
-          profession,
+          fullName: fullName.trim() || 'Не указано',
+          phone: phone.trim() || 'Не указано',
+          comment: comment.trim() || '',
         }),
       });
 
@@ -2002,7 +1024,10 @@ function RegistrationForm({ locale, onSuccess }: { locale: Locale; onSuccess: ()
         throw new Error('Failed');
       }
 
-      onSuccess();
+      setSuccess(true);
+      setTimeout(() => {
+        onClose();
+      }, 2000);
     } catch {
       setError(t.error);
       setSending(false);
@@ -2021,11 +1046,6 @@ function RegistrationForm({ locale, onSuccess }: { locale: Locale; onSuccess: ()
     transition: 'border-color 0.2s',
   };
 
-  const inputErrorStyle: React.CSSProperties = {
-    ...inputStyle,
-    borderColor: '#EF4444',
-  };
-
   const iconStyle: React.CSSProperties = {
     position: 'absolute',
     left: '16px',
@@ -2036,165 +1056,164 @@ function RegistrationForm({ locale, onSuccess }: { locale: Locale; onSuccess: ()
   };
 
   return (
-    <div className="max-w-[500px] mx-auto">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', backdropFilter: 'blur(8px)' }}
+      onClick={onClose}
+    >
       <div
+        className="relative w-full max-w-[450px] max-h-[90vh] overflow-y-auto"
         style={{
-          backgroundColor: '#e8f5f6',
-          borderRadius: '16px',
-          padding: '40px 32px',
+          backgroundColor: 'white',
+          borderRadius: '20px',
+          padding: '32px 28px',
+          boxShadow: '0 25px 50px rgba(0, 0, 0, 0.25)',
+          animation: 'popupIn 0.3s ease-out',
         }}
+        onClick={(e) => e.stopPropagation()}
       >
-        <div className="text-center mb-8">
-          <div
-            className="w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center"
-            style={{ backgroundColor: '#209DA7' }}
-          >
-            <User size={28} color="white" />
-          </div>
-          <h2
-            className="text-[22px] sm:text-[26px] font-semibold mb-2"
-            style={{ color: '#091D33' }}
-          >
-            {t.formTitle}
-          </h2>
-          <p className="text-[14px]" style={{ color: '#6B7280' }}>
-            {t.formSubtitle}
-          </p>
-        </div>
+        {/* Close button */}
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 transition-colors"
+          style={{ color: '#6B7280' }}
+        >
+          <X size={20} />
+        </button>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-          {/* ФИО */}
-          <div>
-            <label className="block text-[13px] font-medium mb-1.5" style={{ color: '#374151' }}>
-              {t.fullName} <span style={{ color: '#EF4444' }}>*</span>
-            </label>
-            <div style={{ position: 'relative' }}>
-              <User size={18} style={iconStyle} />
-              <input
-                type="text"
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-                onBlur={() => setTouched((p) => ({ ...p, fullName: true }))}
-                placeholder={t.fullNamePlaceholder}
-                style={touched.fullName && !fullName.trim() ? inputErrorStyle : inputStyle}
-                onFocus={(e) => (e.target.style.borderColor = '#209DA7')}
-              />
+        {success ? (
+          <div className="text-center py-8">
+            <div
+              className="w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center"
+              style={{ backgroundColor: '#10B981' }}
+            >
+              <CheckCircle2 size={32} color="white" />
             </div>
-            {touched.fullName && !fullName.trim() && (
-              <p className="text-[12px] mt-1" style={{ color: '#EF4444' }}>{t.required}</p>
-            )}
+            <p className="text-[18px] font-medium" style={{ color: '#091D33' }}>
+              {t.success}
+            </p>
           </div>
-
-          {/* Телефон */}
-          <div>
-            <label className="block text-[13px] font-medium mb-1.5" style={{ color: '#374151' }}>
-              {t.phone} <span style={{ color: '#EF4444' }}>*</span>
-            </label>
-            <div style={{ position: 'relative' }}>
-              <Phone size={18} style={iconStyle} />
-              <input
-                type="tel"
-                value={phone}
-                onChange={handlePhoneChange}
-                onBlur={() => setTouched((p) => ({ ...p, phone: true }))}
-                placeholder={t.phonePlaceholder}
-                style={touched.phone && !isPhoneComplete ? inputErrorStyle : inputStyle}
-                onFocus={(e) => {
-                  e.target.style.borderColor = '#209DA7';
-                  if (!phone) setPhone('+7 ');
-                }}
-              />
-            </div>
-            {touched.phone && !isPhoneComplete && (
-              <p className="text-[12px] mt-1" style={{ color: '#EF4444' }}>{t.required}</p>
-            )}
-          </div>
-
-          {/* Место работы */}
-          <div>
-            <label className="block text-[13px] font-medium mb-1.5" style={{ color: '#374151' }}>
-              {t.workplace} <span style={{ color: '#EF4444' }}>*</span>
-            </label>
-            <div style={{ position: 'relative' }}>
-              <MapPin size={18} style={iconStyle} />
-              <input
-                type="text"
-                value={workplace}
-                onChange={(e) => setWorkplace(e.target.value)}
-                onBlur={() => setTouched((p) => ({ ...p, workplace: true }))}
-                placeholder={t.workplacePlaceholder}
-                style={touched.workplace && !workplace.trim() ? inputErrorStyle : inputStyle}
-                onFocus={(e) => (e.target.style.borderColor = '#209DA7')}
-              />
-            </div>
-            {touched.workplace && !workplace.trim() && (
-              <p className="text-[12px] mt-1" style={{ color: '#EF4444' }}>{t.required}</p>
-            )}
-          </div>
-
-          {/* Профессия */}
-          <div>
-            <label className="block text-[13px] font-medium mb-1.5" style={{ color: '#374151' }}>
-              {t.profession} <span style={{ color: '#EF4444' }}>*</span>
-            </label>
-            <div style={{ position: 'relative' }}>
-              <Briefcase size={18} style={iconStyle} />
-              <select
-                value={profession}
-                onChange={(e) => setProfession(e.target.value)}
-                onBlur={() => setTouched((p) => ({ ...p, profession: true }))}
-                style={{
-                  ...(touched.profession && !profession ? inputErrorStyle : inputStyle),
-                  appearance: 'none',
-                  paddingRight: '42px',
-                  color: profession ? '#091D33' : '#9CA3AF',
-                }}
-                onFocus={(e) => (e.target.style.borderColor = '#209DA7')}
+        ) : (
+          <>
+            <div className="text-center mb-6">
+              <div
+                className="w-14 h-14 rounded-full mx-auto mb-3 flex items-center justify-center"
+                style={{ backgroundColor: '#209DA7' }}
               >
-                <option value="" disabled>{t.professionPlaceholder}</option>
-                {t.professions.map((p) => (
-                  <option key={p} value={p}>{p}</option>
-                ))}
-              </select>
-              <ChevronDown
-                size={18}
-                style={{
-                  position: 'absolute',
-                  right: '14px',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  color: '#9CA3AF',
-                  pointerEvents: 'none',
-                }}
-              />
+                <MessageCircle size={26} color="white" />
+              </div>
+              <h2
+                className="text-[20px] sm:text-[22px] font-semibold mb-1"
+                style={{ color: '#091D33' }}
+              >
+                {t.formTitle}
+              </h2>
+              <p className="text-[13px]" style={{ color: '#6B7280' }}>
+                {t.formSubtitle}
+              </p>
             </div>
-            {touched.profession && !profession && (
-              <p className="text-[12px] mt-1" style={{ color: '#EF4444' }}>{t.required}</p>
-            )}
-          </div>
 
-          {/* Error */}
-          {error && (
-            <p className="text-[13px] text-center" style={{ color: '#EF4444' }}>{error}</p>
-          )}
+            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+              {/* ФИО */}
+              <div>
+                <label className="block text-[13px] font-medium mb-1.5" style={{ color: '#374151' }}>
+                  {t.fullName}
+                </label>
+                <div style={{ position: 'relative' }}>
+                  <User size={18} style={iconStyle} />
+                  <input
+                    type="text"
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    placeholder={t.fullNamePlaceholder}
+                    style={inputStyle}
+                    onFocus={(e) => (e.target.style.borderColor = '#209DA7')}
+                    onBlur={(e) => (e.target.style.borderColor = '#E5E7EB')}
+                  />
+                </div>
+              </div>
 
-          {/* Submit */}
-          <button
-            type="submit"
-            disabled={sending}
-            className="w-full py-3.5 rounded-full text-[15px] font-medium transition-opacity"
-            style={{
-              backgroundColor: '#209DA7',
-              color: 'white',
-              opacity: sending ? 0.7 : 1,
-              cursor: sending ? 'not-allowed' : 'pointer',
-              marginTop: '8px',
-            }}
-          >
-            {sending ? t.sending : t.submit}
-          </button>
-        </form>
+              {/* Телефон */}
+              <div>
+                <label className="block text-[13px] font-medium mb-1.5" style={{ color: '#374151' }}>
+                  {t.phone}
+                </label>
+                <div style={{ position: 'relative' }}>
+                  <Phone size={18} style={iconStyle} />
+                  <input
+                    type="tel"
+                    value={phone}
+                    onChange={handlePhoneChange}
+                    placeholder={t.phonePlaceholder}
+                    style={inputStyle}
+                    onFocus={(e) => {
+                      e.target.style.borderColor = '#209DA7';
+                      if (!phone) setPhone('+7 ');
+                    }}
+                    onBlur={(e) => (e.target.style.borderColor = '#E5E7EB')}
+                  />
+                </div>
+              </div>
+
+              {/* Комментарий */}
+              <div>
+                <label className="block text-[13px] font-medium mb-1.5" style={{ color: '#374151' }}>
+                  {t.comment}
+                </label>
+                <div style={{ position: 'relative' }}>
+                  <MessageSquare size={18} style={{ ...iconStyle, top: '20px', transform: 'none' }} />
+                  <textarea
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                    placeholder={t.commentPlaceholder}
+                    rows={3}
+                    style={{
+                      ...inputStyle,
+                      resize: 'none',
+                    }}
+                    onFocus={(e) => (e.target.style.borderColor = '#209DA7')}
+                    onBlur={(e) => (e.target.style.borderColor = '#E5E7EB')}
+                  />
+                </div>
+              </div>
+
+              {/* Error */}
+              {error && (
+                <p className="text-[13px] text-center" style={{ color: '#EF4444' }}>{error}</p>
+              )}
+
+              {/* Submit */}
+              <button
+                type="submit"
+                disabled={sending}
+                className="w-full py-3.5 rounded-full text-[15px] font-medium transition-all hover:opacity-90"
+                style={{
+                  backgroundColor: '#209DA7',
+                  color: 'white',
+                  opacity: sending ? 0.7 : 1,
+                  cursor: sending ? 'not-allowed' : 'pointer',
+                  marginTop: '4px',
+                }}
+              >
+                {sending ? t.sending : t.submit}
+              </button>
+            </form>
+          </>
+        )}
       </div>
+
+      <style>{`
+        @keyframes popupIn {
+          from {
+            opacity: 0;
+            transform: scale(0.95) translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+          }
+        }
+      `}</style>
     </div>
   );
 }

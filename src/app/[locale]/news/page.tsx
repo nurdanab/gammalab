@@ -107,20 +107,19 @@ export default function NewsPage() {
     return (
       <div className="flex flex-col">
         {/* Hero Section */}
-        <section
-          className="relative pt-[140px] sm:pt-[160px] lg:pt-[180px] pb-12 lg:pb-20"
-          style={{ backgroundColor: '#EEF6F6' }}
-        >
-          <div className="px-5 sm:px-8 md:px-12 lg:px-20">
-            <div className="flex items-center gap-2 mb-6">
-              <span className="text-[13px]" style={{ color: '#9CA3AF' }}>{t.home}</span>
-              <span className="text-[13px]" style={{ color: '#9CA3AF' }}>/</span>
-              <span className="text-[13px]" style={{ color: '#209DA7' }}>{t.title}</span>
+        <section className="relative pt-[100px] sm:pt-[110px] lg:pt-[120px] pb-6 lg:pb-8">
+          <Image src="/images/hero-about.jpg" alt="Background" fill className="object-cover object-center" priority />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#091D33]/60 via-[#091D33]/40 to-[#091D33]/60" />
+          <div className="relative z-10 px-5 sm:px-8 md:px-12 lg:px-20">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="text-[13px] text-white/70">{t.home}</span>
+              <span className="text-[13px] text-white/50">/</span>
+              <span className="text-[13px] text-white">{t.title}</span>
             </div>
-            <h1 className="text-[28px] sm:text-[36px] lg:text-[42px] font-semibold mb-4" style={{ color: '#091D33' }}>
+            <h1 className="text-[24px] sm:text-[28px] lg:text-[32px] font-semibold mb-2 text-white">
               {t.title}
             </h1>
-            <p className="text-[15px] leading-[1.8] max-w-[600px]" style={{ color: '#6B7280' }}>
+            <p className="text-[14px] leading-[1.7] max-w-[500px] text-white/80">
               {t.subtitle}
             </p>
           </div>
@@ -147,33 +146,26 @@ export default function NewsPage() {
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <section
-        className="relative pt-[140px] sm:pt-[160px] lg:pt-[180px] pb-12 lg:pb-20"
-        style={{ backgroundColor: '#EEF6F6' }}
-      >
-        <div className="px-5 sm:px-8 md:px-12 lg:px-20">
+      <section className="relative pt-[100px] sm:pt-[110px] lg:pt-[120px] pb-6 lg:pb-8">
+        <Image src="/images/hero-about.jpg" alt="Background" fill className="object-cover object-center" priority />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#091D33]/60 via-[#091D33]/40 to-[#091D33]/60" />
+        <div className="relative z-10 px-5 sm:px-8 md:px-12 lg:px-20">
           {/* Breadcrumbs */}
-          <div className="flex items-center gap-2 mb-6">
-            <Link href="/" className="text-[13px]" style={{ color: '#9CA3AF' }}>
+          <div className="flex items-center gap-2 mb-4">
+            <Link href="/" className="text-[13px] text-white/70 hover:text-white transition-colors">
               {t.home}
             </Link>
-            <span className="text-[13px]" style={{ color: '#9CA3AF' }}>/</span>
-            <span className="text-[13px]" style={{ color: '#209DA7' }}>
+            <span className="text-[13px] text-white/50">/</span>
+            <span className="text-[13px] text-white">
               {t.title}
             </span>
           </div>
 
           {/* Title */}
-          <h1
-            className="text-[28px] sm:text-[36px] lg:text-[42px] font-semibold mb-4"
-            style={{ color: '#091D33' }}
-          >
+          <h1 className="text-[24px] sm:text-[28px] lg:text-[32px] font-semibold mb-2 text-white">
             {t.title}
           </h1>
-          <p
-            className="text-[15px] leading-[1.8] max-w-[600px]"
-            style={{ color: '#6B7280' }}
-          >
+          <p className="text-[14px] leading-[1.7] max-w-[500px] text-white/80">
             {t.subtitle}
           </p>
         </div>

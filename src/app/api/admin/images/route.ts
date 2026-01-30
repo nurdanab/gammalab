@@ -31,7 +31,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'File too large (max 25MB)' }, { status: 400 })
     }
 
-    const supabase = createAdminClient()
+    let supabase
+    try {
+      supabase = createAdminClient()
+    } catch (e) {
+      console.error('Admin client error:', e)
+      return NextResponse.json({ error: 'Admin client initialization failed' }, { status: 500 })
+    }
 
     // Generate unique filename
     const ext = file.name.split('.').pop() || 'jpg'
@@ -55,7 +61,7 @@ export async function POST(request: NextRequest) {
 
     if (uploadError) {
       console.error('Upload error:', uploadError)
-      return NextResponse.json({ error: 'Failed to upload' }, { status: 500 })
+      return NextResponse.json({ error: `Failed to upload: ${uploadError.message}` }, { status: 500 })
     }
 
     // Get public URL
@@ -63,14 +69,18 @@ export async function POST(request: NextRequest) {
       .from(BUCKET_NAME)
       .getPublicUrl(path)
 
-    // Track in image_usage
-    await supabase
-      .from('image_usage')
-      .insert({
-        storage_path: path,
-        used_in_table: null,
-        used_in_id: null,
-      } as never)
+    // Track in image_usage (optional, table may not exist)
+    try {
+      await supabase
+        .from('image_usage')
+        .insert({
+          storage_path: path,
+          used_in_table: null,
+          used_in_id: null,
+        } as never)
+    } catch {
+      // Ignore if table doesn't exist
+    }
 
     return NextResponse.json({
       path,

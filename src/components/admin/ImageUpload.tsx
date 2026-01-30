@@ -7,9 +7,10 @@ interface ImageUploadProps {
   value: string;
   onChange: (url: string) => void;
   folder?: string;
+  label?: string;
 }
 
-export default function ImageUpload({ value, onChange, folder = 'uploads' }: ImageUploadProps) {
+export default function ImageUpload({ value, onChange, folder = 'uploads', label = 'Изображение' }: ImageUploadProps) {
   const [uploading, setUploading] = useState(false);
   const [dragOver, setDragOver] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -92,7 +93,7 @@ export default function ImageUpload({ value, onChange, folder = 'uploads' }: Ima
           marginBottom: '6px',
         }}
       >
-        Изображение
+        {label}
       </label>
 
       {value ? (

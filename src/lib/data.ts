@@ -30,6 +30,12 @@ export type {
   DocumentUpdate,
   DoctorRegistration,
   DoctorRegistrationInsert,
+  HeroCarousel,
+  HeroCarouselInsert,
+  HeroCarouselUpdate,
+  NgsContent,
+  NgsContentUpdate,
+  NgsSection,
 } from './supabase/queries'
 
 export {
@@ -110,6 +116,19 @@ export {
 
   // Stats
   getStats,
+
+  // Hero Carousels
+  getHeroCarousels,
+  getAllHeroCarousels,
+  getHeroCarouselById,
+  createHeroCarousel,
+  updateHeroCarousel,
+  deleteHeroCarousel,
+
+  // NGS Content
+  getNgsContent,
+  getNgsContentAdmin,
+  updateNgsContent,
 } from './supabase/queries'
 
 // Alias functions for backward compatibility

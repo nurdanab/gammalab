@@ -5,20 +5,14 @@ export async function POST(request: NextRequest) {
   try {
     const data = await request.json();
 
-    const { fullName, phone, workplace, profession } = data;
+    const { fullName, phone, comment } = data;
 
-    if (!fullName || !phone || !workplace || !profession) {
-      return NextResponse.json(
-        { error: 'Все поля обязательны для заполнения' },
-        { status: 400 }
-      );
-    }
-
+    // All fields are optional now
     const registration = await createDoctorRegistration({
-      fullName,
-      phone,
-      workplace,
-      profession,
+      fullName: fullName || 'Не указано',
+      phone: phone || 'Не указано',
+      workplace: comment || '-', // Store comment in workplace field
+      profession: 'Врач (форма обратной связи)',
     });
 
     if (!registration) {

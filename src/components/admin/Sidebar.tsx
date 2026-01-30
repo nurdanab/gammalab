@@ -3,16 +3,17 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { LayoutDashboard, Newspaper, Tag, Star, FlaskConical, MessageSquare, LogOut, Menu, X, Folder, FileText, Award, UserCheck } from 'lucide-react';
+import { LayoutDashboard, Newspaper, Tag, Star, FlaskConical, LogOut, Menu, X, Folder, FileText, Award, UserCheck, Image, Dna } from 'lucide-react';
 
 const navItems = [
   { href: '/admin', label: 'Дашборд', icon: LayoutDashboard },
+  { href: '/admin/hero-carousels', label: 'Hero карусель', icon: Image },
   { href: '/admin/news', label: 'Новости', icon: Newspaper },
   { href: '/admin/promotions', label: 'Акции', icon: Tag },
   { href: '/admin/reviews', label: 'Отзывы', icon: Star },
   { href: '/admin/analysis-categories', label: 'Категории анализов', icon: Folder },
   { href: '/admin/analyses', label: 'Анализы', icon: FlaskConical },
-  { href: '/admin/submissions', label: 'Заявки', icon: MessageSquare },
+  { href: '/admin/ngs-content', label: 'NGS (Врачам)', icon: Dna },
   { href: '/admin/doctor-registrations', label: 'Анкеты врачей', icon: UserCheck },
   { href: '/admin/documents', label: 'Лицензии и сертиф.', icon: Award },
   { href: '/admin/privacy', label: 'Политика конфиденц.', icon: FileText },

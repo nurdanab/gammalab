@@ -139,20 +139,14 @@
       "therapy5": "Immunotherapy"
     },
     "advantagesSection": {
-      "title": "KEY ADVANTAGES OF THE LABORATORY",
-      "qualityLabel": "Quality.",
-      "qualityText": "All studies are performed on modern high-tech equipment using certified reagents and a multi-level quality control system, which ensures high reliability and reproducibility of results.",
-      "speedLabel": "Research speed.",
-      "speedText": "Optimized laboratory processes and our own team of specialists allow us to perform research in a short time, which is especially important in the diagnosis and treatment of cancer patients.",
-      "deadlineText": "Results are delivered within 3 to 14 days. The laboratory is one of the molecular genetic laboratories providing results in the shortest possible time.",
-      "staffLabel": "Human resources.",
-      "staffText": "The laboratory is staffed with highly qualified specialists, including:",
-      "staffList1": "laboratory head: over 20 years of experience in oncogenetics",
-      "staffList2": "pathomorphologists",
-      "staffList3": "laboratory diagnostics specialists with specialized education and significant practical experience in molecular pathology and medical genetics",
-      "membersText": "Specialists actively participate in congresses and are members of the European Congress of Pathology, European Cytogeneticists Association (ECA).",
-      "convenienceLabel": "Convenience for partners and patients.",
-      "convenienceText": "We have our own logistics and organized delivery of biological material in compliance with all transportation requirements."
+      "title": "Our Advantages",
+      "adv1": "Laboratory information system and sample barcoding at collection point",
+      "adv2": "Highly qualified specialists with extensive experience in multidisciplinary laboratory",
+      "adv3": "Maximum automation of all work processes",
+      "adv4": "Courier service and sample transportation meeting preanalytical stage requirements",
+      "adv5": "Equipment and reagents from leading global manufacturers",
+      "adv6": "Participation in external quality control systems",
+      "adv7": "Staff training in preanalytical stage rules"
     },
     "qualitySection": {
       "title": "QUALITY MANAGEMENT SYSTEM",

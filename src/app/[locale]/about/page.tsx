@@ -2,22 +2,15 @@
 
 import { useState, useEffect, Fragment } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
-import { Users, Award, FileCheck, CheckCircle } from 'lucide-react';
+import { Users, Award, FileCheck, CheckCircle, CheckCircle2 } from 'lucide-react';
 import Image from 'next/image';
 
 // Подтемы бокового меню (id для связи с переводами)
 const sidebarItemsConfig = [
   { id: 'about', icon: Users },
   { id: 'advantages', icon: Award },
-  { id: 'analyses', icon: FileCheck },
-  { id: 'equipment', icon: Award },
-  { id: 'reagents', icon: CheckCircle },
-  { id: 'labTests', icon: FileCheck },
-  { id: 'logistics', icon: Award },
   { id: 'quality', icon: Award },
   { id: 'licenses', icon: FileCheck },
-  { id: 'experience', icon: Users },
-  { id: 'conferences', icon: Award },
 ];
 
 // Компонент круговой диаграммы для ONCO-профиля
@@ -125,32 +118,52 @@ function AboutSectionContent({ t }: { t: (key: string) => string }) {
 
 // Компонент контента секции "Наши преимущества" с переводами
 function AdvantagesSectionContent({ t }: { t: (key: string) => string }) {
+  const advantages = [
+    t('advantagesSection.adv1'),
+    t('advantagesSection.adv2'),
+    t('advantagesSection.adv3'),
+    t('advantagesSection.adv4'),
+    t('advantagesSection.adv5'),
+    t('advantagesSection.adv6'),
+    t('advantagesSection.adv7'),
+  ];
+
   return (
-    <>
-      <p style={{ marginBottom: '16px' }}>
-        <strong>{t('advantagesSection.qualityLabel')}</strong> {t('advantagesSection.qualityText')}
-      </p>
-      <p style={{ marginBottom: '16px' }}>
-        <strong>{t('advantagesSection.speedLabel')}</strong> {t('advantagesSection.speedText')}
-      </p>
-      <p style={{ marginBottom: '16px' }}>
-        {t('advantagesSection.deadlineText')}
-      </p>
-      <p style={{ marginBottom: '16px' }}>
-        <strong>{t('advantagesSection.staffLabel')}</strong> {t('advantagesSection.staffText')}
-      </p>
-      <ul style={{ paddingLeft: '20px', marginBottom: '16px' }}>
-        <li style={{ marginBottom: '8px' }}>{t('advantagesSection.staffList1')}</li>
-        <li style={{ marginBottom: '8px' }}>{t('advantagesSection.staffList2')}</li>
-        <li style={{ marginBottom: '8px' }}>{t('advantagesSection.staffList3')}</li>
-      </ul>
-      <p style={{ marginBottom: '16px' }}>
-        {t('advantagesSection.membersText')}
-      </p>
-      <p>
-        <strong>{t('advantagesSection.convenienceLabel')}</strong> {t('advantagesSection.convenienceText')}
-      </p>
-    </>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {advantages.map((adv, i) => (
+        <div
+          key={i}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '16px',
+            padding: '20px 24px',
+            borderRadius: '14px',
+            backgroundColor: 'white',
+            border: '2px solid #091D33',
+            boxShadow: '0 2px 12px rgba(0,0,0,0.04)',
+          }}
+        >
+          <div
+            style={{
+              width: '44px',
+              height: '44px',
+              borderRadius: '50%',
+              background: 'linear-gradient(135deg, #091D33, #0a2540)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+            }}
+          >
+            <CheckCircle2 size={22} color="white" />
+          </div>
+          <span style={{ fontSize: '14px', fontWeight: '500', color: '#091D33', lineHeight: '1.5' }}>
+            {adv}
+          </span>
+        </div>
+      ))}
+    </div>
   );
 }
 
@@ -572,75 +585,8 @@ function LogisticsSectionContent({ t }: { t: (key: string) => string }) {
 function QualitySectionContent({ t }: { t: (key: string) => string }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-      {/* Верхняя часть */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-          {/* Лабораторный Внутренний Контроль */}
-          <div style={{
-            backgroundColor: 'white',
-            border: '1px solid #e5e7eb',
-            borderRadius: '8px',
-            padding: '12px 16px'
-          }}>
-            <h4 style={{ fontSize: '13px', fontWeight: '600', color: '#EC910C', marginBottom: '8px' }}>
-              Лабораторный Внутренний Контроль:
-            </h4>
-            <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: '#4b5563', lineHeight: '1.6' }}>
-              <li style={{ marginBottom: '4px' }}>Использование стандартизированных контрольных образцов наборов от производителей при каждой постановке.</li>
-              <li>Систематический мониторинг качества результатов внутри лаборатории.</li>
-            </ul>
-          </div>
-
-          {/* Внешний Контроль Качества */}
-          <div style={{
-            backgroundColor: 'white',
-            border: '1px solid #e5e7eb',
-            borderRadius: '8px',
-            padding: '12px 16px'
-          }}>
-            <h4 style={{ fontSize: '13px', fontWeight: '600', color: '#EC910C', marginBottom: '8px' }}>
-              Внешний Контроль Качества:
-            </h4>
-            <p style={{ margin: 0, fontSize: '12px', color: '#4b5563', lineHeight: '1.6' }}>
-              Специалисты проходят ежегодный внешний контроль качества, имеют сертификаты успешного прохождения международного контроля качества.
-            </p>
-          </div>
-
-          {/* Экспертная Поддержка */}
-          <div style={{
-            backgroundColor: 'white',
-            border: '1px solid #e5e7eb',
-            borderRadius: '8px',
-            padding: '12px 16px'
-          }}>
-            <h4 style={{ fontSize: '13px', fontWeight: '600', color: '#EC910C', marginBottom: '8px' }}>
-              Экспертная Поддержка:
-            </h4>
-            <p style={{ margin: 0, fontSize: '12px', color: '#4b5563', lineHeight: '1.6' }}>
-              Консультации по иммуногистохимическим анализам проводятся под руководством профессора Енин Е.А.
-            </p>
-          </div>
-
-          {/* Система Менеджмента Качества */}
-          <div style={{
-            backgroundColor: 'white',
-            border: '1px solid #e5e7eb',
-            borderRadius: '8px',
-            padding: '12px 16px'
-          }}>
-            <h4 style={{ fontSize: '13px', fontWeight: '600', color: '#EC910C', marginBottom: '8px' }}>
-              Система Менеджмента Качества:
-            </h4>
-            <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: '#4b5563', lineHeight: '1.6' }}>
-              <li style={{ marginBottom: '4px' }}>Внедрена система менеджмента качества с момента поступления биоматериала в лабораторию.</li>
-              <li style={{ marginBottom: '4px' }}>Организован реестр принимаемого материала с назначенными ответственными менеджерами.</li>
-              <li>Постоянный мониторинг и обеспечение высокого стандарта качества на всех этапах анализа.</li>
-            </ul>
-          </div>
-        </div>
-
-      {/* Нижняя часть - Контроль качества (схема) */}
+      {/* Контроль качества (схема) */}
       <div style={{
-        backgroundColor: '#f8f9fa',
         borderRadius: '12px',
         padding: '24px',
         display: 'flex',
@@ -1115,7 +1061,7 @@ export default function AboutPage() {
     }
     if (activeSection === 'advantages') {
       return {
-        title: t('advantagesSection.title'),
+        title: <><span style={{ color: '#091D33' }}>GL</span> | {t('advantagesSection.title')}</>,
         content: <AdvantagesSectionContent t={t} />
       };
     }
@@ -1180,34 +1126,26 @@ export default function AboutPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <section
-        className="relative pt-[100px] sm:pt-[110px] lg:pt-[120px] pb-8 lg:pb-12"
-        style={{ backgroundColor: '#EEF6F6' }}
-      >
-        <div className="px-5 sm:px-8 md:px-12 lg:px-20 text-center">
-          {/* Hero Image */}
-          <div className="relative w-full max-w-[500px] mx-auto mb-6 rounded-xl overflow-hidden">
-            <Image
-              src="/images/about.png"
-              alt="GammaLab Laboratory"
-              width={500}
-              height={300}
-              className="w-full h-auto object-cover"
-              priority
-            />
-          </div>
+      {/* Hero Section - Full Width Image with Overlay */}
+      <section className="relative min-h-[400px] sm:min-h-[450px] lg:min-h-[500px] flex items-center justify-center">
+        {/* Background Image */}
+        <Image
+          src="/images/hero-about.jpg"
+          alt="DNA Background"
+          fill
+          className="object-cover"
+          priority
+        />
 
-          <h1
-            className="text-[28px] sm:text-[36px] lg:text-[42px] font-semibold mb-4"
-            style={{ color: '#091D33' }}
-          >
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#091D33]/40 via-[#091D33]/20 to-[#091D33]/40" />
+
+        {/* Content */}
+        <div className="relative z-10 text-center px-5 sm:px-8 md:px-12 lg:px-20 pt-20">
+          <h1 className="text-[32px] sm:text-[42px] lg:text-[52px] font-bold mb-4 text-white drop-shadow-lg">
             {t('pageTitle')}
           </h1>
-          <p
-            className="text-[15px] leading-[1.8] max-w-[600px] mx-auto"
-            style={{ color: '#6B7280' }}
-          >
+          <p className="text-[16px] lg:text-[18px] leading-[1.8] max-w-[700px] mx-auto text-white/90">
             {t('pageSubtitle')}
           </p>
         </div>
@@ -1266,7 +1204,7 @@ export default function AboutPage() {
                 <h2
                   className="text-2xl"
                   style={{
-                    color: '#EC910C',
+                    color: activeSection === 'advantages' ? '#091D33' : '#EC910C',
                     marginBottom: '24px',
                     textAlign: 'center',
                     fontWeight: '700'

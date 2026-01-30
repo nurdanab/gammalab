@@ -4,6 +4,7 @@ import { useState, useMemo, useRef, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Link } from '@/i18n/routing';
 import { useLocale } from 'next-intl';
+import Image from 'next/image';
 import {
   Search,
   ChevronDown,
@@ -350,7 +351,7 @@ function AnalysesPageContent() {
 
         <div class="footer">
           GammaLab - ${locale === 'kz' ? 'Диагностикалық зертхана' : locale === 'en' ? 'Diagnostic Laboratory' : 'Диагностическая лаборатория'}<br>
-          +7-705-100-03-33 | Salem@Gammalab.kz
+          +7-705-100-03-33 | salem@gammalab.kz
         </div>
       </body>
       </html>
@@ -590,7 +591,20 @@ function AnalysesPageContent() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header Section */}
-      <div className="pt-[140px] sm:pt-[160px] px-5 sm:px-8 md:px-12 lg:px-20 pb-10 lg:pb-12" style={{ backgroundColor: '#209DA7' }}>
+      <div className="relative pt-[100px] sm:pt-[110px] px-5 sm:px-8 md:px-12 lg:px-20 pb-6 lg:pb-8">
+        {/* Background Image */}
+        <Image
+          src="/images/hero-about.jpg"
+          alt="Background"
+          fill
+          className="object-cover object-center"
+          priority
+        />
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#091D33]/60 via-[#091D33]/40 to-[#091D33]/60" />
+
+        {/* Content */}
+        <div className="relative z-10">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-white/70 text-[13px] mb-6">
           <Link href="/" className="hover:text-white transition-colors">
@@ -668,6 +682,7 @@ function AnalysesPageContent() {
               {locale === 'kz' ? 'Онкогенетика' : locale === 'en' ? 'Oncogenetics' : 'Онкогенетика'}
             </button>
           </div>
+        </div>
         </div>
       </div>
 
