@@ -125,10 +125,15 @@ export {
   updateHeroCarousel,
   deleteHeroCarousel,
 
-  // NGS Content
+  // NGS Content (Doctors page)
   getNgsContent,
   getNgsContentAdmin,
   updateNgsContent,
+
+  // Analyses NGS Content
+  getAnalysesNgsContent,
+  getAnalysesNgsContentAdmin,
+  updateAnalysesNgsContent,
 } from './supabase/queries'
 
 // Alias functions for backward compatibility

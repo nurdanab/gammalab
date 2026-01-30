@@ -133,20 +133,40 @@ function AnalysesPageContent() {
   const [visibleCount, setVisibleCount] = useState(10);
   const [showTuberculosisModal, setShowTuberculosisModal] = useState(false);
   const [showOncogeneticsModal, setShowOncogeneticsModal] = useState(false);
+  const [showNgsModal, setShowNgsModal] = useState(false);
+  const [ngsContent, setNgsContent] = useState<{
+    description: string;
+    descriptionKz: string;
+    descriptionEn: string;
+    sections: { title: string; items: string[] }[];
+    sectionsKz: { title: string; items: string[] }[];
+    sectionsEn: { title: string; items: string[] }[];
+  } | null>(null);
   const printRef = useRef<HTMLDivElement>(null);
 
   // Fetch data from API
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await fetch('/api/analyses');
-        if (res.ok) {
-          const data = await res.json();
+        const [analysesRes, ngsRes] = await Promise.all([
+          fetch('/api/analyses'),
+          fetch('/api/analyses-ngs-content')
+        ]);
+
+        if (analysesRes.ok) {
+          const data = await analysesRes.json();
           setAnalyses(data.analyses || []);
           setCategories(data.categories || []);
         }
+
+        if (ngsRes.ok) {
+          const ngsData = await ngsRes.json();
+          if (ngsData) {
+            setNgsContent(ngsData);
+          }
+        }
       } catch (error) {
-        console.error('Error fetching analyses:', error);
+        console.error('Error fetching data:', error);
       } finally {
         setLoading(false);
       }
@@ -322,12 +342,6 @@ function AnalysesPageContent() {
             <label>${locale === 'kz' ? 'Баға' : locale === 'en' ? 'Price' : 'Цена'}</label>
             <div class="value">${formatPrice(analysis.price)} ₸</div>
           </div>
-          ${analysis.collectionPrice > 0 ? `
-          <div class="price-item">
-            <label>${locale === 'kz' ? 'Алу бағасы' : locale === 'en' ? 'Collection' : 'Цена забора'}</label>
-            <div class="value secondary">${formatPrice(analysis.collectionPrice)} ₸</div>
-          </div>
-          ` : ''}
           <div class="price-item">
             <label>${locale === 'kz' ? 'Мерзім' : locale === 'en' ? 'Deadline' : 'Срок'}</label>
             <div class="value secondary">${getAnalysisDeadline(analysis, locale)}</div>
@@ -440,9 +454,9 @@ function AnalysesPageContent() {
   // Tuberculosis Modal Translations
   const tbModalTexts = {
     ru: {
-      title: 'Диагностика туберкулеза',
-      description: 'Тест T-SPOT.TB – это анализ крови, также известный как «тест высвобождения гамма-интерферона» (IGRA), иммунологический тест для диагностики инфицирования микобактериями туберкулеза.',
-      advantagesTitle: 'ПРЕИМУЩЕСТВА ТЕСТА T-SPOT.TB',
+      title: 'T-SPOT.TB (IGRA)',
+      subtitle: 'ЗОЛОТОЙ СТАНДАРТ ДИАГНОСТИКИ ЛТБИ',
+      description: 'T-SPOT.TB (IGRA) – метод диагностики скрытого (латентного) или активного туберкулеза у детей и взрослых (in vitro). Тест определяет наличие микобактерий туберкулеза по реакции на них иммунной системы организма. Исследование позволяет диагностировать с вероятностью 99,9 % особенно внелегочные формы туберкулёза (мочеполовых органов, костей, суставов, глаз, мозговых оболочек, кожи и др.) в короткие сроки.',
       accuracy: 'Точность:',
       accuracyText: 'T-SPOT.TB - единственный тест для диагностики туберкулеза, чувствительность и специфичность которого по данным основных клинических исследований превышают 95%.',
       reliability: 'Достоверность:',
@@ -473,9 +487,9 @@ function AnalysesPageContent() {
       ]
     },
     kz: {
-      title: 'Туберкулез диагностикасы',
-      description: 'T-SPOT.TB тесті – бұл қан анализі, «гамма-интерферон шығару тесті» (IGRA) деп те аталады, туберкулез микобактерияларымен инфекцияны диагностикалауға арналған иммунологиялық тест.',
-      advantagesTitle: 'T-SPOT.TB ТЕСТІНІҢ АРТЫҚШЫЛЫҚТАРЫ',
+      title: 'T-SPOT.TB (IGRA)',
+      subtitle: 'ЛТБИ ДИАГНОСТИКАСЫНЫҢ АЛТЫН СТАНДАРТЫ',
+      description: 'T-SPOT.TB (IGRA) – балалар мен ересектерде жасырын (латентті) немесе белсенді туберкулезді диагностикалау әдісі (in vitro). Тест организмнің иммундық жүйесінің оларға реакциясы бойынша туберкулез микобактерияларының болуын анықтайды. Зерттеу 99,9% ықтималдықпен әсіресе өкпеден тыс туберкулез түрлерін (несеп-жыныс органдарының, сүйектердің, буындардың, көздердің, ми қабықшаларының, терінің және т.б.) қысқа мерзімде диагностикалауға мүмкіндік береді.',
       accuracy: 'Дәлдік:',
       accuracyText: 'T-SPOT.TB - негізгі клиникалық зерттеулер деректері бойынша сезімталдығы мен ерекшелігі 95%-дан асатын туберкулезді диагностикалауға арналған жалғыз тест.',
       reliability: 'Сенімділік:',
@@ -506,9 +520,9 @@ function AnalysesPageContent() {
       ]
     },
     en: {
-      title: 'Tuberculosis Diagnostics',
-      description: 'The T-SPOT.TB test is a blood test, also known as the "interferon-gamma release assay" (IGRA), an immunological test for diagnosing infection with Mycobacterium tuberculosis.',
-      advantagesTitle: 'ADVANTAGES OF T-SPOT.TB TEST',
+      title: 'T-SPOT.TB (IGRA)',
+      subtitle: 'GOLD STANDARD FOR LTBI DIAGNOSIS',
+      description: 'T-SPOT.TB (IGRA) is a method for diagnosing latent or active tuberculosis in children and adults (in vitro). The test detects the presence of Mycobacterium tuberculosis by the immune system response. The study allows diagnosing with 99.9% probability, especially extrapulmonary forms of tuberculosis (urogenital organs, bones, joints, eyes, meninges, skin, etc.) in a short time.',
       accuracy: 'Accuracy:',
       accuracyText: 'T-SPOT.TB is the only test for tuberculosis diagnosis with sensitivity and specificity exceeding 95% according to major clinical studies.',
       reliability: 'Reliability:',
@@ -540,45 +554,7 @@ function AnalysesPageContent() {
     }
   };
 
-  // Oncogenetics Modal Translations
-  const oncoModalTexts = {
-    ru: {
-      title: 'Онкогенетика',
-      p1: 'Диагностическая лаборатория «Gammalab (ГаммаЛаб)» - это современная молекулярно-генетическая лаборатория - это объединение профессионалов, сплочённая команда, решающая ряд перспективных научно-практических задач, связанных с различными направлениями современных технологий в области диагностики заболеваний.',
-      p2: 'Основной целью работы лаборатории является научно-исследовательская деятельность по перспективным направлениям в сфере лабораторной диагностики, а также внедрение новых решений, связанных с молекулярным профилированием опухоли, обеспечивая первую ступень персонифицированной медицины.',
-      p3: 'Лаборатория оснащена самым современным оборудованием, позволяющим проводить исследования на уровне, соответствующим международным стандартам.',
-      lungCancer: 'Рак легкого:',
-      breastCancer: 'Рак молочной железы:',
-      ovarianCancer: 'Рак яичников:',
-      colorectalCancer: 'Колоректальный рак:',
-      melanoma: 'Меланома:'
-    },
-    kz: {
-      title: 'Онкогенетика',
-      p1: '«Gammalab (ГаммаЛаб)» диагностикалық зертханасы – бұл заманауи молекулярлық-генетикалық зертхана – бұл аурулар диагностикасы саласындағы заманауи технологиялардың әртүрлі бағыттарына байланысты бірқатар перспективалық ғылыми-практикалық міндеттерді шешетін кәсіпқойлар бірлестігі, топтасқан команда.',
-      p2: 'Зертхананың негізгі мақсаты – зертханалық диагностика саласындағы перспективалық бағыттар бойынша ғылыми-зерттеу қызметі, сондай-ақ дербес медицинаның бірінші сатысын қамтамасыз ете отырып, ісіктің молекулярлық профильдеуімен байланысты жаңа шешімдерді енгізу.',
-      p3: 'Зертхана халықаралық стандарттарға сәйкес деңгейде зерттеулер жүргізуге мүмкіндік беретін ең заманауи жабдықтармен жабдықталған.',
-      lungCancer: 'Өкпе обыры:',
-      breastCancer: 'Сүт безі обыры:',
-      ovarianCancer: 'Аналық без обыры:',
-      colorectalCancer: 'Колоректальды обыр:',
-      melanoma: 'Меланома:'
-    },
-    en: {
-      title: 'Oncogenetics',
-      p1: 'Diagnostic Laboratory "Gammalab" is a modern molecular genetic laboratory - a union of professionals, a cohesive team solving a number of promising scientific and practical tasks related to various areas of modern technologies in the field of disease diagnostics.',
-      p2: 'The main goal of the laboratory is research activities in promising areas of laboratory diagnostics, as well as the implementation of new solutions related to molecular tumor profiling, providing the first step of personalized medicine.',
-      p3: 'The laboratory is equipped with the most modern equipment, allowing research at a level that meets international standards.',
-      lungCancer: 'Lung cancer:',
-      breastCancer: 'Breast cancer:',
-      ovarianCancer: 'Ovarian cancer:',
-      colorectalCancer: 'Colorectal cancer:',
-      melanoma: 'Melanoma:'
-    }
-  };
-
   const tbTexts = tbModalTexts[locale] || tbModalTexts.ru;
-  const oncoTexts = oncoModalTexts[locale] || oncoModalTexts.ru;
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('ru-RU').format(price);
@@ -590,6 +566,41 @@ function AnalysesPageContent() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <style>{`
+        .quick-btn {
+          position: relative;
+          background-color: #209DA7;
+          color: white;
+          font-size: 13px;
+          font-weight: 500;
+          padding: 10px 18px;
+          border-radius: 25px;
+          white-space: nowrap;
+          border: 2px solid #209DA7;
+          overflow: hidden;
+          transition: color 0.3s ease;
+          z-index: 1;
+        }
+        .quick-btn::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 0;
+          height: 100%;
+          background-color: #EC910C;
+          transition: width 0.3s ease;
+          z-index: -1;
+        }
+        .quick-btn:hover::before {
+          width: 100%;
+        }
+        .quick-btn:hover {
+        border: 2px solid #EC910C;
+          color: #091D33;
+        }
+      `}</style>
+
       {/* Header Section */}
       <div className="relative pt-[100px] sm:pt-[110px] px-5 sm:px-8 md:px-12 lg:px-20 pb-6 lg:pb-8">
         {/* Background Image */}
@@ -650,36 +661,24 @@ function AnalysesPageContent() {
           </div>
 
           {/* Quick Access Buttons */}
-          <div className="flex items-center gap-2">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
             <button
               onClick={() => setShowTuberculosisModal(true)}
-              className="transition-opacity hover:opacity-90"
-              style={{
-                backgroundColor: '#EC910C',
-                color: 'white',
-                fontSize: '13px',
-                fontWeight: '500',
-                padding: '10px 18px',
-                borderRadius: '25px',
-                whiteSpace: 'nowrap'
-              }}
+              className="quick-btn"
             >
               {locale === 'kz' ? 'Туберкулез диагностикасы' : locale === 'en' ? 'Tuberculosis Diagnostics' : 'Диагностика туберкулеза'}
             </button>
             <button
               onClick={() => setShowOncogeneticsModal(true)}
-              className="transition-opacity hover:opacity-90"
-              style={{
-                backgroundColor: '#EC910C',
-                color: 'white',
-                fontSize: '13px',
-                fontWeight: '500',
-                padding: '10px 18px',
-                borderRadius: '25px',
-                whiteSpace: 'nowrap'
-              }}
+              className="quick-btn"
             >
               {locale === 'kz' ? 'Онкогенетика' : locale === 'en' ? 'Oncogenetics' : 'Онкогенетика'}
+            </button>
+            <button
+              onClick={() => setShowNgsModal(true)}
+              className="quick-btn"
+            >
+              NGS
             </button>
           </div>
         </div>
@@ -743,9 +742,12 @@ function AnalysesPageContent() {
             <div style={{ padding: '40px' }}>
               {/* Header */}
               <div style={{ textAlign: 'center', marginBottom: '30px' }}>
-                <h2 style={{ fontSize: '24px', fontWeight: '700', color: '#091D33', marginBottom: '16px' }}>
+                <h2 style={{ fontSize: '26px', fontWeight: '700', color: '#091D33', marginBottom: '8px' }}>
                   {tbTexts.title}
                 </h2>
+                <p style={{ fontSize: '16px', fontWeight: '600', color: '#EC910C', marginBottom: '20px', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                  {tbTexts.subtitle}
+                </p>
                 <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#6B7280', maxWidth: '700px', margin: '0 auto' }}>
                   {tbTexts.description}
                 </p>
@@ -753,18 +755,6 @@ function AnalysesPageContent() {
 
               {/* Advantages Section */}
               <div style={{ marginBottom: '30px' }}>
-                <h3 style={{
-                  fontSize: '14px',
-                  fontWeight: '600',
-                  color: '#209DA7',
-                  textTransform: 'uppercase',
-                  letterSpacing: '1px',
-                  marginBottom: '20px',
-                  textAlign: 'center'
-                }}>
-                  {tbTexts.advantagesTitle}
-                </h3>
-
                 {/* Three Columns */}
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', marginBottom: '24px' }}>
                   <div style={{ backgroundColor: '#E0F2F4', borderRadius: '12px', padding: '20px' }}>
@@ -821,17 +811,68 @@ function AnalysesPageContent() {
                 </div>
               </div>
 
-              {/* Cases Section */}
-              <div style={{ backgroundColor: '#FEF3C7', borderRadius: '12px', padding: '20px' }}>
-                <h3 style={{ fontSize: '14px', fontWeight: '600', color: '#D97706', marginBottom: '14px' }}>
-                  {tbTexts.casesTitle}
+              {/* UN Goals Section */}
+              <div style={{ marginTop: '30px' }}>
+                <h3 style={{ fontSize: '16px', fontWeight: '600', color: '#091D33', textAlign: 'center', marginBottom: '24px' }}>
+                  {locale === 'kz' ? 'БҰҰ мақсаттарына 2035 жылға дейін жәрдемдесу.' : locale === 'en' ? 'Contributing to UN Goals by 2035.' : 'Содействие Целям ООН к 2035 году.'}
                 </h3>
-                <ul style={{ margin: 0, paddingLeft: '18px', fontSize: '13px', lineHeight: '1.8', color: '#4B5563' }}>
-                  {tbTexts.cases.map((item, idx) => (
-                    <li key={idx}>{item}</li>
-                  ))}
-                </ul>
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
+                  {/* Blue Circle */}
+                  <div style={{
+                    width: '280px',
+                    height: '280px',
+                    borderRadius: '50%',
+                    backgroundColor: '#091D33',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: '25px 60px 25px 25px',
+                    marginRight: '-20px',
+                    zIndex: 0
+                  }}>
+                    <p style={{ fontSize: '11px', lineHeight: '1.5', color: 'white', textAlign: 'center' }}>
+                      {locale === 'kz'
+                        ? 'Тұрақты даму саласындағы мақсаттар аясындағы денсаулық сақтау саласындағы міндеттердің бірі – 2035 жылға қарай туберкулезден болатын өлім-жітімді 95%-ға және туберкулезбен сырқаттанушылықты 90%-ға азайтуға қол жеткізу.'
+                        : locale === 'en'
+                        ? 'One of the health goals within the Sustainable Development Goals is to achieve a 95% reduction in tuberculosis mortality and a 90% reduction in tuberculosis incidence by 2035.'
+                        : 'Одна из задач в области здравоохранения в рамках целей в области устойчивого развития заключается в том, чтобы к 2035 году добиться снижения смертности от туберкулеза на 95% и снижения заболеваемости туберкулезом на 90%.'}
+                    </p>
+                  </div>
+                  {/* Orange Circle */}
+                  <div style={{
+                    width: '280px',
+                    height: '280px',
+                    borderRadius: '50%',
+                    backgroundColor: '#EC910C',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: '25px 25px 25px 60px',
+                    marginLeft: '-20px',
+                    zIndex: 1
+                  }}>
+                    <p style={{ fontSize: '11px', lineHeight: '1.5', color: 'white', textAlign: 'center' }}>
+                      {locale === 'kz'
+                        ? 'Біз денсаулық сақтау саласындағы жаһандық мақсаттарға қол жеткізуге бағытталған шараларды белсенді қолдаймыз және енгіземіз. Біз Қазақстанда T-SPOT инновациялық технологиясын енгізгенімізге мақтанамыз.'
+                        : locale === 'en'
+                        ? 'We actively support and implement measures aimed at achieving global health goals. We are proud to introduce the innovative T-SPOT technology in Kazakhstan.'
+                        : 'Мы активно поддерживаем и внедряем меры, направленные на достижение глобальных целей в области здравоохранения. Мы гордимся внедрением инновационной технологии T-SPOT в Казахстане.'}
+                    </p>
+                  </div>
+                </div>
+
+                {/* T-SPOT Image */}
+                <div style={{ marginTop: '30px', borderRadius: '12px', overflow: 'hidden', maxWidth: '550px', margin: '30px auto 0' }}>
+                  <Image
+                    src="/images/tspot.png"
+                    alt="T-SPOT.TB"
+                    width={550}
+                    height={300}
+                    style={{ width: '100%', height: 'auto', display: 'block' }}
+                  />
+                </div>
               </div>
+
             </div>
           </div>
         </div>
@@ -852,7 +893,7 @@ function AnalysesPageContent() {
             alignItems: 'center',
             justifyContent: 'center',
             zIndex: 9999,
-            padding: '20px',
+            padding: '40px 20px',
             overflowY: 'auto'
           }}
         >
@@ -892,182 +933,156 @@ function AnalysesPageContent() {
 
             {/* Modal Content */}
             <div style={{ padding: '40px' }}>
+              {/* Text Content */}
+              <h2 style={{ fontSize: '22px', fontWeight: '700', color: '#091D33', marginBottom: '16px', lineHeight: '1.3' }}>
+                {locale === 'kz'
+                  ? '«GammaLab» диагностикалық зертханасының негізгі мақсаты'
+                  : locale === 'en'
+                  ? 'The main goal of GammaLab diagnostic laboratory'
+                  : 'Основная цель диагностической лаборатории «GammaLab»'}
+              </h2>
+              <p style={{ fontSize: '15px', lineHeight: '1.8', color: '#4B5563', marginBottom: '24px' }}>
+                {locale === 'kz'
+                  ? 'зертханалық диагностика саласындағы перспективалық бағыттар бойынша қызмет, сондай-ақ таргетті терапияны таңдау үшін ісік тінінде мутацияларды зерттеумен байланысты жаңа шешімдерді енгізу болып табылады.'
+                  : locale === 'en'
+                  ? 'is to work in promising areas of laboratory diagnostics, as well as to implement new solutions related to the study of mutations in tumor tissue for the selection of targeted therapy.'
+                  : 'является деятельность по перспективным направлениям в сфере лабораторной диагностики, а также внедрение новых решений, связанные с исследованием мутаций в опухолевой ткани для подбора таргетной терапии.'}
+              </p>
+
+              {/* Image */}
+              <div style={{ borderRadius: '12px', overflow: 'hidden', maxWidth: '600px', margin: '0 auto' }}>
+                <Image
+                  src="/images/onko.png"
+                  alt="Oncogenetics"
+                  width={600}
+                  height={400}
+                  style={{ width: '100%', height: 'auto', display: 'block' }}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* NGS Modal */}
+      {showNgsModal && (
+        <div
+          onClick={() => setShowNgsModal(false)}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 9999,
+            padding: '20px',
+            overflowY: 'auto'
+          }}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              backgroundColor: 'white',
+              borderRadius: '20px',
+              maxWidth: '900px',
+              width: '100%',
+              maxHeight: '90vh',
+              overflowY: 'auto',
+              position: 'relative'
+            }}
+          >
+            {/* Close Button */}
+            <button
+              onClick={() => setShowNgsModal(false)}
+              style={{
+                position: 'absolute',
+                top: '16px',
+                right: '16px',
+                width: '36px',
+                height: '36px',
+                borderRadius: '50%',
+                backgroundColor: '#f3f4f6',
+                border: 'none',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                zIndex: 10
+              }}
+            >
+              <X className="w-5 h-5 text-gray-600" />
+            </button>
+
+            {/* Modal Content */}
+            <div style={{ padding: '40px' }}>
               {/* Header */}
               <div style={{ textAlign: 'center', marginBottom: '30px' }}>
                 <h2 style={{ fontSize: '24px', fontWeight: '700', color: '#091D33', marginBottom: '20px' }}>
-                  {oncoTexts.title}
+                  Next-Generation Sequencing (NGS)
                 </h2>
-                <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#6B7280', marginBottom: '12px' }}>
-                  {oncoTexts.p1}
-                </p>
-                <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#6B7280', marginBottom: '12px' }}>
-                  {oncoTexts.p2}
-                </p>
-                <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#6B7280' }}>
-                  {oncoTexts.p3}
-                </p>
+                {ngsContent && (
+                  <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#6B7280' }}>
+                    {locale === 'kz'
+                      ? ngsContent.descriptionKz
+                      : locale === 'en'
+                      ? ngsContent.descriptionEn
+                      : ngsContent.description}
+                  </p>
+                )}
               </div>
 
-              {/* Cancer Types Table */}
-              <div style={{ overflowX: 'auto' }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
-                  <tbody>
-                    {/* Рак легкого */}
-                    <tr>
-                      <td style={{
-                        padding: '12px 16px',
-                        backgroundColor: '#209DA7',
-                        color: 'white',
-                        fontWeight: '500',
-                        borderRadius: '8px 0 0 8px',
-                        width: '160px'
-                      }}>
-                        {oncoTexts.lungCancer}
-                      </td>
-                      <td style={{ padding: '8px', backgroundColor: '#f8f9fa' }}>
-                        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                          {['EGFR (T790M)', 'KRAS NRAS', 'ALK', 'ROS1', 'PD-L1', 'BRAF'].map((marker, idx) => (
-                            <span key={idx} style={{
-                              backgroundColor: '#E0F2F4',
-                              color: '#209DA7',
-                              padding: '6px 12px',
-                              borderRadius: '20px',
-                              fontSize: '12px',
-                              fontWeight: '500'
-                            }}>
-                              {marker}
-                            </span>
-                          ))}
+              {/* Sections */}
+              {ngsContent && (() => {
+                const sections = locale === 'kz' ? ngsContent.sectionsKz : locale === 'en' ? ngsContent.sectionsEn : ngsContent.sections;
+                if (sections && sections.length > 0) {
+                  return (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                      {sections.map((section, idx) => (
+                        <div key={idx} style={{
+                          backgroundColor: '#f8fafc',
+                          borderRadius: '12px',
+                          padding: '20px 24px'
+                        }}>
+                          {section.title && (
+                            <h3 style={{ fontSize: '16px', fontWeight: '600', color: '#091D33', marginBottom: '12px' }}>
+                              {section.title}
+                            </h3>
+                          )}
+                          {section.items && section.items.length > 0 && (
+                            <ul style={{ margin: 0, paddingLeft: '20px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                              {section.items.filter(item => item.trim()).map((item, iIdx) => (
+                                <li key={iIdx} style={{ fontSize: '14px', color: '#4B5563', lineHeight: '1.6' }}>
+                                  {item}
+                                </li>
+                              ))}
+                            </ul>
+                          )}
                         </div>
-                      </td>
-                    </tr>
-                    {/* Spacer */}
-                    <tr><td colSpan={2} style={{ height: '8px' }}></td></tr>
-                    {/* Рак молочной железы */}
-                    <tr>
-                      <td style={{
-                        padding: '12px 16px',
-                        backgroundColor: '#209DA7',
-                        color: 'white',
-                        fontWeight: '500',
-                        borderRadius: '8px 0 0 8px',
-                        width: '160px'
-                      }}>
-                        {oncoTexts.breastCancer}
-                      </td>
-                      <td style={{ padding: '8px', backgroundColor: '#f8f9fa' }}>
-                        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                          {['BRCA1/2', 'PD-L1', 'HER2/neu', 'PIK3CA'].map((marker, idx) => (
-                            <span key={idx} style={{
-                              backgroundColor: '#E0F2F4',
-                              color: '#209DA7',
-                              padding: '6px 12px',
-                              borderRadius: '20px',
-                              fontSize: '12px',
-                              fontWeight: '500'
-                            }}>
-                              {marker}
-                            </span>
-                          ))}
-                        </div>
-                      </td>
-                    </tr>
-                    {/* Spacer */}
-                    <tr><td colSpan={2} style={{ height: '8px' }}></td></tr>
-                    {/* Рак яичников */}
-                    <tr>
-                      <td style={{
-                        padding: '12px 16px',
-                        backgroundColor: '#209DA7',
-                        color: 'white',
-                        fontWeight: '500',
-                        borderRadius: '8px 0 0 8px',
-                        width: '160px'
-                      }}>
-                        {oncoTexts.ovarianCancer}
-                      </td>
-                      <td style={{ padding: '8px', backgroundColor: '#f8f9fa' }}>
-                        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                          {['BRCA1/2'].map((marker, idx) => (
-                            <span key={idx} style={{
-                              backgroundColor: '#E0F2F4',
-                              color: '#209DA7',
-                              padding: '6px 12px',
-                              borderRadius: '20px',
-                              fontSize: '12px',
-                              fontWeight: '500'
-                            }}>
-                              {marker}
-                            </span>
-                          ))}
-                        </div>
-                      </td>
-                    </tr>
-                    {/* Spacer */}
-                    <tr><td colSpan={2} style={{ height: '8px' }}></td></tr>
-                    {/* Колоректальный рак */}
-                    <tr>
-                      <td style={{
-                        padding: '12px 16px',
-                        backgroundColor: '#209DA7',
-                        color: 'white',
-                        fontWeight: '500',
-                        borderRadius: '8px 0 0 8px',
-                        width: '160px'
-                      }}>
-                        {oncoTexts.colorectalCancer}
-                      </td>
-                      <td style={{ padding: '8px', backgroundColor: '#f8f9fa' }}>
-                        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                          {['KRAS, NRAS', 'BRAF'].map((marker, idx) => (
-                            <span key={idx} style={{
-                              backgroundColor: '#E0F2F4',
-                              color: '#209DA7',
-                              padding: '6px 12px',
-                              borderRadius: '20px',
-                              fontSize: '12px',
-                              fontWeight: '500'
-                            }}>
-                              {marker}
-                            </span>
-                          ))}
-                        </div>
-                      </td>
-                    </tr>
-                    {/* Spacer */}
-                    <tr><td colSpan={2} style={{ height: '8px' }}></td></tr>
-                    {/* Меланома */}
-                    <tr>
-                      <td style={{
-                        padding: '12px 16px',
-                        backgroundColor: '#209DA7',
-                        color: 'white',
-                        fontWeight: '500',
-                        borderRadius: '8px 0 0 8px',
-                        width: '160px'
-                      }}>
-                        {oncoTexts.melanoma}
-                      </td>
-                      <td style={{ padding: '8px', backgroundColor: '#f8f9fa' }}>
-                        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                          {['BRAF', 'KRAS, NRAS'].map((marker, idx) => (
-                            <span key={idx} style={{
-                              backgroundColor: '#E0F2F4',
-                              color: '#209DA7',
-                              padding: '6px 12px',
-                              borderRadius: '20px',
-                              fontSize: '12px',
-                              fontWeight: '500'
-                            }}>
-                              {marker}
-                            </span>
-                          ))}
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+                      ))}
+                    </div>
+                  );
+                }
+                return (
+                  <div style={{
+                    backgroundColor: '#f0fdf4',
+                    borderRadius: '12px',
+                    padding: '24px',
+                    textAlign: 'center'
+                  }}>
+                    <p style={{ fontSize: '14px', color: '#166534', fontWeight: '500' }}>
+                      {locale === 'kz'
+                        ? 'NGS зерттеулері туралы толық ақпарат жақында қосылады'
+                        : locale === 'en'
+                        ? 'Full information about NGS tests will be added soon'
+                        : 'Полная информация об исследованиях NGS будет добавлена в ближайшее время'}
+                    </p>
+                  </div>
+                );
+              })()}
             </div>
           </div>
         </div>
@@ -1176,16 +1191,6 @@ function AnalysesPageContent() {
                           </div>
                         </div>
 
-                        {/* Collection Price - hidden on mobile */}
-                        <div className="hidden sm:block text-center">
-                          <div className="text-[11px] uppercase text-gray-400 mb-1">
-                            {labels.collection}
-                          </div>
-                          <div className="text-[16px] font-medium" style={{ color: '#6B7280' }}>
-                            {analysis.collectionPrice > 0 ? `${formatPrice(analysis.collectionPrice)} ₸` : '—'}
-                          </div>
-                        </div>
-
                         {/* Deadline */}
                         <div className="text-left lg:text-center">
                           <div className="text-[10px] lg:text-[11px] uppercase text-gray-400 mb-1">
@@ -1276,18 +1281,6 @@ function AnalysesPageContent() {
                                 {formatPrice(analysis.price)} ₸
                               </div>
                             </div>
-
-                            {/* Collection Price */}
-                            {analysis.collectionPrice > 0 && (
-                              <div className="mb-4 pb-4 border-b border-gray-100">
-                                <div className="text-[11px] uppercase text-gray-400 mb-1">
-                                  {labels.collection}
-                                </div>
-                                <div className="text-[16px] font-medium" style={{ color: '#091D33' }}>
-                                  {formatPrice(analysis.collectionPrice)} ₸
-                                </div>
-                              </div>
-                            )}
 
                             {/* Deadline */}
                             <div className="mb-6">

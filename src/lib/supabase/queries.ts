@@ -2080,3 +2080,68 @@ export async function updateNgsContent(id: string, updates: NgsContentUpdate): P
   }
   return mapNgsContentRow(data as NgsContentRow)
 }
+
+// =====================
+// Analyses NGS Content (separate from doctors page NGS)
+// =====================
+
+export async function getAnalysesNgsContent(): Promise<NgsContent | null> {
+  const supabase = createPublicClient()
+  const { data, error } = await supabase
+    .from('analyses_ngs_content')
+    .select('*')
+    .eq('is_active', true)
+    .single()
+
+  if (error) {
+    console.error('Error fetching analyses NGS content:', error)
+    return null
+  }
+  return mapNgsContentRow(data as NgsContentRow)
+}
+
+export async function getAnalysesNgsContentAdmin(): Promise<NgsContent | null> {
+  const supabase = createAdminClient()
+  const { data, error } = await supabase
+    .from('analyses_ngs_content')
+    .select('*')
+    .limit(1)
+    .single()
+
+  if (error) {
+    console.error('Error fetching analyses NGS content (admin):', error)
+    return null
+  }
+  return mapNgsContentRow(data as NgsContentRow)
+}
+
+export async function updateAnalysesNgsContent(id: string, updates: NgsContentUpdate): Promise<NgsContent | null> {
+  const supabase = createAdminClient()
+  const dbUpdates: Record<string, unknown> = {
+    updated_at: new Date().toISOString(),
+  }
+
+  if (updates.title !== undefined) dbUpdates.title = updates.title
+  if (updates.titleKz !== undefined) dbUpdates.title_kz = updates.titleKz
+  if (updates.titleEn !== undefined) dbUpdates.title_en = updates.titleEn
+  if (updates.description !== undefined) dbUpdates.description = updates.description
+  if (updates.descriptionKz !== undefined) dbUpdates.description_kz = updates.descriptionKz
+  if (updates.descriptionEn !== undefined) dbUpdates.description_en = updates.descriptionEn
+  if (updates.sections !== undefined) dbUpdates.sections = updates.sections
+  if (updates.sectionsKz !== undefined) dbUpdates.sections_kz = updates.sectionsKz
+  if (updates.sectionsEn !== undefined) dbUpdates.sections_en = updates.sectionsEn
+  if (updates.isActive !== undefined) dbUpdates.is_active = updates.isActive
+
+  const { data, error } = await supabase
+    .from('analyses_ngs_content')
+    .update(dbUpdates as never)
+    .eq('id', id)
+    .select()
+    .single()
+
+  if (error) {
+    console.error('Error updating analyses NGS content:', error)
+    return null
+  }
+  return mapNgsContentRow(data as NgsContentRow)
+}

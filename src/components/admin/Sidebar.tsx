@@ -14,6 +14,7 @@ const navItems = [
   { href: '/admin/analysis-categories', label: 'Категории анализов', icon: Folder },
   { href: '/admin/analyses', label: 'Анализы', icon: FlaskConical },
   { href: '/admin/ngs-content', label: 'NGS (Врачам)', icon: Dna },
+  { href: '/admin/analyses-ngs-content', label: 'NGS (Анализы)', icon: Dna },
   { href: '/admin/doctor-registrations', label: 'Анкеты врачей', icon: UserCheck },
   { href: '/admin/documents', label: 'Лицензии и сертиф.', icon: Award },
   { href: '/admin/privacy', label: 'Политика конфиденц.', icon: FileText },
