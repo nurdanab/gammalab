@@ -246,7 +246,6 @@ export default function PatientsContentPage() {
                         <span className="text-xs px-2 py-0.5 bg-gray-200 text-gray-600 rounded">Скрыта</span>
                       )}
                     </div>
-                    <span className="text-xs text-gray-500">/{section.slug}</span>
                   </div>
 
                   <div className="flex items-center gap-1">
