@@ -41,12 +41,6 @@ const fallbackIcons: Record<string, React.ReactNode> = {
 const missionItems = {
   ru: [
     {
-      id: 'goal',
-      title: 'Цель',
-      icon: 'target',
-      text: 'Внедрение инновационных технологий, обеспечение доступности высококачественных медицинских анализов для всех слоев населения. Мы стремимся сделать диагностику доступной и удобной для каждого.',
-    },
-    {
       id: 'vision',
       title: 'Видение',
       icon: 'eye',
@@ -58,14 +52,14 @@ const missionItems = {
       icon: 'check',
       text: 'Предоставление точных результатов молекулярно-генетической диагностики, помогая людям заботиться о своем здоровье и принимать обоснованные решения о лечении.',
     },
-  ],
-  kz: [
     {
       id: 'goal',
-      title: 'Мақсат',
+      title: 'Цель',
       icon: 'target',
-      text: 'Инновациялық технологияларды енгізу, барлық халық топтары үшін жоғары сапалы медициналық талдауларға қол жетімділікті қамтамасыз ету.',
+      text: 'Внедрение инновационных технологий, обеспечение доступности высококачественных медицинских анализов для всех слоев населения. Мы стремимся сделать диагностику доступной и удобной для каждого.',
     },
+  ],
+  kz: [
     {
       id: 'vision',
       title: 'Көзқарас',
@@ -78,14 +72,14 @@ const missionItems = {
       icon: 'check',
       text: 'Молекулярлық-генетикалық диагностиканың дәл нәтижелерін беру, адамдарға денсаулықтарына қамқорлық жасауға көмектесу.',
     },
-  ],
-  en: [
     {
       id: 'goal',
-      title: 'Goal',
+      title: 'Мақсат',
       icon: 'target',
-      text: 'Implementation of innovative technologies, ensuring accessibility of high-quality medical tests for all segments of the population.',
+      text: 'Инновациялық технологияларды енгізу, барлық халық топтары үшін жоғары сапалы медициналық талдауларға қол жетімділікті қамтамасыз ету.',
     },
+  ],
+  en: [
     {
       id: 'vision',
       title: 'Vision',
@@ -97,6 +91,12 @@ const missionItems = {
       title: 'Mission',
       icon: 'check',
       text: 'Providing accurate results of molecular genetic diagnostics, helping people take care of their health.',
+    },
+    {
+      id: 'goal',
+      title: 'Goal',
+      icon: 'target',
+      text: 'Implementation of innovative technologies, ensuring accessibility of high-quality medical tests for all segments of the population.',
     },
   ],
 };

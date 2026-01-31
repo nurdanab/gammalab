@@ -196,13 +196,6 @@ export default function Header() {
                 >
                   info@gammalab.kz
                 </a>
-                <span className="text-gray-300">|</span>
-                <a
-                  href="mailto:salem@gammalab.kz"
-                  className="text-gray-500 hover:text-primary transition-colors"
-                >
-                  salem@gammalab.kz
-                </a>
               </div>
               <span className="flex items-center gap-2 text-gray-500 text-[13px]">
                 <MapPin className="h-4 w-4 text-primary flex-shrink-0" />
@@ -439,13 +432,6 @@ export default function Header() {
                 >
                   <Mail className="h-4 w-4 text-primary" />
                   <span>info@gammalab.kz</span>
-                </a>
-                <a
-                  href="mailto:salem@gammalab.kz"
-                  className="flex items-center gap-3 text-gray-600 text-sm"
-                >
-                  <Mail className="h-4 w-4 text-primary" />
-                  <span>salem@gammalab.kz</span>
                 </a>
                 <span className="flex items-center gap-3 text-gray-600 text-sm">
                   <MapPin className="h-4 w-4 text-primary" />

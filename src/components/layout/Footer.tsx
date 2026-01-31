@@ -104,11 +104,11 @@ export default function Footer() {
               <div className="flex items-center gap-3">
                 <Mail className="h-4 w-4 flex-shrink-0" style={{ color: '#209DA7' }} />
                 <a
-                  href="mailto:salem@gammalab.kz"
+                  href="mailto:info@gammalab.kz"
                   className="text-[13px] hover:opacity-70 transition-opacity"
                   style={{ color: '#6B7280' }}
                 >
-                  salem@gammalab.kz
+                  info@gammalab.kz
                 </a>
               </div>
               <div className="flex items-center gap-3">

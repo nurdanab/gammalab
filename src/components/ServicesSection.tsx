@@ -116,7 +116,7 @@ export default function ServicesSection({ locale }: ServicesSectionProps) {
                 <h3 className="text-sm lg:text-base font-semibold mb-2 lg:mb-3 text-[#091D33] line-clamp-2">
                   {service.title}
                 </h3>
-                <p className="text-[11px] lg:text-xs leading-relaxed text-gray-500 line-clamp-3">
+                <p className="text-[11px] lg:text-xs leading-relaxed text-gray-500">
                   {service.description}
                 </p>
               </motion.div>

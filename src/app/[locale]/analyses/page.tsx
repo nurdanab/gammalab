@@ -365,7 +365,7 @@ function AnalysesPageContent() {
 
         <div class="footer">
           GammaLab - ${locale === 'kz' ? 'Диагностикалық зертхана' : locale === 'en' ? 'Diagnostic Laboratory' : 'Диагностическая лаборатория'}<br>
-          +7-705-100-03-33 | salem@gammalab.kz
+          +7-705-100-03-33 | info@gammalab.kz
         </div>
       </body>
       </html>

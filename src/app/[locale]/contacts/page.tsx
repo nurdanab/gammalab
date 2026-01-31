@@ -191,7 +191,7 @@ export default function ContactsPage() {
     {
       icon: Mail,
       title: t.emailLabel,
-      lines: ['info@gammalab.kz', 'salem@gammalab.kz'],
+      lines: ['info@gammalab.kz'],
       isLink: true,
       linkPrefix: 'mailto:',
     },
