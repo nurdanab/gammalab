@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Sidebar from '@/components/admin/Sidebar';
 import { Plus, Trash2, Edit2, ChevronDown, ChevronUp, Eye, EyeOff, GripVertical, Save, X } from 'lucide-react';
 
 interface Section {
@@ -188,26 +187,19 @@ export default function PatientsContentPage() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen bg-gray-50">
-        <Sidebar />
-        <main className="flex-1 p-8">
-          <div className="animate-pulse">
-            <div className="h-8 w-64 bg-gray-200 rounded mb-8" />
-            <div className="space-y-4">
-              {[1, 2, 3].map(i => (
-                <div key={i} className="h-20 bg-gray-200 rounded" />
-              ))}
-            </div>
-          </div>
-        </main>
+      <div className="animate-pulse">
+        <div className="h-8 w-64 bg-gray-200 rounded mb-8" />
+        <div className="space-y-4">
+          {[1, 2, 3].map(i => (
+            <div key={i} className="h-20 bg-gray-200 rounded" />
+          ))}
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      <Sidebar />
-      <main className="flex-1 p-8">
+    <div>
         <div className="max-w-4xl">
           <div className="flex items-center justify-between mb-8">
             <div>
@@ -406,7 +398,6 @@ export default function PatientsContentPage() {
             </div>
           </div>
         )}
-      </main>
     </div>
   );
 }
