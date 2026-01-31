@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { LayoutDashboard, Newspaper, Tag, Star, FlaskConical, LogOut, Menu, X, Folder, FileText, Award, UserCheck, Image, Dna } from 'lucide-react';
+import { LayoutDashboard, Newspaper, Tag, Star, FlaskConical, LogOut, Menu, X, Folder, FileText, Award, UserCheck, Image, Dna, Users } from 'lucide-react';
 
 const navItems = [
   { href: '/admin', label: 'Дашборд', icon: LayoutDashboard },
@@ -15,6 +15,7 @@ const navItems = [
   { href: '/admin/analyses', label: 'Анализы', icon: FlaskConical },
   { href: '/admin/ngs-content', label: 'NGS (Врачам)', icon: Dna },
   { href: '/admin/analyses-ngs-content', label: 'NGS (Анализы)', icon: Dna },
+  { href: '/admin/patients-content', label: 'Пациентам', icon: Users },
   { href: '/admin/doctor-registrations', label: 'Анкеты врачей', icon: UserCheck },
   { href: '/admin/documents', label: 'Лицензии и сертиф.', icon: Award },
   { href: '/admin/privacy', label: 'Политика конфиденц.', icon: FileText },

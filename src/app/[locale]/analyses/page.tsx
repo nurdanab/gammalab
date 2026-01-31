@@ -596,8 +596,88 @@ function AnalysesPageContent() {
           width: 100%;
         }
         .quick-btn:hover {
-        border: 2px solid #EC910C;
+          border: 2px solid #EC910C;
           color: #091D33;
+        }
+        .modal-content {
+          padding: 20px;
+        }
+        .modal-grid-3 {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 12px;
+        }
+        .circles-container {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 16px;
+        }
+        .goal-circle {
+          width: 220px;
+          min-width: 220px;
+          height: 220px;
+          min-height: 220px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 20px;
+          flex-shrink: 0;
+          aspect-ratio: 1;
+        }
+        .goal-circle p {
+          font-size: 10px;
+          line-height: 1.4;
+        }
+        @media (min-width: 640px) {
+          .modal-content {
+            padding: 30px;
+          }
+          .modal-grid-3 {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+          }
+          .goal-circle {
+            width: 240px;
+            min-width: 240px;
+            height: 240px;
+            min-height: 240px;
+          }
+          .goal-circle p {
+            font-size: 11px;
+          }
+        }
+        @media (min-width: 768px) {
+          .modal-content {
+            padding: 40px;
+          }
+          .modal-grid-3 {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+          }
+          .circles-container {
+            flex-direction: row;
+            justify-content: center;
+          }
+          .goal-circle {
+            width: 280px;
+            min-width: 280px;
+            height: 280px;
+            min-height: 280px;
+          }
+          .goal-circle p {
+            font-size: 11px;
+            line-height: 1.5;
+          }
+          .goal-circle.blue {
+            padding: 25px 60px 25px 25px;
+            margin-right: -20px;
+          }
+          .goal-circle.orange {
+            padding: 25px 25px 25px 60px;
+            margin-left: -20px;
+          }
         }
       `}</style>
 
@@ -739,39 +819,39 @@ function AnalysesPageContent() {
             </button>
 
             {/* Modal Content */}
-            <div style={{ padding: '40px' }}>
+            <div className="modal-content">
               {/* Header */}
-              <div style={{ textAlign: 'center', marginBottom: '30px' }}>
-                <h2 style={{ fontSize: '26px', fontWeight: '700', color: '#091D33', marginBottom: '8px' }}>
+              <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+                <h2 style={{ fontSize: '22px', fontWeight: '700', color: '#091D33', marginBottom: '8px' }} className="sm:text-[26px]">
                   {tbTexts.title}
                 </h2>
-                <p style={{ fontSize: '16px', fontWeight: '600', color: '#EC910C', marginBottom: '20px', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                <p style={{ fontSize: '14px', fontWeight: '600', color: '#EC910C', marginBottom: '16px', textTransform: 'uppercase', letterSpacing: '1px' }} className="sm:text-[16px] sm:mb-5">
                   {tbTexts.subtitle}
                 </p>
-                <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#6B7280', maxWidth: '700px', margin: '0 auto' }}>
+                <p style={{ fontSize: '13px', lineHeight: '1.7', color: '#6B7280', maxWidth: '700px', margin: '0 auto' }} className="sm:text-[14px]">
                   {tbTexts.description}
                 </p>
               </div>
 
               {/* Advantages Section */}
-              <div style={{ marginBottom: '30px' }}>
+              <div style={{ marginBottom: '24px' }}>
                 {/* Three Columns */}
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', marginBottom: '24px' }}>
-                  <div style={{ backgroundColor: '#E0F2F4', borderRadius: '12px', padding: '20px' }}>
-                    <h4 style={{ fontSize: '18px', fontWeight: '600', color: '#209DA7', marginBottom: '12px' }}>{tbTexts.accuracy}</h4>
-                    <p style={{ fontSize: '13px', lineHeight: '1.6', color: '#4B5563' }}>
+                <div className="modal-grid-3" style={{ marginBottom: '20px' }}>
+                  <div style={{ backgroundColor: '#E0F2F4', borderRadius: '12px', padding: '16px' }} className="sm:p-5">
+                    <h4 style={{ fontSize: '16px', fontWeight: '600', color: '#209DA7', marginBottom: '10px' }} className="sm:text-[18px]">{tbTexts.accuracy}</h4>
+                    <p style={{ fontSize: '12px', lineHeight: '1.6', color: '#4B5563' }} className="sm:text-[13px]">
                       {tbTexts.accuracyText}
                     </p>
                   </div>
-                  <div style={{ backgroundColor: '#E0F2F4', borderRadius: '12px', padding: '20px' }}>
-                    <h4 style={{ fontSize: '18px', fontWeight: '600', color: '#209DA7', marginBottom: '12px' }}>{tbTexts.reliability}</h4>
-                    <p style={{ fontSize: '13px', lineHeight: '1.6', color: '#4B5563' }}>
+                  <div style={{ backgroundColor: '#E0F2F4', borderRadius: '12px', padding: '16px' }} className="sm:p-5">
+                    <h4 style={{ fontSize: '16px', fontWeight: '600', color: '#209DA7', marginBottom: '10px' }} className="sm:text-[18px]">{tbTexts.reliability}</h4>
+                    <p style={{ fontSize: '12px', lineHeight: '1.6', color: '#4B5563' }} className="sm:text-[13px]">
                       {tbTexts.reliabilityText}
                     </p>
                   </div>
-                  <div style={{ backgroundColor: '#E0F2F4', borderRadius: '12px', padding: '20px' }}>
-                    <h4 style={{ fontSize: '18px', fontWeight: '600', color: '#209DA7', marginBottom: '12px' }}>{tbTexts.simplicity}</h4>
-                    <p style={{ fontSize: '13px', lineHeight: '1.6', color: '#4B5563' }}>
+                  <div style={{ backgroundColor: '#E0F2F4', borderRadius: '12px', padding: '16px' }} className="sm:p-5">
+                    <h4 style={{ fontSize: '16px', fontWeight: '600', color: '#209DA7', marginBottom: '10px' }} className="sm:text-[18px]">{tbTexts.simplicity}</h4>
+                    <p style={{ fontSize: '12px', lineHeight: '1.6', color: '#4B5563' }} className="sm:text-[13px]">
                       {tbTexts.simplicityText}
                     </p>
                   </div>
@@ -802,9 +882,9 @@ function AnalysesPageContent() {
                 </div>
 
                 {/* Benefits Grid */}
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', marginBottom: '24px' }}>
+                <div className="modal-grid-3" style={{ marginBottom: '20px' }}>
                   {tbTexts.benefits.map((item, idx) => (
-                    <div key={idx} style={{ backgroundColor: '#E0F2F4', borderRadius: '10px', padding: '14px', fontSize: '12px', lineHeight: '1.5', color: '#4B5563' }}>
+                    <div key={idx} style={{ backgroundColor: '#E0F2F4', borderRadius: '10px', padding: '12px', fontSize: '11px', lineHeight: '1.5', color: '#4B5563' }} className="sm:p-[14px] sm:text-[12px]">
                       {item}
                     </div>
                   ))}
@@ -812,25 +892,14 @@ function AnalysesPageContent() {
               </div>
 
               {/* UN Goals Section */}
-              <div style={{ marginTop: '30px' }}>
-                <h3 style={{ fontSize: '16px', fontWeight: '600', color: '#091D33', textAlign: 'center', marginBottom: '24px' }}>
+              <div style={{ marginTop: '24px' }}>
+                <h3 style={{ fontSize: '14px', fontWeight: '600', color: '#091D33', textAlign: 'center', marginBottom: '20px' }} className="sm:text-[16px] sm:mb-6">
                   {locale === 'kz' ? 'БҰҰ мақсаттарына 2035 жылға дейін жәрдемдесу.' : locale === 'en' ? 'Contributing to UN Goals by 2035.' : 'Содействие Целям ООН к 2035 году.'}
                 </h3>
-                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
+                <div className="circles-container">
                   {/* Blue Circle */}
-                  <div style={{
-                    width: '280px',
-                    height: '280px',
-                    borderRadius: '50%',
-                    backgroundColor: '#091D33',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    padding: '25px 60px 25px 25px',
-                    marginRight: '-20px',
-                    zIndex: 0
-                  }}>
-                    <p style={{ fontSize: '11px', lineHeight: '1.5', color: 'white', textAlign: 'center' }}>
+                  <div className="goal-circle blue" style={{ backgroundColor: '#091D33', zIndex: 0 }}>
+                    <p style={{ color: 'white', textAlign: 'center' }}>
                       {locale === 'kz'
                         ? 'Тұрақты даму саласындағы мақсаттар аясындағы денсаулық сақтау саласындағы міндеттердің бірі – 2035 жылға қарай туберкулезден болатын өлім-жітімді 95%-ға және туберкулезбен сырқаттанушылықты 90%-ға азайтуға қол жеткізу.'
                         : locale === 'en'
@@ -839,19 +908,8 @@ function AnalysesPageContent() {
                     </p>
                   </div>
                   {/* Orange Circle */}
-                  <div style={{
-                    width: '280px',
-                    height: '280px',
-                    borderRadius: '50%',
-                    backgroundColor: '#EC910C',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    padding: '25px 25px 25px 60px',
-                    marginLeft: '-20px',
-                    zIndex: 1
-                  }}>
-                    <p style={{ fontSize: '11px', lineHeight: '1.5', color: 'white', textAlign: 'center' }}>
+                  <div className="goal-circle orange" style={{ backgroundColor: '#EC910C', zIndex: 1 }}>
+                    <p style={{ color: 'white', textAlign: 'center' }}>
                       {locale === 'kz'
                         ? 'Біз денсаулық сақтау саласындағы жаһандық мақсаттарға қол жеткізуге бағытталған шараларды белсенді қолдаймыз және енгіземіз. Біз Қазақстанда T-SPOT инновациялық технологиясын енгізгенімізге мақтанамыз.'
                         : locale === 'en'
@@ -862,7 +920,7 @@ function AnalysesPageContent() {
                 </div>
 
                 {/* T-SPOT Image */}
-                <div style={{ marginTop: '30px', borderRadius: '12px', overflow: 'hidden', maxWidth: '550px', margin: '30px auto 0' }}>
+                <div style={{ borderRadius: '12px', overflow: 'hidden', margin: '24px auto 0' }} className="max-w-[350px] sm:max-w-[450px] md:max-w-[550px]">
                   <Image
                     src="/images/tspot.png"
                     alt="T-SPOT.TB"
@@ -932,16 +990,16 @@ function AnalysesPageContent() {
             </button>
 
             {/* Modal Content */}
-            <div style={{ padding: '40px' }}>
+            <div className="modal-content">
               {/* Text Content */}
-              <h2 style={{ fontSize: '22px', fontWeight: '700', color: '#091D33', marginBottom: '16px', lineHeight: '1.3' }}>
+              <h2 style={{ fontWeight: '700', color: '#091D33', marginBottom: '16px', lineHeight: '1.3' }} className="text-[18px] sm:text-[20px] md:text-[22px]">
                 {locale === 'kz'
                   ? '«GammaLab» диагностикалық зертханасының негізгі мақсаты'
                   : locale === 'en'
                   ? 'The main goal of GammaLab diagnostic laboratory'
                   : 'Основная цель диагностической лаборатории «GammaLab»'}
               </h2>
-              <p style={{ fontSize: '15px', lineHeight: '1.8', color: '#4B5563', marginBottom: '24px' }}>
+              <p style={{ lineHeight: '1.8', color: '#4B5563', marginBottom: '24px' }} className="text-[13px] sm:text-[14px] md:text-[15px]">
                 {locale === 'kz'
                   ? 'зертханалық диагностика саласындағы перспективалық бағыттар бойынша қызмет, сондай-ақ таргетті терапияны таңдау үшін ісік тінінде мутацияларды зерттеумен байланысты жаңа шешімдерді енгізу болып табылады.'
                   : locale === 'en'
@@ -950,7 +1008,7 @@ function AnalysesPageContent() {
               </p>
 
               {/* Image */}
-              <div style={{ borderRadius: '12px', overflow: 'hidden', maxWidth: '600px', margin: '0 auto' }}>
+              <div style={{ borderRadius: '12px', overflow: 'hidden', margin: '0 auto' }} className="max-w-[400px] sm:max-w-[500px] md:max-w-[600px]">
                 <Image
                   src="/images/onko.png"
                   alt="Oncogenetics"
@@ -1018,14 +1076,14 @@ function AnalysesPageContent() {
             </button>
 
             {/* Modal Content */}
-            <div style={{ padding: '40px' }}>
+            <div className="modal-content">
               {/* Header */}
-              <div style={{ textAlign: 'center', marginBottom: '30px' }}>
-                <h2 style={{ fontSize: '24px', fontWeight: '700', color: '#091D33', marginBottom: '20px' }}>
+              <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+                <h2 style={{ fontWeight: '700', color: '#091D33' }} className="text-[18px] sm:text-[20px] md:text-[24px] mb-4 sm:mb-5">
                   Next-Generation Sequencing (NGS)
                 </h2>
                 {ngsContent && (
-                  <p style={{ fontSize: '14px', lineHeight: '1.7', color: '#6B7280' }}>
+                  <p style={{ lineHeight: '1.7', color: '#6B7280' }} className="text-[12px] sm:text-[13px] md:text-[14px]">
                     {locale === 'kz'
                       ? ngsContent.descriptionKz
                       : locale === 'en'
@@ -1040,22 +1098,21 @@ function AnalysesPageContent() {
                 const sections = locale === 'kz' ? ngsContent.sectionsKz : locale === 'en' ? ngsContent.sectionsEn : ngsContent.sections;
                 if (sections && sections.length > 0) {
                   return (
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                    <div className="flex flex-col gap-4 sm:gap-5 md:gap-6">
                       {sections.map((section, idx) => (
                         <div key={idx} style={{
                           backgroundColor: '#f8fafc',
-                          borderRadius: '12px',
-                          padding: '20px 24px'
-                        }}>
+                          borderRadius: '12px'
+                        }} className="p-4 sm:p-5 md:px-6 md:py-5">
                           {section.title && (
-                            <h3 style={{ fontSize: '16px', fontWeight: '600', color: '#091D33', marginBottom: '12px' }}>
+                            <h3 style={{ fontWeight: '600', color: '#091D33', marginBottom: '12px' }} className="text-[14px] sm:text-[15px] md:text-[16px]">
                               {section.title}
                             </h3>
                           )}
                           {section.items && section.items.length > 0 && (
-                            <ul style={{ margin: 0, paddingLeft: '20px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                            <ul className="m-0 pl-4 sm:pl-5 flex flex-col gap-2">
                               {section.items.filter(item => item.trim()).map((item, iIdx) => (
-                                <li key={iIdx} style={{ fontSize: '14px', color: '#4B5563', lineHeight: '1.6' }}>
+                                <li key={iIdx} style={{ color: '#4B5563', lineHeight: '1.6' }} className="text-[12px] sm:text-[13px] md:text-[14px]">
                                   {item}
                                 </li>
                               ))}
@@ -1070,10 +1127,9 @@ function AnalysesPageContent() {
                   <div style={{
                     backgroundColor: '#f0fdf4',
                     borderRadius: '12px',
-                    padding: '24px',
                     textAlign: 'center'
-                  }}>
-                    <p style={{ fontSize: '14px', color: '#166534', fontWeight: '500' }}>
+                  }} className="p-4 sm:p-5 md:p-6">
+                    <p style={{ color: '#166534', fontWeight: '500' }} className="text-[12px] sm:text-[13px] md:text-[14px]">
                       {locale === 'kz'
                         ? 'NGS зерттеулері туралы толық ақпарат жақында қосылады'
                         : locale === 'en'
