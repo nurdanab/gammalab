@@ -611,7 +611,7 @@ function QualitySectionContent({ t }: { t: (key: string) => string }) {
           boxShadow: '0 4px 16px rgba(236, 145, 12, 0.35)',
           flexShrink: 0
         }}>
-          Контроль<br />качества
+          {t('qualitySection.circleTitle')}
         </div>
 
         {/* SVG линии */}
@@ -635,7 +635,7 @@ function QualitySectionContent({ t }: { t: (key: string) => string }) {
             lineHeight: '1.5',
             borderLeft: '3px solid #EC910C'
           }}>
-            В нашей лаборатории внимательно следят за качеством проводимых исследований.
+            {t('qualitySection.point1')}
           </div>
           <div style={{
             backgroundColor: 'white',
@@ -646,7 +646,7 @@ function QualitySectionContent({ t }: { t: (key: string) => string }) {
             lineHeight: '1.5',
             borderLeft: '3px solid #EC910C'
           }}>
-            Ведется строгий контроль начиная с преаналитического этапа.
+            {t('qualitySection.point2')}
           </div>
           <div style={{
             backgroundColor: 'white',
@@ -657,7 +657,7 @@ function QualitySectionContent({ t }: { t: (key: string) => string }) {
             lineHeight: '1.5',
             borderLeft: '3px solid #EC910C'
           }}>
-            Наша лаборатория успешно участвует в программах Внешней Оценки Качества.
+            {t('qualitySection.point3')}
           </div>
           <div style={{
             backgroundColor: 'white',
@@ -668,7 +668,7 @@ function QualitySectionContent({ t }: { t: (key: string) => string }) {
             lineHeight: '1.5',
             borderLeft: '3px solid #EC910C'
           }}>
-            Ежедневно проводится внутренний контроль качества для всех тестов с использованием аттестованных контрольных материалов европейских производителей.
+            {t('qualitySection.point4')}
           </div>
         </div>
       </div>
@@ -849,31 +849,31 @@ function LicensesSectionContent({ t, locale }: { t: (key: string) => string; loc
 }
 
 // Компонент контента секции "Участие в конференциях"
-function ConferencesSectionContent() {
+function ConferencesSectionContent({ t }: { t: (key: string) => string }) {
   const [selectedImage, setSelectedImage] = useState<{ image: string; city: string; date: string } | null>(null);
 
   const conferences = [
     {
       image: '/images/1about.png',
-      city: 'Бильбао, Испания',
-      date: '8-12 сентября 2018',
+      city: t('conferencesSection.city1'),
+      date: t('conferencesSection.date1'),
     },
     {
       image: '/images/2about.png',
-      city: 'Базель, Швейцария',
-      date: '3-7 сентября 2022',
+      city: t('conferencesSection.city2'),
+      date: t('conferencesSection.date2'),
     },
     {
       image: '/images/3about.png',
-      city: 'Монпелье, Франция',
-      date: '1-4 июля 2023',
+      city: t('conferencesSection.city3'),
+      date: t('conferencesSection.date3'),
     },
   ];
 
   return (
     <>
       <p style={{ marginBottom: '24px', fontSize: '14px', lineHeight: '1.8', color: '#4b5563' }}>
-        Наши специалисты активно участвуют в мировых медицинских конференциях, представляя передовые исследования и технологии, а также являются авторами статей в ведущих мировых медицинских журналах, представляя результаты наших исследований.
+        {t('conferencesSection.description')}
       </p>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>
@@ -1115,8 +1115,8 @@ export default function AboutPage() {
     }
     if (activeSection === 'conferences') {
       return {
-        title: 'УЧАСТИЕ В КОНФЕРЕНЦИЯХ И АВТОРСКИЕ СТАТЬИ',
-        content: <ConferencesSectionContent />
+        title: t('conferencesSection.title'),
+        content: <ConferencesSectionContent t={t} />
       };
     }
     return { title: '', content: null };

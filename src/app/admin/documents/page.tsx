@@ -629,6 +629,25 @@ export default function DocumentsAdminPage() {
                 />
               </div>
 
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '20px' }}>
+                <div>
+                  <label style={labelStyle}>Описание (KZ)</label>
+                  <textarea
+                    value={formData.descriptionKz}
+                    onChange={(e) => setFormData(prev => ({ ...prev, descriptionKz: e.target.value }))}
+                    style={{ ...inputStyle, minHeight: '80px', resize: 'vertical' }}
+                  />
+                </div>
+                <div>
+                  <label style={labelStyle}>Описание (EN)</label>
+                  <textarea
+                    value={formData.descriptionEn}
+                    onChange={(e) => setFormData(prev => ({ ...prev, descriptionEn: e.target.value }))}
+                    style={{ ...inputStyle, minHeight: '80px', resize: 'vertical' }}
+                  />
+                </div>
+              </div>
+
               {/* Order and Active */}
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '24px' }}>
                 <div>

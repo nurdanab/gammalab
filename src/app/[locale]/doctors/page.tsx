@@ -637,7 +637,7 @@ function DoctorsContent({ locale }: { locale: Locale }) {
     return ngsContent.sections || [];
   };
 
-  const oncoSections = [
+  const oncoSectionsRu = [
     {
       title: 'ГЕНЕТИЧЕСКИЕ МАРКЕРЫ ПРЕДРАСПОЛОЖЕННОСТИ К РАЗВИТИЮ РАКА МОЛОЧНОЙ ЖЕЛЕЗЫ И РАКА ЯИЧНИКОВ',
       items: [
@@ -678,13 +678,101 @@ function DoctorsContent({ locale }: { locale: Locale }) {
     },
   ];
 
+  const oncoSectionsKz = [
+    {
+      title: 'СҮТ БЕЗІ ЖӘНЕ АНАЛЫҚ БЕЗІ ҚАТЕРЛІ ІСІГІНІҢ ДАМУЫНА БЕЙІМДІЛІКТІҢ ГЕНЕТИКАЛЫҚ МАРКЕРЛЕРІ',
+      items: [
+        'Кешен: ПТР әдісімен BRCA1 және BRCA2 гендеріндегі 16 герминалды мутацияны анықтау',
+      ],
+    },
+    {
+      title: 'ТАРГЕТТІК ҚАТЕРЛІ ІСІККЕ ҚАРСЫ ПРЕПАРАТТАРҒА СЕЗІМТАЛДЫҚ/ТӨЗІМДІЛІКТІҢ ГЕНЕТИКАЛЫҚ МАРКЕРЛЕРІ',
+      items: [
+        'ПТР әдісімен KRAS генінің мутациясын анықтау',
+        'ПТР әдісімен NRAS генінің мутацияларын анықтау',
+        'ПТР әдісімен KRAS гені мен NRAS генінің мутацияларын кешенді зерттеу',
+        'ПТР әдісімен EGFR геніндегі мутациялар кешенін анықтау',
+        'ПТР әдісімен BRAF геніндегі V600E мутациясын анықтау',
+        'Нақты уақыт режиміндегі ПТР көмегімен адам геномдық ДНҚ-сындағы HER2/neu генінің дозасын анықтау',
+        'Полимеразды тізбекті реакция (ПТР) әдісімен PIK3CA генінің мутацияларын анықтау',
+        'Полимеразды тізбекті реакция (ПТР) әдісімен IDH1, IDH2 гендерінің мутацияларын анықтау',
+      ],
+    },
+    {
+      title: 'ИММУНОГИСТОХИМИЯЛЫҚ ЗЕРТТЕУ (ИГХ)',
+      items: [
+        'ИГХ әдісімен ісік тінінің биоптатынан ALK генінің мутациясын анықтау',
+        'ИГХ әдісімен ісік тінінің биоптатынан PD-L1 рецепторын анықтау',
+        'Стандартталған ИГХ зерттеу: сүт безі қатерлі ісігіндегі рецепторлық статус (PR, ER, ki67, C-erbB-2 (HER2/neu)',
+        'ИГХ әдісімен ісік тінінің биоптатынан ROS1 генінің транслокациясындағы ақуыз экспрессиясын анықтау',
+        'ИГХ әдісімен ісік тінінің биоптатынан Her2/neu экспрессиясын анықтау',
+        'ИГХ әдісімен ісік тінінің биоптатынан Ki-67 экспрессиясын анықтау',
+        'ИГХ әдісімен ісік тінінің биоптатынан S100 ақуызын анықтау',
+        'Иммуногистохимиялық әдіспен андроген рецепторларын (AR) анықтау',
+      ],
+    },
+    {
+      title: 'СҰЙЫҚ БИОПСИЯ',
+      items: [
+        'Перифериялық қандағы айналымдағы ісік жасушаларының (АІЖ) құрамын анықтау бойынша кешенді зерттеу',
+      ],
+    },
+  ];
+
+  const oncoSectionsEn = [
+    {
+      title: 'GENETIC MARKERS OF PREDISPOSITION TO BREAST AND OVARIAN CANCER',
+      items: [
+        'Complex: detection of 16 germline mutations in BRCA1 and BRCA2 genes by PCR method',
+      ],
+    },
+    {
+      title: 'GENETIC MARKERS OF SENSITIVITY/RESISTANCE TO TARGETED ANTICANCER DRUGS',
+      items: [
+        'Detection of KRAS gene mutation by PCR method',
+        'Detection of NRAS gene mutations by PCR method',
+        'Complex detection of KRAS and NRAS gene mutations by PCR method',
+        'Detection of EGFR gene mutation complex by PCR method',
+        'Detection of V600E mutation in BRAF gene by PCR method',
+        'Detection of HER2/neu gene dose in human genomic DNA using real-time PCR',
+        'Detection of PIK3CA gene mutations by polymerase chain reaction (PCR)',
+        'Detection of IDH1, IDH2 gene mutations by polymerase chain reaction (PCR)',
+      ],
+    },
+    {
+      title: 'IMMUNOHISTOCHEMISTRY (IHC)',
+      items: [
+        'Detection of ALK gene mutation from tumor tissue biopsy by IHC method',
+        'Detection of PD-L1 receptor from tumor tissue biopsy by IHC method',
+        'Standardized IHC study: receptor status in breast cancer (PR, ER, ki67, C-erbB-2 (HER2/neu)',
+        'Detection of protein expression in ROS1 gene translocation from tumor tissue biopsy by IHC method',
+        'Detection of Her2/neu expression from tumor tissue biopsy by IHC method',
+        'Detection of Ki-67 expression from tumor tissue biopsy by IHC method',
+        'Detection of S100 protein from tumor tissue biopsy by IHC method',
+        'Detection of androgen receptors (AR) by immunohistochemistry method',
+      ],
+    },
+    {
+      title: 'LIQUID BIOPSY',
+      items: [
+        'Comprehensive study for detection of circulating tumor cells (CTC) content in peripheral blood',
+      ],
+    },
+  ];
+
+  const getOncoSections = () => {
+    if (locale === 'kz') return oncoSectionsKz;
+    if (locale === 'en') return oncoSectionsEn;
+    return oncoSectionsRu;
+  };
+
   const directions = [
     {
       title: t.dir1,
       icon: TestTubeIcon,
       description: '',
       details: [],
-      sections: oncoSections,
+      sections: getOncoSections(),
     },
     {
       title: t.dir2,

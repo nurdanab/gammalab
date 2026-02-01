@@ -86,7 +86,7 @@
       "p5": "We are constantly expanding the range of molecular genetic studies performed, which is why the largest state healthcare institutions and private medical centers trust us.",
       "p6label": "Participation in government programs:",
       "p6": "GammaLab LLP is a participant in the guaranteed volume of free medical care (GVFMC) program and compulsory social health insurance (CSHI) as a co-executor and service provider.",
-      "p7": "The laboratory provides a comprehensive approach to laboratory diagnostics and provides constant support to its clients. GammaLab LLP specializes in a narrow field, striving for high quality in laboratory testing. Our focus on specific areas of research allows us to achieve outstanding results."
+      "p7": "The laboratory provides a comprehensive approach to laboratory diagnostics and provides constant support to its clients. We specialize in a narrow field, striving for high quality in laboratory testing. Our focus on specific areas of research allows us to achieve outstanding results."
     },
     "reagentsSection": {
       "title": "REAGENTS AND CONSUMABLES",
@@ -154,7 +154,12 @@
       "hasTitle": "The company has:",
       "item1": "Quality control department for service provision",
       "item2": "QMS Manager – monitoring all customer inquiries",
-      "item3": "Internal laboratory quality control manager for performed tests"
+      "item3": "Internal laboratory quality control manager for performed tests",
+      "circleTitle": "Quality Control",
+      "point1": "Our laboratory carefully monitors the quality of research conducted.",
+      "point2": "Strict control is maintained starting from the pre-analytical stage.",
+      "point3": "Our laboratory successfully participates in External Quality Assessment programs.",
+      "point4": "Daily internal quality control is performed for all tests using certified control materials from European manufacturers."
     },
     "experienceSection": {
       "title": "EXPERIENCE AND COOPERATION",
@@ -171,6 +176,16 @@
       "breast": "Breast cancer",
       "ihcTitle": "Immunohistochemistry positive results percentage:",
       "contactTitle": "Cooperation contacts"
+    },
+    "conferencesSection": {
+      "title": "CONFERENCE PARTICIPATION AND PUBLICATIONS",
+      "description": "Our specialists actively participate in global medical conferences, presenting advanced research and technologies, and are authors of articles in leading international medical journals, sharing the results of our research.",
+      "city1": "Bilbao, Spain",
+      "date1": "September 8-12, 2018",
+      "city2": "Basel, Switzerland",
+      "date2": "September 3-7, 2022",
+      "city3": "Montpellier, France",
+      "date3": "July 1-4, 2023"
     },
     "licensesSection": {
       "title": "LICENSES AND PERMITS",
