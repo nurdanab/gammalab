@@ -84,6 +84,7 @@ const contentTranslations = {
     aboutTitle: 'О КОМПАНИИ',
     aboutText: 'Диагностическая лаборатория «GammaLab (ГаммаЛаб)» — это современная молекулярно-генетическая лаборатория — объединение профессионалов, сплочённая команда, решающая ряд перспективных научно-практических задач, связанных с различными направлениями современных технологий в области диагностики заболеваний.',
     directionsTitle: 'Направления',
+    directionsSubtitle: 'Диагностическая лаборатория GammaLab',
     dir1: 'Онкогенетика',
     dir2: 'Диагностика туберкулеза метод T-SPOT',
     dir3: 'Next-generation sequencing (NGS)',
@@ -236,6 +237,7 @@ const contentTranslations = {
     aboutTitle: 'КОМПАНИЯ ТУРАЛЫ',
     aboutText: '«GammaLab (ГаммаЛаб)» диагностикалық зертханасы — бұл заманауи молекулярлық-генетикалық зертхана, аурулардың диагностикасы саласындағы заманауи технологиялардың әртүрлі бағыттарымен байланысты бірқатар перспективалық ғылыми-практикалық міндеттерді шешетін кәсіпқойлар бірлестігі.',
     directionsTitle: 'Бағыттар',
+    directionsSubtitle: 'GammaLab диагностикалық зертханасы',
     dir1: 'Онкогенетика',
     dir2: 'Туберкулез диагностикасы T-SPOT әдісі',
     dir3: 'Next-generation sequencing (NGS)',
@@ -376,6 +378,7 @@ const contentTranslations = {
     aboutTitle: 'ABOUT THE COMPANY',
     aboutText: 'Diagnostic laboratory "GammaLab" is a modern molecular genetic laboratory — an association of professionals, a cohesive team solving a number of promising scientific and practical tasks related to various areas of modern technologies in the field of disease diagnostics.',
     directionsTitle: 'Directions',
+    directionsSubtitle: 'GammaLab Diagnostic Laboratory',
     dir1: 'Oncogenetics',
     dir2: 'Tuberculosis diagnostics T-SPOT method',
     dir3: 'Next-generation sequencing (NGS)',
@@ -871,7 +874,7 @@ function DoctorsContent({ locale }: { locale: Locale }) {
                 marginRight: 'auto',
               }}
             >
-              Диагностическая лаборатория GammaLab
+              {t.directionsSubtitle}
             </p>
           </div>
 
