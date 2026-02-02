@@ -32,11 +32,9 @@ const translations: Record<string, Record<string, string>> = {
     searchPlaceholder: 'Введите название анализа или услуги...',
     find: 'Найти',
     popularQueries: 'Популярные запросы:',
-    tag1: 'Общий анализ крови',
-    tag2: 'Биохимия',
-    tag3: 'Гормоны',
-    tag4: 'ПЦР тесты',
-    tag5: 'Аллергология',
+    tag1: 'Диагностика туберкулеза',
+    tag2: 'Онкогенетика',
+    tag3: 'NGS',
     address: 'Ходжанова, д. 55а',
     phone: '+7-705-100-03-33',
   },
@@ -56,11 +54,9 @@ const translations: Record<string, Record<string, string>> = {
     searchPlaceholder: 'Анализ немесе қызмет атауын енгізіңіз...',
     find: 'Табу',
     popularQueries: 'Танымал сұраулар:',
-    tag1: 'Жалпы қан анализі',
-    tag2: 'Биохимия',
-    tag3: 'Гормондар',
-    tag4: 'ПТР тесттер',
-    tag5: 'Аллергология',
+    tag1: 'Туберкулез диагностикасы',
+    tag2: 'Онкогенетика',
+    tag3: 'NGS',
     address: 'Ходжанов к., 55а үй',
     phone: '+7-705-100-03-33',
   },
@@ -80,11 +76,9 @@ const translations: Record<string, Record<string, string>> = {
     searchPlaceholder: 'Enter analysis or service name...',
     find: 'Find',
     popularQueries: 'Popular queries:',
-    tag1: 'Complete Blood Count',
-    tag2: 'Biochemistry',
-    tag3: 'Hormones',
-    tag4: 'PCR Tests',
-    tag5: 'Allergology',
+    tag1: 'Tuberculosis Diagnostics',
+    tag2: 'Oncogenetics',
+    tag3: 'NGS',
     address: 'Khodzhanov St., 55a',
     phone: '+7-705-100-03-33',
   },
@@ -359,6 +353,21 @@ export default function Header() {
                     <X className="h-5 w-5 text-gray-400" />
                   </button>
                 </form>
+                <div className="mt-4 pt-4 border-t border-gray-100">
+                  <p className="text-[12px] text-gray-400 mb-3">{t.popularQueries}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {[t.tag1, t.tag2, t.tag3].map((tag) => (
+                      <button
+                        key={tag}
+                        type="button"
+                        onClick={() => handleTagSearch(tag)}
+                        className="px-4 py-2 bg-gray-50 hover:bg-primary hover:text-white rounded-full text-[13px] text-[#091D33] transition-colors"
+                      >
+                        {tag}
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </div>
             )}
           </div>
