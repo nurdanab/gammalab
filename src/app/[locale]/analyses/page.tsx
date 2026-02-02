@@ -671,12 +671,10 @@ function AnalysesPageContent() {
             line-height: 1.5;
           }
           .goal-circle.blue {
-            padding: 25px 60px 25px 25px;
-            margin-right: -20px;
+            padding: 25px;
           }
           .goal-circle.orange {
-            padding: 25px 25px 25px 60px;
-            margin-left: -20px;
+            padding: 25px;
           }
         }
       `}</style>

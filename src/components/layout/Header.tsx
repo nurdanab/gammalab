@@ -359,21 +359,6 @@ export default function Header() {
                     <X className="h-5 w-5 text-gray-400" />
                   </button>
                 </form>
-                <div className="mt-4 pt-4 border-t border-gray-100">
-                  <p className="text-[12px] text-gray-400 mb-3">{t.popularQueries}</p>
-                  <div className="flex flex-wrap gap-2">
-                    {[t.tag1, t.tag2, t.tag3, t.tag4, t.tag5].map((tag) => (
-                      <button
-                        key={tag}
-                        type="button"
-                        onClick={() => handleTagSearch(tag)}
-                        className="px-4 py-2 bg-gray-50 hover:bg-primary hover:text-white rounded-full text-[13px] text-[#091D33] transition-colors"
-                      >
-                        {tag}
-                      </button>
-                    ))}
-                  </div>
-                </div>
               </div>
             )}
           </div>
