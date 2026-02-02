@@ -891,9 +891,6 @@ function AnalysesPageContent() {
 
               {/* UN Goals Section */}
               <div style={{ marginTop: '24px' }}>
-                <h3 style={{ fontSize: '14px', fontWeight: '600', color: '#091D33', textAlign: 'center', marginBottom: '20px' }} className="sm:text-[16px] sm:mb-6">
-                  {locale === 'kz' ? 'БҰҰ мақсаттарына 2035 жылға дейін жәрдемдесу.' : locale === 'en' ? 'Contributing to UN Goals by 2035.' : 'Содействие Целям ООН к 2035 году.'}
-                </h3>
                 <div className="circles-container">
                   {/* Blue Circle */}
                   <div className="goal-circle blue" style={{ backgroundColor: '#091D33', zIndex: 0 }}>
